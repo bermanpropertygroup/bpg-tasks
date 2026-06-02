@@ -176,15 +176,14 @@
 <header>
   <div>
     <h1>📋 BPG All-Tasks Dashboard</h1>
-    <p>Berman Property Group · Full Scan · GChat + Email + GDocs · Jun 2, 2026</p>
+    <p>Berman Property Group · GChat + Email Scan · Jun 2, 2026 · 49 tasks</p>
     <div class="source-pills">
       <span class="source-pill pill-gchat">✓ Google Chat</span>
-      <span class="source-pill pill-gdocs">✓ Google Docs</span>
       <span class="source-pill pill-email" style="background:rgba(255,255,255,0.18);color:#fff;">✓ Email</span>
     </div>
   </div>
   <div class="header-stats">
-    <div class="stat"><div class="num" id="total-tasks">118</div><div class="lbl">Total Tasks</div></div>
+    <div class="stat"><div class="num" id="total-tasks">49</div><div class="lbl">Total Tasks</div></div>
     <div class="stat"><div class="num" id="total-sections">–</div><div class="lbl">Sections</div></div>
     <div class="stat"><div class="num" id="total-unassigned">0</div><div class="lbl">Unassigned</div></div>
   </div>
@@ -224,7 +223,6 @@
     <select id="filter-source">
       <option value="">All Sources</option>
       <option value="gchat">Google Chat</option>
-      <option value="gdocs">Google Docs</option>
       <option value="email">Email</option>
     </select>
   </span>
@@ -316,8 +314,8 @@ const TASKS = [
   { task: "Add storage unit to website (link to CC Storage signup)", detail: "add storage unit to website that will eventually link to CC storage sign up", section: "02 Conversion", space: "Ix - 1827 Ribaut Rd (Self-Storage)", type: "ix", person: "Stephanie", due: "", source: "gchat" },
   { task: "Get HWH quote (pan + expansion tank) from HD or Lowes", detail: "@Stephanie Pretto can you get a quote for HWH, pan and expansion tank from HD or Lowe's? It will be cheaper than Pine's", section: "Stabilized - Ix", space: "Ix - 137 Old Jericho", type: "ix", person: "Stephanie", due: "", source: "gchat" },
   { task: "Request SHM work order to investigate further", detail: "Request a work order from SHM to investigate further", section: "Stabilized - Ix", space: "Ix - 25 Sams Pt 3B", type: "ix", person: "Stephanie", due: "", source: "gchat" },
-  { task: "Check w/ AD Mortgage re: escrow + deposit at closing", detail: "need to check w/ AD Mortgage / @Nichole Nelson - but i'm pretty sure they're going to escrow it AND that we made a big deposit at closing when we refi'd", section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Nichole", due: "", source: "gchat" },
-  { task: "800 Paris Ave LLC Renewal", detail: "800 Paris Ave LLC Renewal. Current policy expires 4/11/26. Renewal costs $6,247.64. Need to know if we're paying in full or if we're financing", section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Eric", due: "", source: "gchat" },
+  { task: "Check w/ AD Mortgage re: escrow + deposit at closing", detail: "need to check w/ AD Mortgage / @Nichole Nelson - but i'm pretty sure they/re going to escrow it AND that we made a big deposit at closing when we refi'd", section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Nichole", due: "", source: "gchat" },
+  { task: "800 Paris Ave LLC Renewal", detail: "800 Paris Ave LLC Renewal. Current policy expires 4/11/26. Renewal costs $6,247.64. Need to know if we/re paying in full or if we're financing", section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Eric", due: "", source: "gchat" },
   { task: "Schedule Snoddy for motion light + walkthrough 832B Paris", detail: "Schedule Snoddy for additional motion light and to walkthrough 832B Paris Ave", section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Stephanie", due: "", source: "gchat" },
   { task: "Update Google listing to remove 'Toddle Town'", detail: "Update google listing to remove 'Toddle Town'. 12/16/25: Suggested edit. 12/17/25: Suggested edit", section: "03 Disposition", space: "Ix - 609 Carteret St", type: "ix", person: "Unassigned", due: "", source: "gchat" },
   { task: "Create before/after video and add to website", detail: "Create before / after video and add to website", section: "Archive - Cx", space: "Cx - 26 Janette", type: "cx", person: "Stephanie", due: "", source: "gchat" },
@@ -337,75 +335,6 @@ const TASKS = [
   { task: "Fix vacant storage units at 1827 Ribaut (2-3 days)", detail: "[BPG Sync Meeting 6/1] Richard Pratten to repair vacant units at the storage facility over 2 to 3 days.", section: "02 Conversion", space: "Email", type: "ix", person: "Unassigned", due: "", source: "email" },
   { task: "Verify SC storage lease binding without tenant signature", detail: "[BPG Sync Meeting 6/1] Austin to research whether new storage lease agreements in South Carolina are legally binding without tenant signatures.", section: "02 Conversion", space: "Email", type: "general", person: "Austin", due: "", source: "email" },
   { task: "Issue non-renewal notices via first class mail + certificate of mailing", detail: "[BPG Sync Meeting 6/1] Austin to send non-renewal notices to tenants using first class mail and certificate of mailing.", section: "Stabilized - Ix", space: "Email", type: "ix", person: "Austin", due: "", source: "email" },
-  { task: "Overlap in SoW on estimates", detail: "Overlap in SoW on estimates", section: "BPG - General Biz", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Specifically, from July pre-CO estimate (repipe, trim", detail: "Specifically, from July pre-CO estimate (repipe, trim out to CO, HWH deletion / install) to the December Post-CO estimate (site work, rough in, trim out of kitchen & baths)", section: "BPG - General Biz", space: "26 Janette", type: "cx", person: "Unassigned", due: "Jul", source: "gdocs" },
-  { task: "Overlap occurs for hot water heaters", detail: "Overlap occurs for hot water heaters", section: "BPG - General Biz", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Invoice amount doesn't match remaining balance on PO", detail: "Invoice amount doesn't match remaining balance on PO ($4,212 invoiced vs. $2,200 actual)", section: "BPG - General Biz", space: "32 Talbert", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Invoice sent for $7,600 doesn't match original PO for $6,200", detail: "Invoice sent for $7,600 doesn't match original PO for $6,200", section: "BPG - General Biz", space: "70 Roseida", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Rough in cost doesn't match expectations ($6,500)", detail: "Rough in cost doesn't match expectations ($6,500)", section: "BPG - General Biz", space: "615 Linton", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Do we have electric finishes O/H for Bath 3 & 5?", detail: "Do we have electric finishes O/H for Bath 3 & 5? → Carey on site today (2/10) to finish rough, could do finish electric in those bathrooms", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "2/10", source: "gdocs" },
-  { task: "Need vanity light selections", detail: "Need vanity light selections", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Install vent fans", detail: "Install vent fans", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Install can lights", detail: "Install can lights", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Install receptacles & switches", detail: "Install receptacles & switches", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Put bulb in place of vanity lights", detail: "Put bulb in place of vanity lights", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "HVAC rough needs to get scheduled, week of 2/17 OR SOONER", detail: "HVAC rough needs to get scheduled, week of 2/17  OR SOONER (2/15 & 2/16) → new unit install + 2nd floor rough in", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "2/17", source: "gdocs" },
-  { task: "Pines Plumbing still going on 2/12?", detail: "Pines Plumbing still going on 2/12?", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "2/12", source: "gdocs" },
-  { task: "Rough in 2nd floor", detail: "Rough in 2nd floor", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Trim out bath 3 & 5", detail: "Trim out bath 3 & 5", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Faucets, and toilets are O/H", detail: "Faucets, and toilets are O/H", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Need to push to 26 janette for 2/13", detail: "**Need to push to 26 janette for 2/13", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "2/13", source: "gdocs" },
-  { task: "EFG to finish to paint ready downstairs", detail: "EFG to finish to paint ready downstairs", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Drywall (26 Janette)", detail: "Drywall", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Video walk thru for fernando (CBS) so he can quote", detail: "Video walk thru for fernando (CBS) → so he can quote", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "See if EFG would do drywall", detail: "See if EFG would do drywall", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "IOT go to paint (1725 BPD)", detail: "IOT go to paint:", section: "02 Conversion", space: "1725 BPD", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Needs 2 interior doors installed", detail: "Needs 2 interior doors installed (RH 18\" swing, 30 flat-LH prehung hollow)", section: "02 Conversion", space: "1725 BPD", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Trim / baseboard fixes", detail: "Trim / baseboard fixes", section: "02 Conversion", space: "1725 BPD", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Counter tops installed", detail: "Counter tops installed", section: "02 Conversion", space: "1725 BPD", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Backsplash installed", detail: "Backsplash installed", section: "02 Conversion", space: "1725 BPD", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Status? (70 Roseida)", detail: "Status?", section: "02 Conversion", space: "70 Roseida", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "No tile backsplash in kitchen → move to 615 Linton", detail: "No tile backsplash in kitchen → move to 615 Linton for use there", section: "02 Conversion", space: "70 Roseida", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "All electric & plumbing fixtures should be O/H", detail: "All electric & plumbing fixtures should be O/H", section: "02 Conversion", space: "70 Roseida", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Is Pines still planning on Rough In on 2/12?", detail: "Is Pines still planning on Rough In on 2/12?", section: "02 Conversion", space: "615 Linton", type: "ix", person: "Unassigned", due: "2/12", source: "gdocs" },
-  { task: "Call rough in & insulation inspection", detail: "Call rough in & insulation inspection", section: "02 Conversion", space: "615 Linton", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "R30 for ceiling", detail: "R30 for ceiling", section: "02 Conversion", space: "615 Linton", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "R13 for walls", detail: "R13 for walls", section: "02 Conversion", space: "615 Linton", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Schedule HVAC trimout for 2nd floor (32 Talbert)", detail: "Schedule HVAC trimout for 2nd floor", section: "02 Conversion", space: "32 Talbert", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Week of 2/17 → MEP trimout (32 Talbert)", detail: "Week of 2/17 → MEP trimout", section: "02 Conversion", space: "32 Talbert", type: "cx", person: "Unassigned", due: "2/17", source: "gdocs" },
-  { task: "Ready for paint wednesday (17 Miller)", detail: "Ready for paint wednesday", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Week of 2/17 → MEP trimout (17 Miller)", detail: "Week of 2/17 → MEP trimout", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "2/17", source: "gdocs" },
-  { task: "Need to schedule electric & plumbing trimout", detail: "Need to schedule electric & plumbing trimout", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Electric (17 Miller)", detail: "Electric", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Vanity light (17 Miller)", detail: "Vanity light", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Vent fan (17 Miller)", detail: "Vent fan", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "receptacles/switches (17 Miller)", detail: "receptacles/switches", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Plumbing (17 Miller)", detail: "Plumbing", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Shower trim kit", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs", detail: "Shower trim kit" },
-  { task: "Pedestal sink", detail: "Pedestal sink", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "Pedestal sink faucet", detail: "Pedestal sink faucet", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - PRE WORK: Plans, layouts, approvals, etc.", detail: "Plans, layouts, approvals, etc.", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - ROUGH IN: Complete Framing Rough", detail: "Complete Framing Rough", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - ROUGH IN: Complete Electrical Rough", detail: "Complete Electrical Rough", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - ROUGH IN: Complete Plumbing Rough", detail: "Complete Plumbing Rough", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - ROUGH IN: Complete HVAC Rough", detail: "COmplete HVAC Rough", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - INSPECT: Walk thru → ensure correct rough, layouts and quality", detail: "Walk thru → ensure correct rough, layouts and quality", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - INSULATION: Insulation", detail: "Insulation", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - FINISHES: Drywall", detail: "Drywall", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - FINISHES: Tilework - Showers / bathrooms", detail: "Tilework - Showers / bathrooms", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - FINISHES: Flooring", detail: "Flooring", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - FINISHES: Initial interior paint", detail: "Initial interior paint", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - Cabinetry/Counters: Kitchen cabinets / counters", detail: "Kitchen cabinets / counters", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - Cabinetry/Counters: Bathroom vanities / counters", detail: "Bathroom vanities / counters", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - Tilework - backsplashes", detail: "Tilework - backsplashes", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - Carpentry / Trim: Baseboard, window / door casing", detail: "Baseboard, window / door casing", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - Carpentry / Trim: Misc trim", detail: "Misc trim", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - Paint (interior)", detail: "Paint (interior)", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - Mechanical Trim out: Electrical Trim out", detail: "Electrical Trim out", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - Mechanical Trim out: Plumbing Trim out", detail: "Plumbing Trim out", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - Mirrors / Glass", detail: "Mirrors / Glass", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - Appliance install / testing", detail: "Appliance install / testing", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "2119 SIP - PUNCH OUT", detail: "PUNCH OUT", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" }
 ];
 
 // ── Sort / expand state ───────────────────────────────────────────────────
@@ -427,7 +356,9 @@ function dueDisplay(due) {
   return `<span style="${overdue?'color:#d32f2f;font-weight:700;':'color:#e65100;font-weight:600;'}">${due}${overdue?' ⚠':''}</span>`;
 }
 function sourcePill(s) {
-  return s==='gdocs' ? `<span class="src-pill src-gdocs">GDocs</span>` : `<span class="src-pill src-gchat">GChat</span>`;
+  if (s==='gdocs') return `<span class="src-pill src-gdocs">GDocs</span>`;
+  if (s==='email') return `<span class="src-pill src-email">Email</span>`;
+  return `<span class="src-pill src-gchat">GChat</span>`;
 }
 
 // ── Filter ────────────────────────────────────────────────────────────────
