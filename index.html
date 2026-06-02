@@ -160,6 +160,7 @@
   .src-pill { display: inline-block; padding: 1px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
   .src-gchat { background: #e3f0ff; color: #1565c0; }
   .src-gdocs { background: #fce4ec; color: #880e4f; }
+  .src-email { background: #e8f5e9; color: #1b5e20; }
 
   .no-results { text-align: center; padding: 48px; color: #aaa; font-size: 0.95rem; }
 
@@ -175,14 +176,15 @@
 <header>
   <div>
     <h1>📋 BPG All-Tasks Dashboard</h1>
-    <p>Berman Property Group · Full GChat Scan Complete · May 23, 2026</p>
+    <p>Berman Property Group · Full Scan · GChat + Email + GDocs · Jun 2, 2026</p>
     <div class="source-pills">
       <span class="source-pill pill-gchat">✓ Google Chat</span>
       <span class="source-pill pill-gdocs">✓ Google Docs</span>
+      <span class="source-pill pill-email" style="background:rgba(255,255,255,0.18);color:#fff;">✓ Email</span>
     </div>
   </div>
   <div class="header-stats">
-    <div class="stat"><div class="num" id="total-tasks">38</div><div class="lbl">Total Tasks</div></div>
+    <div class="stat"><div class="num" id="total-tasks">118</div><div class="lbl">Total Tasks</div></div>
     <div class="stat"><div class="num" id="total-sections">–</div><div class="lbl">Sections</div></div>
     <div class="stat"><div class="num" id="total-unassigned">0</div><div class="lbl">Unassigned</div></div>
   </div>
@@ -223,6 +225,7 @@
       <option value="">All Sources</option>
       <option value="gchat">Google Chat</option>
       <option value="gdocs">Google Docs</option>
+      <option value="email">Email</option>
     </select>
   </span>
   <button class="clear-btn" onclick="clearFilters()">✕ Clear</button>
@@ -285,273 +288,124 @@ const SECTION_CLASS = {
 // Fields: task (short title), detail (full original text / context), section, space, type, person, due, source
 // detail: "" = not yet captured from source; populate on next GChat re-scan
 const TASKS = [
-
-  // ── BPG - GENERAL BIZ › Accounting ───────────────────────────────────────
-  { task: "Add Austin Hartman as BPG Vanguard signer",
-    detail: "@Austin Hartman i need to add you as a signer for BPG vanguard",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Eric", due: "", source: "gchat" },
-
-  { task: "HOA billing JE – zero out 25 Sams 3B/3D",
-    detail: "I think this should effectively be zero'd out, since the HOA has been billing against this each month and it's gone down over time - In other words, you can put $1300 towards HOA fees for 25 sams 3B, and the other 1300 towards HOA fees for 25 sams 3D in a JE to zero it out",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-
-  { task: "Viktor Group investment entry",
-    detail: "This shows Investment into Viktor Group by Ember. Is there an equivalent to this on Viktor's books? Would this show up under Equity on Viktor's B/S? These entries Phillip put in, I don't fully understand them",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-
-  { task: "Amortization lines – zero out",
-    detail: "Shouldn't these amortization lines be zero'd out as well?",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-
-  { task: "Loan tracking discrepancy – $404,322",
-    detail: "I'm tracking a different outstanding loan amount - I'm tracking $404,322 - where's the JE that sold 65 sams point rd, shouldn't that have adjusted this correctly? Please explain",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-
-  { task: "Loan 0082 rolled to 0094 – missing from BPG B/S",
-    detail: "Loan 0082 no longer exists - i think this rolled over to 0094 (which is missing from BPG B/S)",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-
-  { task: "Clear BPG Balance Sheet line",
-    detail: "How can we clear out this line on BPG B/S? @Nichole Nelson",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-
-  { task: "Lawn care report by property",
-    detail: "@Nichole Nelson can you give me a report showing what we pay in lawn care, on average, per month, per property?",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-
-  { task: "Review refi JE – Paris Ave (Viktor)",
-    detail: "@Eric Berman please review the refinance Journal Entry in Viktor for Paris Ave (feb 2026)",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Eric", due: "", source: "gchat" },
-
-  { task: "JE for 800 Paris Refi – 832 portion",
-    detail: "@Eric Berman JE for 800Paris Refi -832 Portion of loan is entered in QB, please review",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Eric", due: "", source: "gchat" },
-
-  { task: "Insurance policy – CGL for BPG vs 800 Paris",
-    detail: "I think this policy was given BPG as a customer. It's some sort of liability policy, the attached doc in QB has 800 paris ave as the address, but i don't know if this is the CGL policy for 800 paris ave, or a general CGL for BPG — @Stephanie Pretto or @Nichole Nelson can you please confirm? If for BPG, then change nothing. If for 800 Paris, @Nichole Nelson please re-cast to 800 paris ave as customer.",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-
-  // ── BPG - GENERAL BIZ › BPG - General ────────────────────────────────────
-  { task: "Pretto – add to FUB / bid 2507 Fripp",
-    detail: "Pretto!! Please add to fub and then also reach out to get their emails and have them bid on 2507 Fripp st.",
-    section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Stephanie", due: "", source: "gchat" },
-
-  { task: "Stephanie can't access 153 Williams / Jericho – request HVAC info from SHM",
-    detail: "@Stephanie Pretto i can't get into 153 Williams or the Jericho properties to get HVAC info you'll need to request that of SHM to register those units",
-    section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Stephanie", due: "", source: "gchat" },
-
-  { task: "Create welcome package for subcontractors",
-    detail: "Create welcome package for new subcontractors",
-    section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Nichole", due: "", source: "gchat" },
-
-  { task: "Look into Follow Up Boss subscription",
-    detail: "@Nichole Nelson you should see if you can get follow up boss down next (monthly subscription)",
-    section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Nichole", due: "", source: "gchat" },
-
-  // ── BPG - GENERAL BIZ › Marketing ────────────────────────────────────────
-  { task: "Leave flyers at cigar shop + windhorse",
-    detail: "@Austin Hartman leave flyers at cigar shop + windhorse",
-    section: "BPG - General Biz", space: "Marketing", type: "marketing", person: "Austin", due: "", source: "gchat" },
-
-  { task: "Sort by Stage in dashboard",
-    detail: "We can also sort by Stage - i'll mess w/ this later",
-    section: "BPG - General Biz", space: "Marketing", type: "marketing", person: "Eric", due: "", source: "gchat" },
-
-  { task: "1x/month vacancies + construction openings to distro list",
-    detail: "1x per month, send list of vacancies and construction openings to distro list (Dukes, Guerrero, Phillips, Megan/Hannah, Scott, Summerall, Dean, etc)",
-    section: "BPG - General Biz", space: "Marketing", type: "marketing", person: "Stephanie", due: "", source: "gchat" },
-
-  // ── 01 ACQUISITION ────────────────────────────────────────────────────────
-  { task: "Reach out to Kevin Dukes about build agreements",
-    detail: "1. Builder Agreement between REA/GC, with land basis, profit share details. 2. Joint venture spec build agreement, building for a fee + % of profit.",
-    section: "01 Acquisition", space: "Cx - Prospects", type: "cx", person: "Eric", due: "", source: "gchat" },
-
-  // ── 02 CONVERSION ─────────────────────────────────────────────────────────
-
-  { task: "Schedule EFG to paint – week of June 1 (after epoxy dries)",
-    detail: "schedule EFG to paint the week of June 1 after epoxy dries",
-    section: "02 Conversion", space: "Cx - 1012 Mustellidae", type: "cx", person: "Stephanie", due: "June 1, 2026", source: "gchat" },
-
-  { task: "Construction permit / selections sheet / designer call / send plans",
-    detail: "Tasks: 1) Put together construction permit 2) Put together a selections sheet 3) Schedule call w/ designer to go over selections 4) Send plans out to our usual suspects (will need to include stucco folks)",
-    section: "02 Conversion", space: "Cx - 16 Mum Grace", type: "cx", person: "Stephanie", due: "", source: "gchat" },
-
-  { task: "Hang full-length mirror on side door bathroom entrance",
-    detail: "arrange for the hanging of the full length mirror that was in the larger bathroom to be attached to the inside of the side door entrance to the bathroom",
-    section: "02 Conversion", space: "Cx - 401 Scott St Beth Israel", type: "cx", person: "Austin", due: "", source: "gchat" },
-
-  { task: "@Austin Hartman – please review",
-    detail: "@Austin Hartman please review",
-    section: "02 Conversion", space: "Cx - 401 Scott St Beth Israel", type: "cx", person: "Austin", due: "", source: "gchat" },
-
-  // ── 02 Conversion — Ix - 1827 Ribaut Rd ─────────────────────────────────
-  { task: "Final sign design for permit – include electrical for lighting",
-    detail: "Need to also work on a final sign design that we can submit for a permit app – we should include running electrical to sign for lighting on either side. Here's permanent sign permit app.",
-    section: "02 Conversion", space: "Ix - 1827 Ribaut Rd Self-Storage", type: "ix", person: "Stephanie", due: "", source: "gchat" },
-
-  { task: "Add storage unit to website linking CC storage sign-up",
-    detail: "add storage unit to website that will eventually link to CC storage sign up",
-    section: "02 Conversion", space: "Ix - 1827 Ribaut Rd Self-Storage", type: "ix", person: "Stephanie", due: "", source: "gchat" },
-
-  { task: "Update Google listing to remove 'Toddle Town'",
-    detail: "12/16/25: Suggested edit, 12/17/25: Suggested edit",
-    section: "03 Disposition", space: "Ix - 609 Carteret St", type: "ix", person: "Stephanie", due: "", source: "gchat" },
-
-  { task: "Get quote for HWH, pan and expansion tank from HD or Lowe's",
-    detail: "@Stephanie Pretto can you get a quote for HWH, pan and expansion tank from HD or Lowe's? It will be cheaper than Pine's",
-    section: "Stabilized - Ix", space: "Ix - 137 Old Jericho", type: "ix", person: "Stephanie", due: "", source: "gchat" },
-
-  { task: "Request a work order from SHM to investigate further",
-    detail: "Request a work order from SHM to investigate further",
-    section: "Stabilized - Ix", space: "Ix - 25 Sams Pt 3B", type: "ix", person: "Stephanie", due: "", source: "gchat" },
-
-  { task: "Check w/ AD Mortgage re: escrow and deposit at closing",
-    detail: "need to check w/ AD Mortgage / @Nichole Nelson - but i'm pretty sure they're going to escrow it AND that we made a big deposit at closing when we refi'd",
-    section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Nichole", due: "", source: "gchat" },
-
-  { task: "800 Paris Ave LLC Renewal – $6,247.64 (expires 4/11/26)",
-    detail: "Current policy expires 4/11/26. Renewal costs $6,247.64. Need to know if we're paying in full or if we're financing",
-    section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Eric", due: "4/11/2026", source: "gchat" },
-
-  { task: "Schedule Snoddy for additional motion light + walkthrough 832B",
-    detail: "Schedule Snoddy for additional motion light and to walkthrough 832B Paris Ave",
-    section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Stephanie", due: "", source: "gchat" },
-
-  // ── ARCHIVE - CX ──────────────────────────────────────────────────────────
-  { task: "Create before/after video and add to website",
-    detail: "Create before/after video and add to website",
-    section: "Archive - Cx", space: "Cx - 26 Janette", type: "cx", person: "Stephanie", due: "", source: "gchat" },
-
-  { task: "2119 SIP Before/After video",
-    detail: "2119 SIP Before/After video",
-    section: "Archive - Cx", space: "Cx - 2119 SIP", type: "cx", person: "Stephanie", due: "", source: "gchat" },
-
-  { task: "Create before/after video and add to website",
-    detail: "Create before/after video and add to website",
-    section: "Archive - Cx", space: "Cx - 332 CJFV", type: "cx", person: "Stephanie", due: "", source: "gchat" },
-
-  // ── GOOGLE DOCS › Projects Master (RUNNING tab) ───────────────────────────
-  // Extracted from Tuesday Operations Sync Meeting notes · May 22, 2026
-
-  // DUE OUTS — explicitly assigned in meeting notes
-  { task: "Order material for 504 King St",
-    detail: "Order material for 504 King St",
-    section: "02 Conversion", space: "Cx - 504 King St", type: "cx", person: "Stephanie", due: "", source: "gdocs" },
-  { task: "Get updated Proof & design for Ribaut Storage Sign",
-    detail: "Get updated Proof & design for permanent Ribaut Storage Sign",
-    section: "02 Conversion", space: "Ix - 1827 Ribaut Rd Self-Storage", type: "ix", person: "Stephanie", due: "", source: "gdocs" },
-  { task: "Update vacancies list",
-    detail: "Update vacancies list",
-    section: "BPG - General Biz", space: "Marketing", type: "marketing", person: "Stephanie", due: "", source: "gdocs" },
-  { task: "Schedule financial meeting template working sessions",
-    detail: "Schedule financial meeting template working sessions",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gdocs" },
-  { task: "Hit up delinquent tenants to pay",
-    detail: "Hit up delinquent tenants, get them to pay",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gdocs" },
-  { task: "Onboard all Ribaut storage tenants ASAP",
-    detail: "Onboard all ribaut storage tenants ASAP — to new software, leases, autopay, and TPP",
-    section: "02 Conversion", space: "Ix - 1827 Ribaut Rd Self-Storage", type: "ix", person: "Nichole", due: "", source: "gdocs" },
-  { task: "Incorporate TPP asap",
-    detail: "Incorporate TPP asap (TPP addendum for all leases)",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gdocs" },
-
-  // Accounting & Finance
-  { task: "Send updated PFS to Nichole",
-    detail: "Eric–send updated PFS (Personal Financial Statement) to NN",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Eric", due: "", source: "gdocs" },
-  { task: "Complete Viktor Group P&L audit",
-    detail: "Working through audits and tasks for 2025 → Austin 40% done with auditing Viktor Group P&L",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Austin", due: "", source: "gdocs" },
-  { task: "Reconcile Books for April",
-    detail: "Reconcile Books for April",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gdocs" },
-  { task: "Get Gallagher insurance competitor pricing documents",
-    detail: "Get Gallagher insurance the following documents for their competitor pricing review: (all policies) — Copies of policies currently in place, Statement of Values with property addresses and COPE info, Loss runs dating back 5 years",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gdocs" },
-  { task: "Invoice $5K for 2507 Fripp St",
-    detail: "2507 Fripp St - Invoice for $5K on 5/22 (deposit invoice outstanding)",
-    section: "02 Conversion", space: "Cx - 2507 Fripp St", type: "cx", person: "Nichole", due: "5/22/2026", source: "gdocs" },
-  { task: "Monthly Financial Meeting template — finalize",
-    detail: "Monthly Financial Meeting template → finalize template, reports, etc.",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gdocs" },
-  { task: "Send refi documents to lender for 27 Miller/67 Sams",
-    detail: "Need to send him documents for these two properties (27 Miller and 67 Sams) — docs stored in drive link; Eric–send updated PFS to NN",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Eric", due: "", source: "gdocs" },
-  { task: "Discuss 1122 Emmons cleaning fees with Eric",
-    detail: "1122 Emmons Cleaning Fees and Year End Breakdown → Nichole to discuss w/ Eric",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gdocs" },
-  { task: "Discuss Ribaut Storage hours/fixed fee contract",
-    detail: "Discuss Hours/Fixed Fee Contract for Ribaut Storage with EB and AH",
-    section: "02 Conversion", space: "Ix - 1827 Ribaut Rd Self-Storage", type: "ix", person: "Eric", due: "", source: "gdocs" },
-
-  // General Business & Operations
-  { task: "Update cost plus contract",
-    detail: "ESB → Update Cost plus contract (include 10-15% fee for allowances that go over budget; design/pricing fee for new builds)",
-    section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Eric", due: "", source: "gdocs" },
-  { task: "Grant Austin access to Chase accounts",
-    detail: "Grant Austin permissions to access Chase accounts w/out Eric's approval (Eric has to do this)",
-    section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Eric", due: "", source: "gdocs" },
-  { task: "Build 1st Draft of Acquisition SOP section",
-    detail: "[ESB] Build 1st Draft of Acquisition Section of SOP → 3/20 target",
-    section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Eric", due: "", source: "gdocs" },
-  { task: "Build 1st Draft of Disposition SOP section",
-    detail: "[SMP] Build 1st Draft of Disposition Section of SOP. How we handle sales of properties, lease listings, etc. → take our DD checklist and incorporate. 3/20 target",
-    section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Stephanie", due: "", source: "gdocs" },
-  { task: "Close out BRB Acquisitions entity",
-    detail: "Close out BRB Acquisitions — Final tax filings, Close out QB, Close bank acct, Close out EIN, Close out company w/ Sec of State",
-    section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Eric", due: "", source: "gdocs" },
-  { task: "Rebook one night on points for BPCON",
-    detail: "Austin needs to rebook one night on points for BPCON",
-    section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Austin", due: "", source: "gdocs" },
-  { task: "Richard (RJP) onboarding — June 1 start",
-    detail: "Richard Onboarding → 1 June start date — Create offer letter/contract, Establish RJP in QB, Collect W4/direct deposit, Define project roles, Create BPG email, Create FUB number, Request credit cards (Amex, Chase, Ribaut), Incorporate into all GChat spaces",
-    section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Unassigned", due: "6/1/2026", source: "gdocs" },
-
-  // Investment Projects
-  { task: "1827 Ribaut: Remove physical payment box",
-    detail: "Physical payment box — Remove end of May",
-    section: "02 Conversion", space: "Ix - 1827 Ribaut Rd Self-Storage", type: "ix", person: "Stephanie", due: "5/31/2026", source: "gdocs" },
-  { task: "1827 Ribaut: Approve drainage work with Tony",
-    detail: "Drainage — Give Tony a green light or discuss the drainage work before the rainy season begins. TC put together a robust drainage plan w/ gravel included, ~$8,000-$10,000",
-    section: "02 Conversion", space: "Ix - 1827 Ribaut Rd Self-Storage", type: "ix", person: "Eric", due: "", source: "gdocs" },
-  { task: "1827 Ribaut: Send certified letter to Teresa Pearson",
-    detail: "Begin lien process with Teresa Pearson & Crasandra Padilla (no action on Crasandra for now) — Austin will send a certified letter to Teresa Pearson",
-    section: "02 Conversion", space: "Ix - 1827 Ribaut Rd Self-Storage", type: "ix", person: "Austin", due: "", source: "gdocs" },
-  { task: "1827 Ribaut: Set bulk pricing rates for June 1",
-    detail: "Set bulk pricing rates for June 1 in CC Storage (link to spreadsheet)",
-    section: "02 Conversion", space: "Ix - 1827 Ribaut Rd Self-Storage", type: "ix", person: "Stephanie", due: "6/1/2026", source: "gdocs" },
-  { task: "1827 Ribaut: Return vinyl skirt to Lowe's",
-    detail: "Mobile home rehab — Return 39 pc. vinyl skirt to Lowe's on 5/25",
-    section: "02 Conversion", space: "Ix - 1827 Ribaut Rd Self-Storage", type: "ix", person: "Stephanie", due: "5/25/2026", source: "gdocs" },
-  { task: "800 Paris Ave: Address front building water issues",
-    detail: "800 Paris Ave — Need to address front of building water issues ASAP. Austin meeting w/ EFG on 5/22. Replace/repair all caulking along front side w/ industrial grade (SHM tasked EFG). Caulk/seal around all 8x8 posts. Replace commercial door thresholds.",
-    section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Austin", due: "", source: "gdocs" },
-  // Construction Projects
-  { task: "2507 Fripp: Review takeoff / respond to RFIs",
-    detail: "[ESB] Review Takeoff for 2507 Fripp St → seems like a few things are missing and have a few RFIs. Questions for Housley.",
-    section: "02 Conversion", space: "Cx - 2507 Fripp St", type: "cx", person: "Eric", due: "", source: "gdocs" },
-  { task: "2507 Fripp: Print Whitaker Labs results for permit box",
-    detail: "2507 Fripp St — Need Whitaker Labs test results printed, put in plastic, and hung up in the permit box",
-    section: "02 Conversion", space: "Cx - 2507 Fripp St", type: "cx", person: "Stephanie", due: "", source: "gdocs" },
-  { task: "16 Mum Grace: Construction permit & selections sheet",
-    detail: "16 Mum Grace (Rob Herbstman - Sunroom addition) — START END OF JUNE (6/22). Put together construction permit, put together selections sheet, schedule call w/ designer to go over selections, handle HOA requirements for construction",
-    section: "02 Conversion", space: "Cx - 16 Mum Grace", type: "cx", person: "Stephanie", due: "6/22/2026", source: "gdocs" },
-  { task: "1012 Mustelidae: Schedule EFG for paint ASAP",
-    detail: "1012 Mustelidae: current phase - paint & screen. EFG needs to be scheduled for paint ASAP — First week of June. Epoxy floor — Is there a PO? Scheduled for May 27, 2026.",
-    section: "02 Conversion", space: "Cx - 1012 Mustellidae", type: "cx", person: "Stephanie", due: "", source: "gdocs" },
-  { task: "1012 Mustelidae: Make PO for Diamond Porches screen",
-    detail: "1012 Mustelidae screen — Diamond Porches - Make PO ($2,650 for ½ x 1\" aluminum framing). Schedule 2nd week of June. Remove portajon and post construction DD afterwards. Professional photos.",
-    section: "02 Conversion", space: "Cx - 1012 Mustellidae", type: "cx", person: "Stephanie", due: "", source: "gdocs" },
-  { task: "611 Linton: Follow up with client by EOW",
-    detail: "611 Linton - Richard Rickabaugh — proposal sent (DATE), client confirmed receipt. Follow up by EOW.",
-    section: "02 Conversion", space: "Cx - 611 Linton", type: "cx", person: "Stephanie", due: "", source: "gdocs" },
-  { task: "401/403 Scott: Swap handle, get reviews & photos",
-    detail: "401/403 Scott St — Swap 1 handle, Get reviews, Other post construction DD items, Professional photos?",
-    section: "02 Conversion", space: "Cx - 401 Scott St Beth Israel", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
-  { task: "MCRD PI: Meet John Baise (FEAD contracting officer)",
-    detail: "Get on List / Meet w/ main contracting guy at MCRD PI — John Baise - FEAD (main contracting officer). Need to send hours and process to all subs that we ask to go on base.",
-    section: "01 Acquisition", space: "Cx - Prospects", type: "cx", person: "Austin", due: "", source: "gdocs" },
+  { task: "Is the SREO 'RentRoll' tab updated?", detail: "Is the SREO 'RentRoll' tab updated? 606 Carteret St Unit 2 --> Delinquent, 409 Carteret (Day Spa) --> Delinquent, 137 Old Jericho Unia A --> lease end date in the past", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
+  { task: "Figure out Richard's biweekly pay", detail: "@Nichole Nelson Need to figure out Richard's biweekly pay is going to be.", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
+  { task: "Add Austin as signer for BPG Vanguard", detail: "@Austin Hartman i need to add you as a signer for BPG vanguard", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Eric", due: "", source: "gchat" },
+  { task: "HOA fees zero-out JE (25 Sams 3B & 3D)", detail: "Zero out HOA billing: $1300 towards HOA fees for 25 sams 3B and $1300 towards HOA fees for 25 sams 3D in a JE", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
+  { task: "Viktor Group / Ember investment entry", detail: "This shows Investment into Viktor Group by Ember. Is there an equivalent on Viktor's books? Would this show up under Equity on Viktor's B/S?", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
+  { task: "Amortization lines — zero out?", detail: "Shouldn't these amortization lines be zero'd out as well?", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
+  { task: "Outstanding loan amount — 65 Sams Point JE", detail: "Tracking $404,322 outstanding loan — where's the JE that sold 65 sams point rd? Shouldn't that have adjusted this correctly?", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
+  { task: "Loan 0082 rolled to 0094 — missing from BPG B/S", detail: "Loan 0082 no longer exists - i think this rolled over to 0094 (which is missing from BPG B/S)", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
+  { task: "Leave flyers at cigar shop + windhorse", detail: "@Austin Hartman leave flyers at cigar shop + windhorse", section: "BPG - General Biz", space: "Marketing", type: "marketing", person: "Austin", due: "", source: "gchat" },
+  { task: "Sort by Stage in dashboard", detail: "We can also sort by Stage - i'll mess w/ this later", section: "BPG - General Biz", space: "Marketing", type: "marketing", person: "Eric", due: "", source: "gchat" },
+  { task: "1x/month vacancies + construction openings to distro list", detail: "1x per month, send list of vacancies and construction openings to distro list (Dukes, Guerrero, Phillips, Megan/Hannah, Scott, Summerall, Dean, etc)", section: "BPG - General Biz", space: "Marketing", type: "marketing", person: "Stephanie", due: "", source: "gchat" },
+  { task: "Add Edgar to FUB + get framing quote", detail: "@Stephanie Pretto did you ever add these guys to FUB, also did we try and get a framing quote from this Edgar guy?", section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Stephanie", due: "", source: "gchat" },
+  { task: "Add to FUB + get emails + bid on 2507 Fripp", detail: "Pretto!! Please add to fub and then also reach out to get their emails and have them bid on 2507 Fripp st.", section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Stephanie", due: "", source: "gchat" },
+  { task: "Request SHM Re`�ter HVAC for 153 Williams + Jericho", detail: "@Stephanie Pretto i can't get into 153 Williams or the Jericho properties to get HVAC info you'll need to request that of SHM to register those units", section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Stephanie", due: "", source: "gchat" },
+  { task: "Create welcome package for new subcontractors", detail: "Create welcome package for new subcontractors", section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Nichole", due: "", source: "gchat" },
+  { task: "Look into Follow Up Boss subscription (monthly)", detail: "@Nichole Nelson you should see if you can get follow up boss down next (monthly subscription)", section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Nichole", due: "", source: "gchat" },
+  { task: "Schedule walk thru b/w Eric and Freddy at MCRD PI", detail: "Please schedule a walk thru b/w me and Freddy at MCRD PI", section: "01 Acquisition", space: "Cx - Prospects", type: "cx", person: "Stephanie", due: "", source: "gchat" },
+  { task: "Add to FUB — saw their truck", detail: "@Stephanie Pretto add to FUB we can try these guys if needed. Saw their truck earlier", section: "01 Acquisition", space: "Cx - Prospects", type: "cx", person: "Stephanie", due: "", source: "gchat" },
+  { task: "Reach out to Kevin Dukes about build agreements", detail: "Reach out to Kevin Dukes about build agreements: 1. Builder Agreement between REA/GC with land basis, profit share details. 2. Joint venture spec build agreement, building for a fee + % of profit", section: "01 Acquisition", space: "Cx - Prospects", type: "cx", person: "Eric", due: "", source: "gchat" },
+  { task: "Construction permit + selections sheet + designer call + send plans", detail: "Tasks: 1) Put together construction permit 2) Put together a selections sheet 3) Schedule call w/ designer to go over selections 4) Send plans out to our usual suspects (will need to include stucco folks)", section: "02 Conversion", space: "Cx - 16 Mum Grace (Herbstman/Simek)", type: "cx", person: "Stephanie", due: "", source: "gchat" },
+  { task: "Migrate docs from Cox chat to original 2507 Fripp chat + archive", detail: "Stephanie created this 2507 Fripp St chat in April 2026. Every document in this chat needs to be migrated to the original 2507 Fripp St chat and then this one should be archived", section: "02 Conversion", space: "Cx - 2507 Fripp St - Cox", type: "cx", person: "Stephanie", due: "", source: "gchat" },
+  { task: "Order quicktie cables from Anchor Hardware Bluffton", detail: "@Stephanie Pretto Anchor Hardware in Bluffton will likely have access to quicktie cables. We need (16x) QTG Green w/ the appropriate steel plates and hex nuts. Link: quicktieproducts.com/wood-quickties/", section: "02 Conversion", space: "Cx - 2507 Fripp St - Cox", type: "cx", person: "Stephanie", due: "", source: "gchat" },
+  { task: "Fix Nichole payment issue", detail: "ah, lol. @Nichole Nelson please unfuck her payments.", section: "02 Conversion", space: "Ix - 1827 Ribaut Rd (Self-Storage)", type: "ix", person: "Nichole", due: "", source: "gchat" },
+  { task: "Order bollards + safety signs for 1827", detail: "@Stephanie Pretto Order the following, per discussion above: -(2x) bollards -(1x) Notice, Enter at own risk!... sign -(1x) No Tailgating... sign", section: "02 Conversion", space: "Ix - 1827 Ribaut Rd (Self-Storage)", type: "ix", person: "Stephanie", due: "", source: "gchat" },
+  { task: "Final sign design + permit app for 1827 (lit sign)", detail: "Need to also work on a final sign design that we can submit for a permit app - we should include running electrical to sign for lighting on either side. Here's permanent sign permit app.", section: "02 Conversion", space: "Ix - 1827 Ribaut Rd (Self-Storage)", type: "ix", person: "Stephanie", due: "", source: "gchat" },
+  { task: "Add storage unit to website (link to CC Storage signup)", detail: "add storage unit to website that will eventually link to CC storage sign up", section: "02 Conversion", space: "Ix - 1827 Ribaut Rd (Self-Storage)", type: "ix", person: "Stephanie", due: "", source: "gchat" },
+  { task: "Get HWH quote (pan + expansion tank) from HD or Lowes", detail: "@Stephanie Pretto can you get a quote for HWH, pan and expansion tank from HD or Lowe's? It will be cheaper than Pine's", section: "Stabilized - Ix", space: "Ix - 137 Old Jericho", type: "ix", person: "Stephanie", due: "", source: "gchat" },
+  { task: "Request SHM work order to investigate further", detail: "Request a work order from SHM to investigate further", section: "Stabilized - Ix", space: "Ix - 25 Sams Pt 3B", type: "ix", person: "Stephanie", due: "", source: "gchat" },
+  { task: "Check w/ AD Mortgage re: escrow + deposit at closing", detail: "need to check w/ AD Mortgage / @Nichole Nelson - but i'm pretty sure they/re going to escrow it AND that we made a big deposit at closing when we refi'd", section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Nichole", due: "", source: "gchat" },
+  { task: "800 Paris Ave LLC Renewal", detail: "800 Paris Ave LLC Renewal. Current policy expires 4/11/26. Renewal costs $6,247.64. Need to know if we're paying in full or if we're financing", section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Eric", due: "", source: "gchat" },
+  { task: "Schedule Snoddy for motion light + walkthrough 832B Paris", detail: "Schedule Snoddy for additional motion light and to walkthrough 832B Paris Ave", section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Stephanie", due: "", source: "gchat" },
+  { task: "Update Google listing to remove 'Toddle Town'", detail: "Update google listing to remove 'Toddle Town'. 12/16/25: Suggested edit. 12/17/25: Suggested edit", section: "03 Disposition", space: "Ix - 609 Carteret St", type: "ix", person: "Unassigned", due: "", source: "gchat" },
+  { task: "Create before/after video and add to website", detail: "Create before / after video and add to website", section: "Archive - Cx", space: "Cx - 26 Janette", type: "cx", person: "Stephanie", due: "", source: "gchat" },
+  { task: "2119 SIP Before/After video", detail: "2119 SIP Before/After video", section: "Archive - Cx", space: "Cx - 2119 SIP", type: "cx", person: "Stephanie", due: "", source: "gchat" },
+  { task: "Create before/after video and add to website", detail: "Create before/after video and add to website", section: "Archive - Cx", space: "Cx - 332 CJFV", type: "cx", person: "Stephanie", due: "", source: "gchat" },
+  { task: "SAM.gov registration renewal — expires July 2", detail: "ACTION REQUIRED: SAM.gov entity registration for Berman Property Group LLC expires July 2, 2026 (30 days). Must renew to stay eligible for federal awards.", section: "BPG - General Biz", space: "Email", type: "general", person: "Eric", due: "2026-07-02", source: "email" },
+  { task: "Ribaut Storage sign — confirm install location w/ AlphaGraphics", detail: "Barry Wilson at AlphaGraphics: sign installer may come Tuesday evening. Need to confirm mockup is correct and mark the spot where the sign should be installed.", section: "BPG - General Biz", space: "Email", type: "general", person: "Stephanie", due: "", source: "email" },
+  { task: "1904 PP Construction Agreement — follow up with Allison Greco", detail: "Eric sent draft construction agreement to allisongrecorealtor@gmail.com. She replied received. Need her sign-off to send for ex-signature.", section: "01 Acquisition", space: "Email", type: "cx", person: "Eric", due: "", source: "email" },
+  { task: "HOA remaining balances — 301/602/603 Battery Ln", detail: "Parris Island Gate HOA payments processed for 301BL, 602BL 603BL"} but each shows a remaining balance. Need to investigate and resolve.", section: "Stabilized - Ix", space: "Email", type: "accounting", person: "Nichole", due: "", source: "email" },
+  { task: "Lima One Capital — pay 2 outstanding invoices", detail: "Two invoices from Lima One Capital are available at portal.limaone.com. Need to log in and process payments.", section: "BPG - General Biz", space: "Email", type: "accounting", person: "Nichole", due: "", source: "email" },
+  { task: "Research 401k plan options for BPG", detail: "[BPG Sync Meeting 6/1] Research 401k plan options and provide specific recommendations for the company.", section: "BPG - General Biz", space: "Email", type: "general", person: "Nichole", due: "", source: "email" },
+  { task: "Wall Raven security deposit refund — verify address + process", detail: "[BPG Sync Meeting 6/1] Process security deposit refund for Wall Raven via bill pay. Nichole to call Wall Raven to verify mailing address and email to confirm process.", section: "BPG - General Biz", space: "Email", type: "general", person: "Nichole", due: "", source: "email" },
+  { task: "1106 Carter project proposal", detail: "[BPG Sync Meeting 6/1] Draft the 1106 Carter project proposal.", section: "01 Acquisition", space: "Email", type: "cx", person: "Eric", due: "", source: "email" },
+  { task: "Prepare BPCON materials for LA", detail: "[BPG Sync Meeting 6/1] Austin to prepare materials for BPCON conference in Los Angeles.", section: "BPG - General Biz", space: "Email", type: "general", person: "Austin", due: "", source: "email" },
+  { task: "Check Lowe's account return was processed", detail: "[BPG Sync Meeting 6/1] Verify if the Lowe's account return was processed correctly.", section: "BPG - General Biz", space: "Email", type: "accounting", person: "Nichole", due: "", source: "email" },
+  { task: "Respond to Wendy Barry outstanding email inquiries", detail: "[BPG Sync Meeting 6/1] Address Wendy Barry's outstanding inquiries via email.", section: "BPG - General Biz", space: "Email", type: "general", person: "Nichole", due: "", source: "email" },
+  { task: "Fix vacant storage units at 1827 Ribaut (2-3 days)", detail: "[BPG Sync Meeting 6/1] Richard Pratten to repair vacant units at the storage facility over 2 to 3 days.", section: "02 Conversion", space: "Email", type: "ix", person: "Unassigned", due: "", source: "email" },
+  { task: "Verify SC storage lease binding without tenant signature", detail: "[BPG Sync Meeting 6/1] Austin to research whether new storage lease agreements in South Carolina are legally binding without tenant signatures.", section: "02 Conversion", space: "Email", type: "general", person: "Austin", due: "", source: "email" },
+  { task: "Issue non-renewal notices via first class mail + certificate of mailing", detail: "[BPG Sync Meeting 6/1] Austin to send non-renewal notices to tenants using first class mail and certificate of mailing.", section: "Stabilized - Ix", space: "Email", type: "ix", person: "Austin", due: "", source: "email" },
+  { task: "Overlap in SoW on estimates", detail: "Overlap in SoW on estimates", section: "BPG - General Biz", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Specifically, from July pre-CO estimate (repipe, trim", detail: "Specifically, from July pre-CO estimate (repipe, trim out to CO, HWH deletion / install) to the December Post-COЁ��ѥ��є��ͥє�ݽɬ��ɽ՝�������ɥ����Ё�����э��������ѡ̤���͕�ѥ��耉	A������Ʌ��	�舰������耈�؁)����є�������耉��������ͽ�耉U���ͥ��������ue: "Jul", source: "gdocs" },
+  { task: "Overlap occurs for hot water heaters", detail: "Overlap occurs for hot water heaters", section: "BPG - General Biz", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Invoice amount doesn't match remaining balance on PO", detail: "Invoice amount doesn't match remaining balance on PO ($4,212 invoiced vs. $2,200 actual)", section: "BPG - General Biz", space: "32 Talbert", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Invoice sent for $7,600 doesn't match original PO for $6,200", detail: "Invoice sent for $7,600 doesn't match original PO for $6,200", section: "BPG - General Biz", space: "70 Roseida", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Rough in cost doesn't match expectations ($6,500)", detail: "Rough in cost doesn't match expectations ($6,500)", section: "BPG - General Biz", space: "615 Linton", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Do we have electric finishes O/H for Bath 3 & 5?", detail: "Do we have electric finishes O/H for Bath 3 & 5? → Carey on site today (2/10) to finish rough, could do finish electric in those bathrooms", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "2/10", source: "gdocs" },
+  { task: "Need vanity light selections", detail: "Need vanity light selections", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Install vent fans", detail: "Install vent fans", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Install can lights", detail: "Install can lights", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Install receptacles & switches", detail: "Install receptacles & switches", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Put bulb in place of vanity lights", detail: "Put bulb in place of vanity lights", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "HVAC rough needs to get scheduled, week of 2/17 OR SOONER", detail: "HVAC rough needs to get scheduled, week of 2/17  OR SOONER (2/15 & 2/16) → new unit install + 2nd floor rough in", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "2/17", source: "gdocs" },
+  { task: "Pines Plumbing still going on 2/12?", detail: "Pines Plumbing still going on 2/12?", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "2/12", source: "gdocs" },
+  { task: "Rough in 2nd floor", detail: "Rough in 2nd floor", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Trim out bath 3 & 5", detail: "Trim out bath 3 & 5", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Faucets, and toilets are O/H", detail: "Faucets, and toilets are O/H", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Need to push to 26 janette for 2/13", detail: "**Need to push to 26 janette for 2/13", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "2/13", source: "gdocs" },
+  { task: "EFG to finish to paint ready downstairs", detail: "EFG to finish to paint ready downstairs", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Drywall (26 Janette)", detail: "Drywall", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Video walk thru for fernando (CBS) so he can quote", detail: "Video walk thru for fernando (CBS) → so he can quote", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "See if EFG would do drywall", detail: "See if EFG would do drywall", section: "02 Conversion", space: "26 Janette", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "IOT go to paint (1725 BPD)", detail: "IOT go to paint:", section: "02 Conversion", space: "1725 BPD", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Needs 2 interior doors installed", detail: "Needs 2 interior doors installed (RH 18\" swing, 30 flat-LH prehung hollow)", section: "02 Conversion", space: "1725 BPD", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Trim / baseboard fixes", detail: "Trim / baseboard fixes", section: "02 Conversion", space: "1725 BPD", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Counter tops installed", detail: "Counter tops installed", section: "02 Conversion", space: "1725 BPD", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Backsplash installed", detail: "Backsplash installed", section: "02 Conversion", space: "1725 BPD", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Status? (70 Roseida)", detail: "Status?", section: "02 Conversion", space: "70 Roseida", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "No tile backsplash in kitchen → move to 615 Linton", detail: "No tile backsplash in kitchen → move to 615 Linton for use there", section: "02 Conversion", space: "70 Roseida", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "All electric & plumbing fixtures should be O/H", detail: "All electric & plumbing fixtures should be O/H", section: "02 Conversion", space: "70 Roseida", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Is Pines still planning on Rough In on 2/12?", detail: "Is Pines still planning on Rough In on 2/12?", section: "02 Conversion", space: "615 Linton", type: "ix", person: "Unassigned", due: "2/12", source: "gdocs" },
+  { task: "Call rough in & insulation inspection", detail: "Call rough in & insulation inspection", section: "02 Conversion", space: "615 Linton", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "R30 for ceiling", detail: "R30 for ceiling", section: "02 Conversion", space: "615 Linton", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "R13 for walls", detail: "R13 for walls", section: "02 Conversion", space: "615 Linton", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Schedule HVAC trimout for 2nd floor (32 Talbert)", detail: "Schedule HVAC trimout for 2nd floor", section: "02 Conversion", space: "32 Talbert", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Week of 2/17 → MEP trimout (32 Talbert)", detail: "Week of 2/17 → MEP trimout", section: "02 Conversion", space: "32 Talbert", type: "cx", person: "Unassigned", due: "2/17", source: "gdocs" },
+  { task: "Ready for paint wednesday (17 Miller)", detail: "Ready for paint wednesday", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Week of 2/17 → MEP trimout (17 Miller)", detail: "Week of 2/17 → MEP trimout", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "2/17", source: "gdocs" },
+  { task: "Need to schedule electric & plumbing trimout", detail: "Need to schedule electric & plumbing trimout", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Electric (17 Miller)", detail: "Electric", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Vanity light (17 Miller)", detail: "Vanity light", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Vent fan (17 Miller)", detail: "Vent fan", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "receptacles/switches (17 Miller)", detail: "receptacles/switches", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Plumbing (17 Miller)", detail: "Plumbing", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Shower trim kit", detail: "Shower trim kit", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Pedestal sink", detail: "Pedestal sink", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "Pedestal sink faucet", detail: "Pedestal sink faucet", section: "02 Conversion", space: "17 Miller", type: "ix", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - PRE WORK: Plans, layouts, approvals, etc.", detail: "Plans, layouts, approvals, etc.", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - ROUGH IN: Complete Framing Rough", detail: "Complete Framing Rough", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - ROUGH IN: Complete Electrical Rough", detail: "Complete Electrical Rough", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - ROUGH IN: Complete Plumbing Rough", detail: "Complete Plumbing Rough", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - ROUGH IN: Complete HVAC Rough", detail: "COmplete HVAC Rough", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - INSPECT: Walk thru → ensure correct rough, layouts and quality", detail: "Walk thru → ensure correct rough, layouts and quality", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - INSULATION: Insulation", detail: "Insulation", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - FINISHES: Drywall", detail: "Drywall", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - FINISHES: Tilework - Showers / bathrooms", detail: "Tilework - Showers / bathrooms", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - FINISHES: Flooring", detail: "Flooring", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - FINISHES: Initial interior paint", detail: "Initial interior paint", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - Cabinetry/Counters: Kitchen cabinets / counters", detail: "Kitchen cabinets / counters", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - Cabinetry/Counters: Bathroom vanities / counters", detail: "Bathroom vanities / counters", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - Tilework - backsplashes", detail: "Tilework - backsplashes", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - Carpentry / Trim: Baseboard, window / door casing", detail: "Baseboard, window / door casing", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - Carpentry / Trim: Misc trim", detail: "Misc trim", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - Paint (interior)", detail: "Paint (interior)", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - Mechanical Trim out: Electrical Trim out", detail: "Electrical Trim out", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - Mechanical Trim out: Plumbing Trim out", detail: "Plumbing Trim out", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - Mirrors / Glass", detail: "Mirrors / Glass", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - Appliance install / testing", detail: "Appliance install / testing", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" },
+  { task: "2119 SIP - PUNCH OUT", detail: "PUNCH OUT", section: "02 Conversion", space: "2119 SIP", type: "cx", person: "Unassigned", due: "", source: "gdocs" }
 ];
 
 // ── Sort / expand state ───────────────────────────────────────────────────
@@ -669,7 +523,7 @@ function updateStats() {
   document.getElementById('cnt-total').textContent      = TASKS.length;
   document.getElementById('total-tasks').textContent    = TASKS.length;
   document.getElementById('total-unassigned').textContent = c('Unassigned');
-  document.getElementById('total-sections').textContent = new Set(TASKS.map(t=>t.section)).size;
+  document.getElementById('total-sections').textContent = new Set(TAPMS.map(t=>t.section)).size;
 }
 
 function sortTable(col) {
