@@ -176,14 +176,14 @@
 <header>
   <div>
     <h1>ğŸ“‹ BPG All-Tasks Dashboard</h1>
-    <p>Berman Property Group Â· GChat + Email Scan Â· Jun 2, 2026 Â· 49 tasks</p>
+    <p>Berman Property Group Â· GChat + Email + GDocs Â· Jun 2, 2026 Â· 75 tasks</p>
     <div class="source-pills">
       <span class="source-pill pill-gchat">âœ“ Google Chat</span>
       <span class="source-pill pill-email" style="background:rgba(255,255,255,0.18);color:#fff;">âœ“ Email</span>
     </div>
   </div>
   <div class="header-stats">
-    <div class="stat"><div class="num" id="total-tasks">49</div><div class="lbl">Total Tasks</div></div>
+    <div class="stat"><div class="num" id="total-tasks">75</div><div class="lbl">Total Tasks</div></div>
     <div class="stat"><div class="num" id="total-sections">â€“</div><div class="lbl">Sections</div></div>
     <div class="stat"><div class="num" id="total-unassigned">0</div><div class="lbl">Unassigned</div></div>
   </div>
@@ -223,6 +223,7 @@
     <select id="filter-source">
       <option value="">All Sources</option>
       <option value="gchat">Google Chat</option>
+      <option value="gdocs">Google Docs</option>
       <option value="email">Email</option>
     </select>
   </span>
@@ -314,8 +315,8 @@ const TASKS = [
   { task: "Add storage unit to website (link to CC Storage signup)", detail: "add storage unit to website that will eventually link to CC storage sign up", section: "02 Conversion", space: "Ix - 1827 Ribaut Rd (Self-Storage)", type: "ix", person: "Stephanie", due: "", source: "gchat" },
   { task: "Get HWH quote (pan + expansion tank) from HD or Lowes", detail: "@Stephanie Pretto can you get a quote for HWH, pan and expansion tank from HD or Lowe's? It will be cheaper than Pine's", section: "Stabilized - Ix", space: "Ix - 137 Old Jericho", type: "ix", person: "Stephanie", due: "", source: "gchat" },
   { task: "Request SHM work order to investigate further", detail: "Request a work order from SHM to investigate further", section: "Stabilized - Ix", space: "Ix - 25 Sams Pt 3B", type: "ix", person: "Stephanie", due: "", source: "gchat" },
-  { task: "Check w/ AD Mortgage re: escrow + deposit at closing", detail: "need to check w/ AD Mortgage / @Nichole Nelson - but i'm pretty sure they/re going to escrow it AND that we made a big deposit at closing when we refi'd", section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Nichole", due: "", source: "gchat" },
-  { task: "800 Paris Ave LLC Renewal", detail: "800 Paris Ave LLC Renewal. Current policy expires 4/11/26. Renewal costs $6,247.64. Need to know if we/re paying in full or if we're financing", section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Eric", due: "", source: "gchat" },
+  { task: "Check w/ AD Mortgage re: escrow + deposit at closing", detail: "need to check w/ AD Mortgage / @Nichole Nelson - but i'm pretty sure they're going to escrow it AND that we made a big deposit at closing when we refi'd", section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Nichole", due: "", source: "gchat" },
+  { task: "800 Paris Ave LLC Renewal", detail: "800 Paris Ave LLC Renewal. Current policy expires 4/11/26. Renewal costs $6,247.64. Need to know if we're paying in full or if we're financing", section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Eric", due: "", source: "gchat" },
   { task: "Schedule Snoddy for motion light + walkthrough 832B Paris", detail: "Schedule Snoddy for additional motion light and to walkthrough 832B Paris Ave", section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Stephanie", due: "", source: "gchat" },
   { task: "Update Google listing to remove 'Toddle Town'", detail: "Update google listing to remove 'Toddle Town'. 12/16/25: Suggested edit. 12/17/25: Suggested edit", section: "03 Disposition", space: "Ix - 609 Carteret St", type: "ix", person: "Unassigned", due: "", source: "gchat" },
   { task: "Create before/after video and add to website", detail: "Create before / after video and add to website", section: "Archive - Cx", space: "Cx - 26 Janette", type: "cx", person: "Stephanie", due: "", source: "gchat" },
@@ -335,189 +336,12 @@ const TASKS = [
   { task: "Fix vacant storage units at 1827 Ribaut (2-3 days)", detail: "[BPG Sync Meeting 6/1] Richard Pratten to repair vacant units at the storage facility over 2 to 3 days.", section: "02 Conversion", space: "Email", type: "ix", person: "Unassigned", due: "", source: "email" },
   { task: "Verify SC storage lease binding without tenant signature", detail: "[BPG Sync Meeting 6/1] Austin to research whether new storage lease agreements in South Carolina are legally binding without tenant signatures.", section: "02 Conversion", space: "Email", type: "general", person: "Austin", due: "", source: "email" },
   { task: "Issue non-renewal notices via first class mail + certificate of mailing", detail: "[BPG Sync Meeting 6/1] Austin to send non-renewal notices to tenants using first class mail and certificate of mailing.", section: "Stabilized - Ix", space: "Email", type: "ix", person: "Austin", due: "", source: "email" },
-];
 
-// â”€â”€ Sort / expand state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-let sortCol = null, sortDir = 1;
-const expandedRows = new Set();
-
-// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-function sectionBadge(s) {
-  return `<span class="sec-badge ${SECTION_CLASS[s]||'sec-bpg-general'}">${s}</span>`;
-}
-function spaceTagClass(t) { return "space-tag type-" + t; }
-function personBadge(p) {
-  const m = { Eric:"person-eric", Stephanie:"person-stephanie", Austin:"person-austin", Nichole:"person-nichole", Unassigned:"person-unassigned" };
-  return `<span class="person ${m[p]||'person-unassigned'}"><span class="dot"></span>${p}</span>`;
-}
-function dueDisplay(due) {
-  if (!due) return `<span style="color:#bbb;">â€”</span>`;
-  const d = new Date(due), overdue = !isNaN(d) && d < new Date();
-  return `<span style="${overdue?'color:#d32f2f;font-weight:700;':'color:#e65100;font-weight:600;'}">${due}${overdue?' âš ':''}</span>`;
-}
-function sourcePill(s) {
-  if (s==='gdocs') return `<span class="src-pill src-gdocs">GDocs</span>`;
-  if (s==='email') return `<span class="src-pill src-email">Email</span>`;
-  return `<span class="src-pill src-gchat">GChat</span>`;
-}
-
-// â”€â”€ Filter â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-function getFilteredTasks() {
-  const q = document.getElementById('search').value.toLowerCase();
-  const fS = document.getElementById('filter-section').value;
-  const fP = document.getElementById('filter-person').value;
-  const fSp= document.getElementById('filter-space').value;
-  const fSrc=document.getElementById('filter-source').value;
-  return TASKS.map((t,i)=>({...t,_idx:i})).filter(t => {
-    if (q && ![t.task,t.detail,t.space,t.person,t.section].some(f=>(f||'').toLowerCase().includes(q))) return false;
-    if (fS  && t.section!==fS)  return false;
-    if (fP  && t.person !==fP)  return false;
-    if (fSp && t.space  !==fSp) return false;
-    if (fSrc&& t.source !==fSrc)return false;
-    return true;
-  });
-}
-
-// â”€â”€ Render â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-function renderTable() {
-  const filtered = getFilteredTasks();
-  let sorted = [...filtered];
-  if (sortCol) sorted.sort((a,b)=>(a[sortCol]||'').localeCompare(b[sortCol]||'')*sortDir);
-
-  const tbody = document.getElementById('task-tbody');
-  tbody.innerHTML = '';
-  document.getElementById('no-results').style.display = sorted.length ? 'none' : 'block';
-
-  sorted.forEach(t => {
-    const idx = t._idx;
-    const isOpen = expandedRows.has(idx);
-    const hasDetail = !!t.detail;
-
-    // Main row
-    const tr = document.createElement('tr');
-    tr.className = 'task-row' + (isOpen ? ' expanded' : '');
-    tr.dataset.idx = idx;
-    tr.onclick = () => toggleDetail(idx);
-    tr.innerHTML = `
-      <td class="task-name-cell">
-        <div class="task-title-row">
-          <span class="chevron ${hasDetail?'has-detail':''} ${isOpen?'open':''}">â–¶</span>
-          ${t.task}
-        </div>
-      </td>
-      <td>${sectionBadge(t.section)}</td>
-      <td><span class="${spaceTagClass(t.type)}">${t.space}</span></td>
-      <td>${personBadge(t.person)}</td>
-      <td>${dueDisplay(t.due)}</td>
-      <td>${sourcePill(t.source)}</td>
-    `;
-    tbody.appendChild(tr);
-
-    // Detail row
-    const dr = document.createElement('tr');
-    dr.className = 'detail-row' + (isOpen ? '' : ' hidden');
-    dr.dataset.detailFor = idx;
-    const detailContent = hasDetail
-      ? `<div class="detail-label">Full Context</div><div class="detail-text">${t.detail}</div>`
-      : `<div class="detail-missing">Full task text not yet captured â€” will be added on next GChat re-scan.</div>`;
-    dr.innerHTML = `<td colspan="6"><div class="detail-inner">${detailContent}</div></td>`;
-    tbody.appendChild(dr);
-  });
-
-  document.getElementById('showing-count').textContent = `Showing ${sorted.length} of ${TASKS.length} tasks`;
-  updateStats();
-}
-
-function toggleDetail(idx) {
-  if (expandedRows.has(idx)) expandedRows.delete(idx);
-  else expandedRows.add(idx);
-
-  // Update only the affected rows without full re-render
-  const taskRow   = document.querySelector(`tr.task-row[data-idx="${idx}"]`);
-  const detailRow = document.querySelector(`tr.detail-row[data-detail-for="${idx}"]`);
-  if (!taskRow || !detailRow) return;
-
-  const open = expandedRows.has(idx);
-  taskRow.classList.toggle('expanded', open);
-  detailRow.classList.toggle('hidden', !open);
-  const chevron = taskRow.querySelector('.chevron');
-  if (chevron) chevron.classList.toggle('open', open);
-}
-
-function updateStats() {
-  const c = p => TASKS.filter(t=>t.person===p).length;
-  document.getElementById('cnt-nichole').textContent    = c('Nichole');
-  document.getElementById('cnt-stephanie').textContent  = c('Stephanie');
-  document.getElementById('cnt-eric').textContent       = c('Eric');
-  document.getElementById('cnt-austin').textContent     = c('Austin');
-  document.getElementById('cnt-unassigned').textContent = c('Unassigned');
-  document.getElementById('cnt-total').textContent      = TASKS.length;
-  document.getElementById('total-tasks').textContent    = TASKS.length;
-  document.getElementById('total-unassigned').textContent = c('Unassigned');
-  document.getElementById('total-sections').textContent = new Set(TASKS.map(t=>t.section)).size;
-}
-
-function sortTable(col) {
-  sortDir = sortCol===col ? sortDir*-1 : 1;
-  sortCol = col;
-  document.querySelectorAll('th').forEach(th=>th.classList.remove('sorted'));
-  document.getElementById('th-'+col)?.classList.add('sorted');
-  renderTable();
-}
-function clearFilters() {
-  document.getElementById('search').value='';
-  ['filter-section','filter-person','filter-space','filter-source'].forEach(id=>document.getElementById(id).value='');
-  renderTable();
-}
-function filterByPerson(p)  { document.getElementById('filter-person').value=p;  renderTable(); }
-function filterBySection(s) { document.getElementById('filter-section').value=s; renderTable(); }
-
-document.getElementById('search').addEventListener('input', renderTable);
-['filter-section','filter-person','filter-space','filter-source'].forEach(id=>
-  document.getElementById(id).addEventListener('change', renderTable));
-
-// â”€â”€ Space/Area dropdown â€” built dynamically from TASKS data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-function buildSpaceDropdown() {
-  const SECTION_ORDER = [
-    'BPG - General Biz',
-    '01 Acquisition',
-    '02 Conversion',
-    '03 Disposition',
-    'Stabilized - Ix',
-    'Archive - Ix',
-    'Archive - Cx'
-  ];
-  // Collect unique spaces grouped by section
-  const grouped = {};
-  TASKS.forEach(t => {
-    if (!t.space) return;
-    if (!grouped[t.section]) grouped[t.section] = new Set();
-    grouped[t.section].add(t.space);
-  });
-
-  const sel = document.getElementById('filter-space');
-  // Remove all existing options except the first "All" option
-  while (sel.options.length > 1) sel.remove(1);
-
-  // Add optgroups in canonical order
-  SECTION_ORDER.forEach(sec => {
-    if (!grouped[sec]) return;
-    const spaces = [...grouped[sec]].sort();
-    const grp = document.createElement('optgroup');
-    grp.label = 'â”€â”€ ' + sec + ' â”€â”€';
-    spaces.forEach(sp => {
-      const opt = document.createElement('option');
-      opt.value = sp;
-      // Friendly display: strip 'Ix - ' / 'Cx - ' prefix clutter for long names
-      opt.textContent = sp;
-      grp.appendChild(opt);
-    });
-    sel.appendChild(grp);
-  });
-}
-
-buildSpaceDropdown();
-renderTable();
-</script>
-</body>
-</html>
+  // â”€â”€ PROJECTS MASTER â€” RUNNING TAB (May 22, 2026 extract) â”€â”€ 26 tasks
+  { task: "Get Gallagher insurance competitor pricing documents", detail: "Get Gallagher insurance the following for competitor pricing review: copies of current policies, Statement of Values with COPE info, loss runs 5 years", section: "BPG - General Biz", space: "Projects Master", type: "accounting", person: "Nichole", due: "", source: "gdocs" },
+  { task: "Work Refi for 27 Miller/67 Sams + 409 Carteret", detail: "Work Refi for 27 Miller/67 Sams, 409 Carteret â€”" needs P&L/B&S all entities, tax returns/extension. Eric to send updated PFS to NN. Maturity: 27 Miller/67 Sams = Aug 19, 2026; 409 Carteret = Mar 1, 2027", section: "BPG - General Biz", space: "Projects Master", type: "accounting", person: "Nichole", due: "", source: "gdocs" },
+  { task: "Finalize monthly financial meeting template", detail: "Monthly Financial Meeting template â€” finalize template, reports, etc.", section: "BPG - General Biz", space: "Projects Master", type: "accounting", person: "Nichole", due: "", source: "gdocs" },
+  { task: "1122 Emmons Cleaning Fees and Year End Breakdown", detail: "1122 Emmons Cleaning Fees and Year End Breakdown â€” Nichole to discuss w/ Eric", section: "BPG - General Biz", space: "Projects Master", type: "accounting", person: "Nichole", due: "", source: "gdocs" },
+  { task: "Reconcile Books for April â€” Ribaut Storage CC Storage Fees", detail: "Reconcile Books for April. Ribaut Storage CC Storage Fees to reconcile", section: "BPG - General Biz", space: "Projects Master", type: "accounting", person: "Nichole", due: "", source: "gdocs" },
+  { task: "Discuss Hours/Fixed Fee Contract for Ribaut Storage", detail: "Discuss Hours/Fixed Fee Contract for Ribaut Storage with EB and AH", section: "BPG - General Biz", space: "Projects Master", type: "accounting", person: "Eric", due: "", source: "gdocs" },
+  { task: "Update construction contracts â€” cost plus billing rates", detail: "Update cost plus contract to have list of billing rates for specific trades: Superintendent 90/hr, CarpeçG'’ôg&Ö–ærsö‡"Â–çF–ærõ7F–æ–ærcö‡"ÂWF2â"Â6V7F–öã¢$%rÒvVæW&Â&—¢"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&vVæW&Â"ÂW'6öã¢$W&–2"ÂGVS¢""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢$6Æ÷6R÷WB%$"7V—6—F–öç2ÄÄ2"ÂFWF–Ã¢$6Æ÷6R÷WB%$"7V—6—F–öç3¢f–æÂF‚f–Æ–æw2Â6Æ÷6R"Â6Æ÷6R&æ²67BÂ6Æ÷6RT”âÂ6Æ÷6R6ö×ç’rò6V2öb7FFR"Â6V7F–öã¢$%rÒvVæW&Â&—¢"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&vVæW&Â"ÂW'6öã¢$W&–2"ÂGVS¢""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢##r6Æ¶V†F6†–RÆw7V—B(	BbõRrò–ç7W&æ6RGF÷&æW—2"ÂFWF–Ã¢##r6Æ¶V†F6†–RÆw7V—C¢bõRv—F‚–ç7W&æ6RGF÷&æW—2âvö–ær&6²æBf÷'F‚v—F‚6Æ–ÒF§W7FW"7W'&VçFÇ’â"Â6V7F–öã¢$%rÒvVæW&Â&—¢"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&vVæW&Â"ÂW'6öã¢$W&–2"ÂGVS¢""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢$vWBöâÆ—7BòÖVWB¦ö†â&—6RBÔ5$B’„dTB’"ÂFWF–Ã¢$vWBöâÆ—7BòÖVWBròÖ–â6öçG&7F–ærwW’BÔ5$B’(	B¦ö†â&—6R„dTB6öçG&7F–æröff–6W"’âæVVBFò6VæB†÷W'2æB&ö6W72FòÆÂ7V'2vö–æröâ&6Râ"Â6V7F–öã¢#7V—6—F–öâ"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&7‚"ÂW'6öã¢$W&–2"ÂGVS¢""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢#ƒ#r&–&WC¢76W72f6çBVæ—B6öæF—F–öç2ƒÃbÃ‚Ã#bÃSrÃS’ÃcBÃcb’"ÂFWF–Ã¢$f÷"V6‚f6çBVæ—BBƒ#r&–&WBÂæVVBFò76W72–çFW&–÷"6öæF—F–öã¢ÖöÆBöÖ–ÆFWrÂF÷&â–ç7VÆF–öâÂF—'G’ÂWF2âÆ—7C¢Væ—G2ÂbÂ‚Â#bÂSrÂS’ÂcBÂcb"Â6V7F–öã¢#"6öçfW'6–öâ"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&—‚"ÂW'6öã¢$W7F–â"ÂGVS¢""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢#ƒ#r&–&WC¢G&–ævRÆâ(	Bw&VVâÆ–v‡BFöç’÷"F—67W72&Vf÷&R&–ç’6V6öâ"ÂFWF–Ã¢$v—fRFöç’w&VVâÆ–v‡B÷"F—67W72G&–ævRv÷&²&Vf÷&R&–ç’6V6öââD2FòWBFövWF†W"&ö'W7BG&–ævRÆâròw&fVÂ‡âC‚ÃÒCÃ’âÇ6òwWGFW'2Ò¶VâÆöævòâ"Â6V7F–öã¢#"6öçfW'6–öâ"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&—‚"ÂW'6öã¢$W7F–â"ÂGVS¢""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢#ƒ#r&–&WC¢&Vv–âÆ–Vâ&ö6W72v—F‚FW&W6V'6öâ"ÂFWF–Ã¢$&Vv–âÆ–Vâ&ö6W72v—F‚FW&W6V'6öâ†æò7F–öâöâ7&6æG&f÷"æ÷r’âW7F–âFò6VæB6W'F–f–VBÆWGFW"FòFW&W6V'6öââ"Â6V7F–öã¢#"6öçfW'6–öâ"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&—‚"ÂW'6öã¢$W7F–â"ÂGVS¢""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢#ƒ#r&–&WC¢–ç7FÆÂ¶æ÷‚&÷‚f÷"f—&RFW'FÖVçBvFR66W72"ÂFWF–Ã¢$–ç7FÆÂf—&RFW'FÖVçB¶æ÷‚&÷‚f÷"F†RvFR7—7FVÒâ¶æ÷‚vFRæB¶W’66W72÷&FW&VBbVæF–ærFVÆ—fW'’â"Â6V7F–öã¢#"6öçfW'6–öâ"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&—‚"ÂW'6öã¢%7FW†æ–R"ÂGVS¢""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢#cb6'FW&WC¢fVæ6RÂwWGFW'2ÂV6âG&VR&VÖ÷fÂ"ÂFWF–Ã¢#cb6'FW&WC¢fVæ6RÂwWGFW'2ÂV6âG&VR&VÖ÷fÂ"Â6V7F–öã¢#2F—7÷6—F–öâ"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&—‚"ÂW'6öã¢%7FW†æ–R"ÂGVS¢""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢#c’6'FW&WC¢&×÷7FW–çFòVæ—B"f÷"FVæçB"ÂFWF–Ã¢%&×÷7FW–çFòc’6'FW&WBVæ—B"&WVW7FVB'’FVæçB"Â6V7F–öã¢#2F—7÷6—F–öâ"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&—‚"ÂW'6öã¢%7FW†æ–R"ÂGVS¢""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢#cr6×2ó#rÖ–ÆÆW"&Vf’(	B6VæBFö72Fò6‡&—7F–â"ÂFWF–Ã¢%v÷&²&Vf’f÷"#rÖ–ÆÆW"ócr6×2âæVVBFò6VæB6‡&—7F–âF†RFö72âbõRv—F‚6‡&—7F–â&S¢&Vf’âÖGW&—G“¢VwW7B’Â##b"Â6V7F–öã¢#2F—7÷6—F–öâ"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&—‚"ÂW'6öã¢$æ–6†öÆR"ÂGVS¢###bÓ‚Ó’"Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢#ƒ&—2fS¢FG&W72g&öçBöb'V–ÆF–ærvFW"—77VW24"ÂFWF–Ã¢%&WÆ6R÷&W—"ÆÂ6VÆ¶–ærÆöærg&öçB6–FRöb'V–ÆF–ærv—F‚–æGW7G&–Âw&FRâ6VÆ²÷6VÂ&÷VæBÆÂ‡ƒ‚÷7G2â&WÆ6R6öÖÖW&6–ÂFö÷"F‡&W6†öÆG2â4„ÒF6¶VBTdrv—F‚6VÆ¶–ærâ&WÆ6R&W6–FVçF–ÂFö÷'2÷fW"F–ÖR‡âC#W"Fö÷"ÂdÒ’"Â6V7F–öã¢%7F&–Æ—¦VBÒ—‚"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&—‚"ÂW'6öã¢$W7F–â"ÂGVS¢""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢##Srg&—7B6÷ƒ¢÷&FW"V–6µF–R6&ÆW2f–&ÇVfgFöâ7WÆ–W""ÂFWF–Ã¢$æVVBFò÷&FW"V–6µF–R6&ÆW2f–7WÆ–W"–â&ÇVfgFöâ„¦'&WGB¶æ÷w2’âU4"Fò&Wf–WrF¶Vöfb(	BfWrF†–æw2Ö—76–æræB†fR$d—2â"Â6V7F–öã¢#"6öçfW'6–öâ"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&7‚"ÂW'6öã¢%7FW†æ–R"ÂGVS¢""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢#b×VÒw&6S¢6–ÇBfVæ6RÂ„ô&WV—&VÖVçG2Â6VæBÆç2Fò7V'2"ÂFWF–Ã¢#b×VÒw&6R„†W&'7FÖâ’7F'F–ærVæBöb§VæRâWBFövWF†W"6öç7G'V7F–öâW&Ö—BÂ6VÆV7F–öç26†VWBÂ66†VGVÆRFW6–væW"6ÆÂÂ6–ÇBfVæ6RÂ„ô&WV—&VÖVçG2f÷"6öç7G'V7F–öââ6VæBÆç2FòW7VÂ7W7V7G2„¦'&WGBÂ6æöFG’Â&ööf–ærÂf÷VæFF–öâÂg&Ö–ær’"Â6V7F–öã¢#"6öçfW'6–öâ"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&7‚"ÂW'6öã¢%7FW†æ–R"ÂGVS¢###bÓbÓ#""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢#"×W7FVÆ–FS¢66†VGVÆRTdrf÷"–çB4²67&VVâFö÷""ÂFWF–Ã¢#"×W7FVÆ–FS¢TdræVVG2Fò&R66†VGVÆVBf÷"–çB4†f—'7BvVV²öb§VæR’â67&VVã¢F–ÖöæB÷&6†W2ÂC"ÃcSf÷"ÇVÖ–çVÒg&Ö–ærÂ66†VGVÆR&æBvVV²öb§VæRâ&VÖ÷fR÷'F¦öâgFW"Â÷7BÖ6öç7G'V7F–öâDBÂ&öfW76–öæÂ†÷F÷2â"Â6V7F–öã¢#"6öçfW'6–öâ"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&7‚"ÂW'6öã¢%7FW†æ–R"ÂGVS¢""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢#S&–&WC¢&÷f–FR&F‡&ööÒôD6ö×Æ–æ6R&÷÷6Â"ÂFWF–Ã¢#S2&–&WC¢&F‡&ööÒbD6ö×Æ–æ6R&ö¦V7Bf÷"Æw–W"w26öÖÖW&6–Âöff–6Râ&÷f–FR&÷÷6ÂÂ6VæBbõRB6öÖRö–çBâ"Â6V7F–öã¢#7V—6—F–öâ"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&7‚"ÂW'6öã¢$W&–2"ÂGVS¢""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢#C÷'B&WV&Æ–2„ææ7’'&öö·2“¢bõRöâ&÷÷6Â"ÂFWF–Ã¢#C÷'B&WV&Æ–2(	Bææ7’'&öö·2â&÷÷6Â6VçBRóó#bâbõRæVVFVBâ"Â6V7F–öã¢#7V—6—F–öâ"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&7‚"ÂW'6öã¢%7FW†æ–R"ÂGVS¢""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢#cÆ–çFöâ…&–6¶&Vv‚“¢bõRöâ&÷÷6Â'’Tõr"ÂFWF–Ã¢#cÆ–çFöâ(	B&–6†&B&–6¶&Vv‚âföÆÆ÷rW'’Tõrâ&÷÷6Â6VçBÂ6Æ–VçB6öæf—&ÖVB&V6V—Bâ"Â6V7F–öã¢#7V—6—F–öâ"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&7‚"ÂW'6öã¢%7FW†æ–R"ÂGVS¢""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢#Ræ÷'F‚†W&Ö—FvR„†öÆ×V—7B“¢66†VGVÆRvÆ·F‡&÷Vv‚"ÂFWF–Ã¢#Ræ÷'F‚†W&Ö—FvR(	B&÷72†öÆ×V—7BâvÆ·F‡&÷Vv‚VæF–ærâ"Â6V7F–öã¢#7V—6—F–öâ"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&7‚"ÂW'6öã¢%7FW†æ–R"ÂGVS¢""Â6÷W&6S¢&vFö72"ÒÀ¢²F6³¢#“Bó“‚„w&V6ò“¢föÆÆ÷rWöâæWr'V–ÆBW"7V2Æ—7F–æw2"ÂFWF–Ã¢$ÆÆ—6öâw&V6ó¢–vVöâö–çB&ö¦V7G2(	BW"7V2Æ—7F–æw2f÷"“Bó“‚âgFW"3F—2æò6öçG&7BÂ7F'B'V–ÆF–ærv—F‚%râæWr'V–ÆG3¢“B¶–ær7B6÷GFvRÂ“‚6—7FW"öbF†R6V3DBâ"Â6V7F–öã¢#7V—6—F–öâ"Â76S¢%&ö¦V7G2Ö7FW""ÂG—S¢&7‚"ÂW'6öã¢$W&–2"ÂGVS¢""Â6÷W&6S¢&vFö72"Ğ¥Ó° ¢òò)H)H6÷'BòW‡æB7FFR)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H ¦ÆWB6÷'D6öÂÒçVÆÂÂ6÷'DF—"Ò°¦6öç7BW‡æFVE&÷w2ÒæWr6WB‚“° ¢òò)H)H†VÇW'2)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H ¦gVæ7F–öâ6V7F–öä&FvR‡2’°¢&WGW&âÇ7â6Æ73Ò'6V2Ö&FvRGµ4T5D”ôåô4Ä55·5×ÇÂw6V2Ö'rÖvVæW&ÂwÒ#âG·7ÓÂ÷7ãæ°§Ğ¦gVæ7F–öâ76UFt6Æ72‡B’²&WGW&â'76R×FrG—RÒ"²C²Ğ¦gVæ7F–öâW'6öä&FvR‡’°¢6öç7BÒÒ²W&–3¢'W'6öâÖW&–2"Â7FW†æ–S¢'W'6öâ×7FW†æ–R"ÂW7F–ã¢'W'6öâÖW7F–â"Âæ–6†öÆS¢'W'6öâÖæ–6†öÆR"ÂVæ76–væVC¢'W'6öâ×Væ76–væVB"Ó°¢&WGW&âÇ7â6Æ73Ò'W'6öâG¶Õ·×ÇÂwW'6öâ×Væ76–væVBwÒ#ãÇ7â6Æ73Ò&F÷B#ãÂ÷7ãâG·ÓÂ÷7ãæ°§Ğ¦gVæ7F–öâGVTF—7Æ’†GVR’°¢–b‚GVR’&WGW&âÇ7â7G–ÆSÒ&6öÆ÷#¢6&&#²#î(	CÂ÷7ãæ°¢6öç7BBÒæWrFFR†GVR’Â÷fW&GVRÒ—4æâ†B’bbBÂæWrFFR‚“°¢&WGW&âÇ7â7G–ÆSÒ"G¶÷fW&GVSòv6öÆ÷#¢6C3&c&c¶föçB×vV–v‡C£s²s¢v6öÆ÷#¢6ScS¶föçB×vV–v‡C£c²wÒ#âG¶GVWÒG¶÷fW&GVSòr)ªs¢rwÓÂ÷7ãæ°§Ğ¦gVæ7F–öâ6÷W&6U–ÆÂ‡2’°¢–b‡3ÓÓÒvvFö72r’&WGW&âÇ7â6Æ73Ò'7&2×–ÆÂ7&2ÖvFö72#ätFö73Â÷7ãæ°¢–b‡3ÓÓÒvVÖ–Âr’&WGW&âÇ7â6Æ73Ò'7&2×–ÆÂ7&2ÖVÖ–Â#äVÖ–ÃÂ÷7ãæ°¢&WGW&âÇ7â6Æ73Ò'7&2×–ÆÂ7&2Öv6†B#ät6†CÂ÷7ãæ°§Ğ ¢òò)H)Hf–ÇFW")H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H ¦gVæ7F–öâvWDf–ÇFW&VEF6·2‚’°¢6öç7BÒFö7VÖVçBævWDVÆVÖVçD'”–B‚w6V&6‚r’çfÇVRçFôÆ÷vW$66R‚“°¢6öç7Be2ÒFö7VÖVçBævWDVÆVÖVçD'”–B‚vf–ÇFW"×6V7F–öâr’çfÇVS°¢6öç7BeÒFö7VÖVçBævWDVÆVÖVçD'”–B‚vf–ÇFW"×W'6öâr’çfÇVS°¢6öç7Be7ÒFö7VÖVçBævWDVÆVÖVçD'”–B‚vf–ÇFW"×76Rr’çfÇVS°¢6öç7Be7&3ÖFö7VÖVçBævWDVÆVÖVçD'”–B‚vf–ÇFW"×6÷W&6Rr’çfÇVS°¢&WGW&âD4µ2æÖ‚‡BÆ’“Óâ‡²ââçBÅö–Gƒ¦—Ò’’æf–ÇFW"‡BÓâ°¢–b‡bb·BçF6²ÇBæFWF–ÂÇBç76RÇBçW'6öâÇBç6V7F–öåÒç6öÖR†cÓâ†gÇÂrr’çFôÆ÷vW$66R‚’æ–æ6ÇVFW2‡’’’&WGW&âfÇ6S°¢–b†e2bbBç6V7F–öâÓÖe2’&WGW&âfÇ6S°¢–b†ebbBçW'6öâÓÖe’&WGW&âfÇ6S°¢–b†e7bbBç76RÓÖe7’&WGW&âfÇ6S°¢–b†e7&2bbBç6÷W&6RÓÖe7&2—&WGW&âfÇ6S°¢&WGW&âG'VS°¢Ò“°§Ğ ¢òò)H)H&VæFW")H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H)H ¦gVæ7F–öâ&VæFW%F&ÆR‚’°¢6öç7Bf–ÇFW&VBÒvWDf–ÇFW&VEF6·2‚“°¢ÆWB6÷'FVBÒ²ââæf–ÇFW&VEÓ°¢–b‡6÷'D6öÂ’6÷'FVBç6÷'B‚†Æ"“Óâ†·6÷'D6öÅ×ÇÂrr’æÆö6ÆT6ö×&R†%·6÷'D6öÅ×ÇÂrr’§6÷'DF—"“° ¢6öç7BF&öG’ÒFö7VÖVçBævWDVÆVÖVçD'”–B‚wF6²×F&öG’r“°¢F&öG’æ–ææW$…DÔÂÒrs°¢Fö7VÖVçBævWDVÆVÖVçD'”–B‚væò×&W7VÇG2r’ç7G–ÆRæF—7Æ’Ò6÷'FVBæÆVæwF‚òvæöæRr¢v&Æö6²s° ¢6÷'FVBæf÷$V6‚‡BÓâ°¢6öç7B–G‚ÒBåö–Gƒ°¢6öç7B—4÷VâÒW‡æFVE&÷w2æ†2†–G‚“°¢6öç7B†4FWF–ÂÒBæFWF–Ã° ¢òòÖ–â&÷p¢6öç7BG"ÒFö7VÖVçBæ7&VFTVÆVÖVçB‚wG"r“°¢G"æ6Æ74æÖRÒwF6²×&÷rr²†—4÷VâòrW‡æFVBr¢rr“°¢G"æFF6WBæ–G‚Ò–Gƒ°¢G"æöæ6Æ–6²Ò‚’ÓâFövvÆTFWF–Â†–G‚“°¢G"æ–ææW$…DÔÂÒ ¢ÇFB6Æ73Ò'F6²ÖæÖRÖ6VÆÂ#à¢ÆF—b6Æ73Ò'F6²×F—FÆR×&÷r#à¢Ç7â6Æ73Ò&6†Wg&öâG¶†4FWF–Ãòv†2ÖFWF–Âs¢rwÒG¶—4÷Vãòv÷Vâs¢rwÒ#î)kcÂ÷7ãà¢G·BçF6·Ğ¢ÂöF—cà¢Â÷FCà¢ÇFCâG·6V7F–öä&FvR‡Bç6V7F–öâ—ÓÂ÷FCà¢ÇFCãÇ7â6Æ73Ò"G·76UFt6Æ72‡BçG—R—Ò#âG·Bç76WÓÂ÷7ããÂ÷FCà¢ÇFCâG·W'6öä&FvR‡BçW'6öâ—ÓÂ÷FCà¢ÇFCâG¶GVTF—7Æ’‡BæGVR—ÓÂ÷FCà¢ÇFCâG·6÷W&6U–ÆÂ‡Bç6÷W&6R—ÓÂ÷FCà¢°¢F&öG’æVæD6†–ÆB‡G"“° ¢òòFWF–Â&÷p¢6öç7BG"ÒFö7VÖVçBæ7&VFTVÆVÖVçB‚wG"r“°¢G"æ6Æ74æÖRÒvFWF–Â×&÷rr²†—4÷Vâòrr¢r†–FFVâr“°¢G"æFF6WBæFWF–Äf÷"Ò–Gƒ°¢6öç7BFWF–Ä6öçFVçBÒ†4FWF–À¢òÆF—b6Æ73Ò&FWF–ÂÖÆ&VÂ#ägVÆÂ6öçFW‡CÂöF—cãÆF—b6Æ73Ò&FWF–Â×FW‡B#âG·BæFWF–ÇÓÂöF—cæ ¢¢ÆF—b6Æ73Ò&FWF–ÂÖÖ—76–ær#ägVÆÂF6²FW‡Bæ÷B–WB6GW&VB(	Bv–ÆÂ&RFFVBöâæW‡Bt6†B&R×66âãÂöF—cæ°¢G"æ–ææW$…DÔÂÒÇFB6öÇ7ãÒ#b#ãÆF—b6Æ73Ò&FWF–ÂÖ–ææW"#âG¶FWF–Ä6öçFVçGÓÂöF—cãÂ÷FCæ°¢F&öG’æVæD6†–ÆB†G"“°¢Ò“° ¢Fö7VÖVçBævWDVÆVÖVçD'”–B‚w6†÷v–ærÖ6÷VçBr’çFW‡D6öçFVçBÒ6†÷v–ærG·6÷'FVBæÆVæwF‡ÒöbGµD4µ2æÆVæwF‡ÒF6·6°¢WFFU7FG2‚“°§Ğ ¦gVæ7F–öâFövvÆTFWF–Â†–G‚’°¢–b†W‡æFVE&÷w2æ†2†–G‚’’W‡æFVE&÷w2æFVÆWFR†–G‚“°¢VÇ6RW‡æFVE&÷w2æFB†–G‚“° ¢òòWFFRöæÇ’F†RffV7FVB&÷w2v—F†÷WBgVÆÂ&R×&VæFW ¢6öç7BF6µ&÷rÒFö7VÖVçBçVW'•6VÆV7F÷"†G"çF6²×&÷u¶FFÖ–GƒÒ"G¶–G‡Ò%Ö“°¢6öç7BFWF–Å&÷rÒFö7VÖVçBçVW'•6VÆV7F÷"†G"æFWF–Â×&÷u¶FFÖFWF–ÂÖf÷#Ò"G¶–G‡Ò%Ö“°¢–b‚F6µ&÷rÇÂFWF–Å&÷r’&WGW&ã° ¢6öç7B÷VâÒW‡æFVE&÷w2æ†2†–G‚“°¢F6µ&÷ræ6Æ74Æ—7BçFövvÆR‚vW‡æFVBrÂ÷Vâ“°¢FWF–Å&÷ræ6Æ74Æ—7BçFövvÆR‚v†–FFVârÂ÷Vâ“°¢6öç7B6†Wg&öâÒF6µ&÷rçVW'•6VÆV7F÷"‚ræ6†Wg&öâr“°¢–b†6†Wg&öâ’6†Wg&öâæ6Æ74Æ—7BçFövvÆR‚v÷VârÂ÷Vâ“°§Ğ ¦gVæ7F–öâWFFU7FG2‚’°¢6öç7B2ÒÓâD4µ2æf–ÇFW"‡CÓçBçW'6öãÓÓ×’æÆVæwFƒ°¢Fö7VÖVçBævWDVÆVÖVçD'”–B‚v6çBÖæ–6†öÆRr’çFW‡D6öçFVçBÒ2‚tæ–6†öÆRr“°¢Fö7VÖVçBævWDVÆVÖVçD'”–B‚v6çB×7FW†æ–Rr’çFW‡D6öçFVçBÒ2‚u7FW†æ–Rr“°¢Fö7VÖVçBævWDVÆVÖVçD'”–B‚v6çBÖW&–2r’çFW‡D6öçFVçBÒ2‚tW&–2r“°¢Fö7VÖVçBævWDVÆVÖVçD'”–B‚v6çBÖW7F–âr’çFW‡D6öçFVçBÒ2‚tW7F–âr“°¢Fö7VÖVçBævWDVÆVÖVçD'”–B‚v6çB×Væ76–væVBr’çFW‡D6öçFVçBÒ2‚uVæ76–væVBr“°¢Fö7VÖVçBævWDVÆVÖVçD'”–B‚v6çB×F÷FÂr’çFW‡D6öçFVçBÒD4µ2æÆVæwFƒ°¢Fö7VÖVçBævWDVÆVÖVçD'”–B‚wF÷FÂ×F6·2r’çFW‡D6öçFVçBÒD4µ2æÆVæwFƒ°¢Fö7VÖVçBævWDVÆVÖVçD'”–B‚wF÷FÂ×Væ76–væVBr’çFW‡D6öçFVçBÒ2‚uVæ76–væVBr“°¢Fö7VÖVçBævWDVÆVÖVçD'”–B‚wF÷FÂ×6V7F–öç2r’çFW‡D6öçFVçBÒæWr6WB…D4µ2æÖ‡CÓçBç6V7F–öâ’’ç6—¦S°§Ğ ¦gVæ7F–öâ6÷'EF&ÆR†6öÂ’°¢6÷'DF—"Ò6÷'D6öÃÓÓÖ6öÂò6÷'DF—"¢Ó¢°¢6÷'D6öÂÒ6öÃ°¢Fö7VÖVçBçVW'•6VÆV7F÷$ÆÂ‚wF‚r’æf÷$V6‚‡FƒÓçF‚æ6Æ74Æ—7Bç&VÖ÷fR‚w6÷'FVBr’“°¢Fö7VÖVçBævWDVÆVÖVçD'”–B‚wF‚Òr¶6öÂ“òæ6Æ74Æ—7BæFB‚w6÷'FVBr“°¢&VæFW%F&ÆR‚“°§Ğ¦gVæ7F–öâ6ÆV$f–ÇFW'2‚’°¢Fö7VÖVçBævWDVÆVÖVçD'”–B‚w6V&6‚r’çfÇVSÒrs°¢²vf–ÇFW"×6V7F–öârÂvf–ÇFW"×W'6öârÂvf–ÇFW"×76RrÂvf–ÇFW"×6÷W&6RuÒæf÷$V6‚†–CÓæFö7VÖVçBævWDVÆVÖVçD'”–B†–B’çfÇVSÒrr“°¢&VæFW%F&ÆR‚“°§Ğ¦gVæ7F–öâf–ÇFW$'•W'6öâ‡’²Fö7VÖVçBævWDVÆVÖVçD'”–B‚vf–ÇFW"×W'6öâr’çfÇVS×²&VæFW%F&ÆR‚“²Ğ¦gVæ7F–öâf–ÇFW$'•6V7F–öâ‡2’²Fö7VÖVçBævWDVÆVÖVçD'”–B‚vf–ÇFW"×6V7F–öâr’çfÇVS×3²&VæFW%F&ÆR‚“²Ğ ¦Fö7VÖVçBævWDVÆVÖVçD'”–B‚w6V&6‚r’æFDWfVçDÆ—7FVæW"‚v–çWBrÂ&VæFW%F&ÆR“°¥²vf–ÇFW"×6V7F–öârÂvf–ÇFW"×W'6öârÂvf–ÇFW"×76RrÂvf–ÇFW"×6÷W&6RuÒæf÷$V6‚†–CÓà¢Fö7VÖVçBævWDVÆVÖVçD'”–B†–B’æFDWfVçDÆ—7FVæW"‚v6†ævRrÂ&VæFW%F&ÆR’“° ¢òò)H)H76Rô&VG&÷F÷vâ(	B'V–ÇBG–æÖ–6ÆÇ’g&öÒD4µ2FF)H)H)H)H)H)H)H)H)H)H)H)H)H)H ¦gVæ7F–öâ'V–ÆE76TG&÷F÷vâ‚’°¢6öç7B4T5D”ôåôõ$DU"Ò°¢t%rÒvVæW&Â&—¢rÀ¢s7V—6—F–öârÀ¢s"6öçfW'6–öârÀ¢s2F—7÷6—F–öârÀ¢u7F&–Æ—¦VBÒ—‚rÀ¢t&6†—fRÒ—‚rÀ¢t&6†—fRÒ7‚p¢Ó°¢òò6öÆÆV7BVæ—VR76W2w&÷WVB'’6V7F–öà¢6öç7Bw&÷WVBÒ·Ó°¢D4µ2æf÷$V6‚‡BÓâ°¢–b‚Bç76R’&WGW&ã°¢–b‚w&÷WVE·Bç6V7F–öåÒ’w&÷WVE·Bç6V7F–öåÒÒæWr6WB‚“°¢w&÷WVE·Bç6V7F–öåÒæFB‡Bç76R“°¢Ò“° ¢6öç7B6VÂÒFö7VÖVçBævWDVÆVÖVçD'”–B‚vf–ÇFW"×76Rr“°¢òò&VÖ÷fRÆÂW†—7F–ær÷F–öç2W†6WBF†Rf—'7B$ÆÂ"÷F–öà¢v†–ÆR‡6VÂæ÷F–öç2æÆVæwF‚â’6VÂç&VÖ÷fRƒ“° ¢òòFB÷Fw&÷W2–â6æöæ–6Â÷&FW ¢4T5D”ôåôõ$DU"æf÷$V6‚‡6V2Óâ°¢–b‚w&÷WVE·6V5Ò’&WGW&ã°¢6öç7B76W2Ò²ââæw&÷WVE·6V5ÕÒç6÷'B‚“°¢6öç7Bw'ÒFö7VÖVçBæ7&VFTVÆVÖVçB‚v÷Fw&÷Wr“°¢w'æÆ&VÂÒ~)H)Hr²6V2²r)H)Hs°¢76W2æf÷$V6‚‡7Óâ°¢6öç7B÷BÒFö7VÖVçBæ7&VFTVÆVÖVçB‚v÷F–öâr“°¢÷BçfÇVRÒ7°¢òòg&–VæFÇ’F—7Æ“¢7G&—t—‚Òròt7‚Òr&Vf—‚6ÇWGFW"f÷"ÆöæræÖW0¢÷BçFW‡D6öçFVçBÒ7°¢w'æVæD6†–ÆB†÷B“°¢Ò“°¢6VÂæVæD6†–ÆB†w'“°¢Ò“°§Ğ ¦'V–ÆE76TG&÷F÷vâ‚“°§&VæFW%F&ÆR‚“°£Â÷67&—Cà£Âö&öG“à£Âö‡FÖÃà 
