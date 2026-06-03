@@ -175,22 +175,22 @@
 
 <header>
   <div>
-    <h1>ð BPG All-Tasks Dashboard</h1>
-    <p>Berman Property Group Â· GChat + Email Scan Â· Jun 2, 2026 Â· 49 tasks</p>
+    <h1>📋 BPG All-Tasks Dashboard</h1>
+    <p>Berman Property Group · GChat + Email + GDocs · Jun 2, 2026 · 76 tasks</p>
     <div class="source-pills">
-      <span class="source-pill pill-gchat">â Google Chat</span>
-      <span class="source-pill pill-email" style="background:rgba(255,255,255,0.18);color:#fff;">â Email</span>
+      <span class="source-pill pill-gchat">✓ Google Chat</span>
+      <span class="source-pill pill-email" style="background:rgba(255,255,255,0.18);color:#fff;">✓ Email</span>
     </div>
   </div>
   <div class="header-stats">
     <div class="stat"><div class="num" id="total-tasks">76</div><div class="lbl">Total Tasks</div></div>
-    <div class="stat"><div class="num" id="total-sections">â</div><div class="lbl">Sections</div></div>
+    <div class="stat"><div class="num" id="total-sections">–</div><div class="lbl">Sections</div></div>
     <div class="stat"><div class="num" id="total-unassigned">0</div><div class="lbl">Unassigned</div></div>
   </div>
 </header>
 
 <div class="controls">
-  <span><label>ð</label><input type="text" id="search" placeholder="Search tasks, spaces, people..."></span>
+  <span><label>🔍</label><input type="text" id="search" placeholder="Search tasks, spaces, people..."></span>
   <span><label>Section:</label>
     <select id="filter-section">
       <option value="">All Sections</option>
@@ -227,7 +227,7 @@
       <option value="email">Email</option>
     </select>
   </span>
-  <button class="clear-btn" onclick="clearFilters()">â Clear</button>
+  <button class="clear-btn" onclick="clearFilters()">✕ Clear</button>
 </div>
 
 <div class="main">
@@ -251,18 +251,18 @@
 
   <div class="table-wrap">
     <div class="table-header">
-      <h2>Active Tasks <span style="font-size:0.75rem;font-weight:400;color:#aaa;margin-left:8px;">â¶ click any row to expand full context</span></h2>
+      <h2>Active Tasks <span style="font-size:0.75rem;font-weight:400;color:#aaa;margin-left:8px;">▶ click any row to expand full context</span></h2>
       <span class="task-count" id="showing-count"></span>
     </div>
     <table>
       <thead>
         <tr>
-          <th onclick="sortTable('task')"    id="th-task">Task <span class="sort-icon">â</span></th>
-          <th onclick="sortTable('section')" id="th-section">Section <span class="sort-icon">â</span></th>
-          <th onclick="sortTable('space')"   id="th-space">Space / Area <span class="sort-icon">â</span></th>
-          <th onclick="sortTable('person')"  id="th-person">Assigned To <span class="sort-icon">â</span></th>
-          <th onclick="sortTable('due')"     id="th-due">Due <span class="sort-icon">â</span></th>
-          <th onclick="sortTable('source')"  id="th-source">Source <span class="sort-icon">â</span></th>
+          <th onclick="sortTable('task')"    id="th-task">Task <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable('section')" id="th-section">Section <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable('space')"   id="th-space">Space / Area <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable('person')"  id="th-person">Assigned To <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable('due')"     id="th-due">Due <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable('source')"  id="th-source">Source <span class="sort-icon">↕</span></th>
         </tr>
       </thead>
       <tbody id="task-tbody"></tbody>
@@ -283,7 +283,7 @@ const SECTION_CLASS = {
   "Google Docs":       "sec-gdocs",
 };
 
-// ââ Task data ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── Task data ──────────────────────────────────────────────────────────────
 // Fields: task (short title), detail (full original text / context), section, space, type, person, due, source
 // detail: "" = not yet captured from source; populate on next GChat re-scan
 const TASKS = [
@@ -292,9 +292,9 @@ const TASKS = [
   { task: "Add Austin as signer for BPG Vanguard", detail: "@Austin Hartman i need to add you as a signer for BPG vanguard", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Eric", due: "", source: "gchat" },
   { task: "HOA fees zero-out JE (25 Sams 3B & 3D)", detail: "Zero out HOA billing: $1300 towards HOA fees for 25 sams 3B and $1300 towards HOA fees for 25 sams 3D in a JE", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
   { task: "Viktor Group / Ember investment entry", detail: "This shows Investment into Viktor Group by Ember. Is there an equivalent on Viktor's books? Would this show up under Equity on Viktor's B/S?", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-  { task: "Amortization lines â zero out?", detail: "Shouldn't these amortization lines be zero'd out as well?", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-  { task: "Outstanding loan amount â 65 Sams Point JE", detail: "Tracking $404,322 outstanding loan â where's the JE that sold 65 sams point rd? Shouldn't that have adjusted this correctly?", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-  { task: "Loan 0082 rolled to 0094 â missing from BPG B/S", detail: "Loan 0082 no longer exists - i think this rolled over to 0094 (which is missing from BPG B/S)", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
+  { task: "Amortization lines — zero out?", detail: "Shouldn't these amortization lines be zero'd out as well?", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
+  { task: "Outstanding loan amount — 65 Sams Point JE", detail: "Tracking $404,322 outstanding loan — where's the JE that sold 65 sams point rd? Shouldn't that have adjusted this correctly?", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
+  { task: "Loan 0082 rolled to 0094 — missing from BPG B/S", detail: "Loan 0082 no longer exists - i think this rolled over to 0094 (which is missing from BPG B/S)", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
   { task: "Leave flyers at cigar shop + windhorse", detail: "@Austin Hartman leave flyers at cigar shop + windhorse", section: "BPG - General Biz", space: "Marketing", type: "marketing", person: "Austin", due: "", source: "gchat" },
   { task: "Sort by Stage in dashboard", detail: "We can also sort by Stage - i'll mess w/ this later", section: "BPG - General Biz", space: "Marketing", type: "marketing", person: "Eric", due: "", source: "gchat" },
   { task: "1x/month vacancies + construction openings to distro list", detail: "1x per month, send list of vacancies and construction openings to distro list (Dukes, Guerrero, Phillips, Megan/Hannah, Scott, Summerall, Dean, etc)", section: "BPG - General Biz", space: "Marketing", type: "marketing", person: "Stephanie", due: "", source: "gchat" },
@@ -304,7 +304,7 @@ const TASKS = [
   { task: "Create welcome package for new subcontractors", detail: "Create welcome package for new subcontractors", section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Nichole", due: "", source: "gchat" },
   { task: "Look into Follow Up Boss subscription (monthly)", detail: "@Nichole Nelson you should see if you can get follow up boss down next (monthly subscription)", section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Nichole", due: "", source: "gchat" },
   { task: "Schedule walk thru b/w Eric and Freddy at MCRD PI", detail: "Please schedule a walk thru b/w me and Freddy at MCRD PI", section: "01 Acquisition", space: "Cx - Prospects", type: "cx", person: "Stephanie", due: "", source: "gchat" },
-  { task: "Add to FUB â saw their truck", detail: "@Stephanie Pretto add to FUB we can try these guys if needed. Saw their truck earlier", section: "01 Acquisition", space: "Cx - Prospects", type: "cx", person: "Stephanie", due: "", source: "gchat" },
+  { task: "Add to FUB — saw their truck", detail: "@Stephanie Pretto add to FUB we can try these guys if needed. Saw their truck earlier", section: "01 Acquisition", space: "Cx - Prospects", type: "cx", person: "Stephanie", due: "", source: "gchat" },
   { task: "Reach out to Kevin Dukes about build agreements", detail: "Reach out to Kevin Dukes about build agreements: 1. Builder Agreement between REA/GC with land basis, profit share details. 2. Joint venture spec build agreement, building for a fee + % of profit", section: "01 Acquisition", space: "Cx - Prospects", type: "cx", person: "Eric", due: "", source: "gchat" },
   { task: "Construction permit + selections sheet + designer call + send plans", detail: "Tasks: 1) Put together construction permit 2) Put together a selections sheet 3) Schedule call w/ designer to go over selections 4) Send plans out to our usual suspects (will need to include stucco folks)", section: "02 Conversion", space: "Cx - 16 Mum Grace (Herbstman/Simek)", type: "cx", person: "Stephanie", due: "", source: "gchat" },
   { task: "Migrate docs from Cox chat to original 2507 Fripp chat + archive", detail: "Stephanie created this 2507 Fripp St chat in April 2026. Every document in this chat needs to be migrated to the original 2507 Fripp St chat and then this one should be archived", section: "02 Conversion", space: "Cx - 2507 Fripp St - Cox", type: "cx", person: "Stephanie", due: "", source: "gchat" },
@@ -322,13 +322,13 @@ const TASKS = [
   { task: "Create before/after video and add to website", detail: "Create before / after video and add to website", section: "Archive - Cx", space: "Cx - 26 Janette", type: "cx", person: "Stephanie", due: "", source: "gchat" },
   { task: "2119 SIP Before/After video", detail: "2119 SIP Before/After video", section: "Archive - Cx", space: "Cx - 2119 SIP", type: "cx", person: "Stephanie", due: "", source: "gchat" },
   { task: "Create before/after video and add to website", detail: "Create before/after video and add to website", section: "Archive - Cx", space: "Cx - 332 CJFV", type: "cx", person: "Stephanie", due: "", source: "gchat" },
-  { task: "SAM.gov registration renewal â expires July 2", detail: "ACTION REQUIRED: SAM.gov entity registration for Berman Property Group LLC expires July 2, 2026 (30 days). Must renew to stay eligible for federal awards.", section: "BPG - General Biz", space: "Email", type: "general", person: "Eric", due: "2026-07-02", source: "email" },
-  { task: "Ribaut Storage sign â confirm install location w/ AlphaGraphics", detail: "Barry Wilson at AlphaGraphics: sign installer may come Tuesday evening. Need to confirm mockup is correct and mark the spot where the sign should be installed.", section: "BPG - General Biz", space: "Email", type: "general", person: "Stephanie", due: "", source: "email" },
-  { task: "1904 PP Construction Agreement â follow up with Allison Greco", detail: "Eric sent draft construction agreement to allisongrecorealtor@gmail.com. She replied received. Need her sign-off to send for e-signature.", section: "01 Acquisition", space: "Email", type: "cx", person: "Eric", due: "", source: "email" },
-  { task: "HOA remaining balances â 301/602/603 Battery Ln", detail: "Parris Island Gate HOA payments processed for 301BL, 602BL, 603BL but each shows a remaining balance. Need to investigate and resolve.", section: "Stabilized - Ix", space: "Email", type: "accounting", person: "Nichole", due: "", source: "email" },
-  { task: "Lima One Capital â pay 2 outstanding invoices", detail: "Two invoices from Lima One Capital are available at portal.limaone.com. Need to log in and process payments.", section: "BPG - General Biz", space: "Email", type: "accounting", person: "Nichole", due: "", source: "email" },
+  { task: "SAM.gov registration renewal — expires July 2", detail: "ACTION REQUIRED: SAM.gov entity registration for Berman Property Group LLC expires July 2, 2026 (30 days). Must renew to stay eligible for federal awards.", section: "BPG - General Biz", space: "Email", type: "general", person: "Eric", due: "2026-07-02", source: "email" },
+  { task: "Ribaut Storage sign — confirm install location w/ AlphaGraphics", detail: "Barry Wilson at AlphaGraphics: sign installer may come Tuesday evening. Need to confirm mockup is correct and mark the spot where the sign should be installed.", section: "BPG - General Biz", space: "Email", type: "general", person: "Stephanie", due: "", source: "email" },
+  { task: "1904 PP Construction Agreement — follow up with Allison Greco", detail: "Eric sent draft construction agreement to allisongrecorealtor@gmail.com. She replied received. Need her sign-off to send for e-signature.", section: "01 Acquisition", space: "Email", type: "cx", person: "Eric", due: "", source: "email" },
+  { task: "HOA remaining balances — 301/602/603 Battery Ln", detail: "Parris Island Gate HOA payments processed for 301BL, 602BL, 603BL but each shows a remaining balance. Need to investigate and resolve.", section: "Stabilized - Ix", space: "Email", type: "accounting", person: "Nichole", due: "", source: "email" },
+  { task: "Lima One Capital — pay 2 outstanding invoices", detail: "Two invoices from Lima One Capital are available at portal.limaone.com. Need to log in and process payments.", section: "BPG - General Biz", space: "Email", type: "accounting", person: "Nichole", due: "", source: "email" },
   { task: "Research 401k plan options for BPG", detail: "[BPG Sync Meeting 6/1] Research 401k plan options and provide specific recommendations for the company.", section: "BPG - General Biz", space: "Email", type: "general", person: "Nichole", due: "", source: "email" },
-  { task: "Wall Raven security deposit refund â verify address + process", detail: "[BPG Sync Meeting 6/1] Process security deposit refund for Wall Raven via bill pay. Nichole to call Wall Raven to verify mailing address and email to confirm process.", section: "BPG - General Biz", space: "Email", type: "general", person: "Nichole", due: "", source: "email" },
+  { task: "Wall Raven security deposit refund — verify address + process", detail: "[BPG Sync Meeting 6/1] Process security deposit refund for Wall Raven via bill pay. Nichole to call Wall Raven to verify mailing address and email to confirm process.", section: "BPG - General Biz", space: "Email", type: "general", person: "Nichole", due: "", source: "email" },
   { task: "1106 Carter project proposal", detail: "[BPG Sync Meeting 6/1] Draft the 1106 Carter project proposal.", section: "01 Acquisition", space: "Email", type: "cx", person: "Eric", due: "", source: "email" },
   { task: "Prepare BPCON materials for LA", detail: "[BPG Sync Meeting 6/1] Austin to prepare materials for BPCON conference in Los Angeles.", section: "BPG - General Biz", space: "Email", type: "general", person: "Austin", due: "", source: "email" },
   { task: "Check Lowe's account return was processed", detail: "[BPG Sync Meeting 6/1] Verify if the Lowe's account return was processed correctly.", section: "BPG - General Biz", space: "Email", type: "accounting", person: "Nichole", due: "", source: "email" },
@@ -337,7 +337,8 @@ const TASKS = [
   { task: "Verify SC storage lease binding without tenant signature", detail: "[BPG Sync Meeting 6/1] Austin to research whether new storage lease agreements in South Carolina are legally binding without tenant signatures.", section: "02 Conversion", space: "Email", type: "general", person: "Austin", due: "", source: "email" },
   { task: "Issue non-renewal notices via first class mail + certificate of mailing", detail: "[BPG Sync Meeting 6/1] Austin to send non-renewal notices to tenants using first class mail and certificate of mailing.", section: "Stabilized - Ix", space: "Email", type: "ix", person: "Austin", due: "", source: "email" },
 ,
-  // ── PROJECTS MASTER — RUNNING TAB (Jun 2, 2026) ── 27 tasks
+
+  // -- PROJECTS MASTER RUNNING TAB (Jun 2, 2026) -- 27 tasks
   { task: "Get Gallagher insurance competitor pricing documents", detail: "Get Gallagher insurance the following for competitor pricing review: copies of current policies, Statement of Values with COPE info, loss runs 5 years", section: "BPG - General Biz", space: "Projects Master", type: "accounting", person: "Nichole", due: "", source: "gdocs" },
   { task: "Work Refi for 27 Miller/67 Sams + 409 Carteret", detail: "Work Refi for 27 Miller/67 Sams (maturity Aug 19, 2026) and 409 Carteret (maturity Mar 1, 2027). Needs P&L/B&S all entities, tax returns/extension. Eric send updated PFS to NN.", section: "BPG - General Biz", space: "Projects Master", type: "accounting", person: "Nichole", due: "2026-08-19", source: "gdocs" },
   { task: "Finalize monthly financial meeting template", detail: "Monthly Financial Meeting template - finalize template, reports, etc.", section: "BPG - General Biz", space: "Projects Master", type: "accounting", person: "Nichole", due: "", source: "gdocs" },
@@ -367,11 +368,11 @@ const TASKS = [
   { task: "1904/1908 PP (Greco): follow up on paper spec listings", detail: "Allison Greco Pigeon Point Projects: paper spec listings for 1904/1908 PP. After 30 days no contract, start building with BPG. New builds: 1904 PP King St Cottage, 1908 PP Sister of the Sea.", section: "01 Acquisition", space: "Projects Master", type: "cx", person: "Eric", due: "", source: "gdocs" }
 ];
 
-// ââ Sort / expand state âââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── Sort / expand state ───────────────────────────────────────────────────
 let sortCol = null, sortDir = 1;
 const expandedRows = new Set();
 
-// ââ Helpers âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── Helpers ───────────────────────────────────────────────────────────────
 function sectionBadge(s) {
   return `<span class="sec-badge ${SECTION_CLASS[s]||'sec-bpg-general'}">${s}</span>`;
 }
@@ -381,9 +382,9 @@ function personBadge(p) {
   return `<span class="person ${m[p]||'person-unassigned'}"><span class="dot"></span>${p}</span>`;
 }
 function dueDisplay(due) {
-  if (!due) return `<span style="color:#bbb;">â</span>`;
+  if (!due) return `<span style="color:#bbb;">—</span>`;
   const d = new Date(due), overdue = !isNaN(d) && d < new Date();
-  return `<span style="${overdue?'color:#d32f2f;font-weight:700;':'color:#e65100;font-weight:600;'}">${due}${overdue?' â ':''}</span>`;
+  return `<span style="${overdue?'color:#d32f2f;font-weight:700;':'color:#e65100;font-weight:600;'}">${due}${overdue?' ⚠':''}</span>`;
 }
 function sourcePill(s) {
   if (s==='gdocs') return `<span class="src-pill src-gdocs">GDocs</span>`;
@@ -391,7 +392,7 @@ function sourcePill(s) {
   return `<span class="src-pill src-gchat">GChat</span>`;
 }
 
-// ââ Filter ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── Filter ────────────────────────────────────────────────────────────────
 function getFilteredTasks() {
   const q = document.getElementById('search').value.toLowerCase();
   const fS = document.getElementById('filter-section').value;
@@ -408,7 +409,7 @@ function getFilteredTasks() {
   });
 }
 
-// ââ Render ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── Render ────────────────────────────────────────────────────────────────
 function renderTable() {
   const filtered = getFilteredTasks();
   let sorted = [...filtered];
@@ -431,7 +432,7 @@ function renderTable() {
     tr.innerHTML = `
       <td class="task-name-cell">
         <div class="task-title-row">
-          <span class="chevron ${hasDetail?'has-detail':''} ${isOpen?'open':''}">â¶</span>
+          <span class="chevron ${hasDetail?'has-detail':''} ${isOpen?'open':''}">▶</span>
           ${t.task}
         </div>
       </td>
@@ -449,7 +450,7 @@ function renderTable() {
     dr.dataset.detailFor = idx;
     const detailContent = hasDetail
       ? `<div class="detail-label">Full Context</div><div class="detail-text">${t.detail}</div>`
-      : `<div class="detail-missing">Full task text not yet captured â will be added on next GChat re-scan.</div>`;
+      : `<div class="detail-missing">Full task text not yet captured — will be added on next GChat re-scan.</div>`;
     dr.innerHTML = `<td colspan="6"><div class="detail-inner">${detailContent}</div></td>`;
     tbody.appendChild(dr);
   });
@@ -506,7 +507,7 @@ document.getElementById('search').addEventListener('input', renderTable);
 ['filter-section','filter-person','filter-space','filter-source'].forEach(id=>
   document.getElementById(id).addEventListener('change', renderTable));
 
-// ââ Space/Area dropdown â built dynamically from TASKS data ââââââââââââââ
+// ── Space/Area dropdown — built dynamically from TASKS data ──────────────
 function buildSpaceDropdown() {
   const SECTION_ORDER = [
     'BPG - General Biz',
@@ -534,7 +535,7 @@ function buildSpaceDropdown() {
     if (!grouped[sec]) return;
     const spaces = [...grouped[sec]].sort();
     const grp = document.createElement('optgroup');
-    grp.label = 'ââ ' + sec + ' ââ';
+    grp.label = '── ' + sec + ' ──';
     spaces.forEach(sp => {
       const opt = document.createElement('option');
       opt.value = sp;
