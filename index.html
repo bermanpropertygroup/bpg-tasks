@@ -176,7 +176,7 @@
 <header>
   <div>
     <h1>📋 BPG All-Tasks Dashboard</h1>
-    <p>Berman Property Group · GChat + Email + GDocs · Jun 6, 2026 (rebuild) · 79 tasks</p>
+    <p>Berman Property Group · GChat + Email + GDocs · Jun 19, 2026 (rebuild) · 72 tasks</p>
     <div class="source-pills">
       <span class="source-pill pill-gchat">✓ Google Chat</span>
       <span class="source-pill pill-email" style="background:rgba(255,255,255,0.18);color:#fff;">✓ Email</span>
@@ -287,86 +287,727 @@ const SECTION_CLASS = {
 // Fields: task (short title), detail (full original text / context), section, space, type, person, due, source
 // detail: "" = not yet captured from source; populate on next GChat re-scan
 const TASKS = [
-    { task: "SREO RentRoll tab updated?", detail: "Confirm 606 Carteret Unit 2 + 409 Carteret (Day Spa) delinquent status; 137 Old Jericho Unit A lease end date is in the past — did they renew?", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-    { task: "Add Austin as signer for BPG Vanguard", detail: "Call 877-662-7447 to add Austin Hartman as signer on BPG Vanguard.", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Eric", due: "", source: "gchat" },
-    { task: "Zero out HOA JE — 25 Sams 3B & 3D", detail: "HOA has been billed monthly; put $1,300 toward HOA fees for 25 Sams 3B and $1,300 toward 25 Sams 3D in a JE to zero it out.", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-    { task: "Viktor/Ember investment — equivalent entry on Viktor books?", detail: "Investment into Viktor Group by Ember — is there an equivalent on Viktor's books (under Equity)? Phillip's entries unclear.", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-    { task: "Amortization lines — should be zero'd out?", detail: "Confirm whether the amortization lines should be zero'd out on the B/S.", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-    { task: "Outstanding loan $404,322 — find 65 Sams Point JE", detail: "Tracking a different outstanding loan amount ($404,322) — locate the JE that sold 65 Sams Point Rd; should have adjusted this.", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-    { task: "Loan 0082 rolled to 0094 — missing from BPG B/S", detail: "Loan 0082 no longer exists; rolled to 0094 which is missing from BPG balance sheet.", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-    { task: "Clear out stray line on BPG B/S", detail: "Resolve how to clear out the flagged line on the BPG balance sheet.", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-    { task: "Lawn care spend report — avg per month per property", detail: "Provide a report showing average lawn-care spend per month, per property.", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-    { task: "Review Viktor refinance JE — Paris Ave (Feb 2026)", detail: "Review the refinance Journal Entry in Viktor for Paris Ave (Feb 2026).", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Eric", due: "", source: "gchat" },
-    { task: "Review 800 Paris refi JE — 832 portion in QB", detail: "800 Paris refi: 832 portion of loan entered in QB — please review.", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Eric", due: "", source: "gchat" },
-    { task: "Confirm liability policy — CGL for 800 Paris or BPG?", detail: "A liability policy was given to BPG as a customer; confirm whether it's the CGL for 800 Paris Ave or a general BPG CGL.", section: "BPG - General Biz", space: "Accounting", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-    { task: "Create welcome package for new subcontractors", detail: "Build the subcontractor welcome packet.", section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Unassigned", due: "", source: "gchat" },
-    { task: "Get Follow Up Boss monthly subscription down", detail: "Look into reducing the Follow Up Boss monthly subscription cost.", section: "BPG - General Biz", space: "BPG - General", type: "general", person: "Nichole", due: "", source: "gchat" },
-    { task: "Review 'Newsletter Recipient' tagged list", detail: "Review everyone tagged 'Newsletter Recipient'; flag anyone to add/remove.", section: "BPG - General Biz", space: "Marketing", type: "marketing", person: "Austin", due: "", source: "gchat" },
-    { task: "Leave flyers at cigar shop + windhorse", detail: "Drop BPG flyers at the cigar shop and windhorse.", section: "BPG - General Biz", space: "Marketing", type: "marketing", person: "Austin", due: "", source: "gchat" },
-    { task: "Add 'Sort by Stage' to dashboard", detail: "Add ability to sort the dashboard by Stage.", section: "BPG - General Biz", space: "Marketing", type: "marketing", person: "Eric", due: "", source: "gchat" },
-    { task: "Monthly: send vacancies + construction openings to distro list", detail: "1x/month send list of vacancies and construction openings to distro list (Dukes, Guerrero, Phillips, Megan/Hannah, Scott, Summerall, Dean, etc).", section: "BPG - General Biz", space: "Marketing", type: "marketing", person: "Stephanie", due: "", source: "gchat" },
-    { task: "Schedule walk-thru w/ Freddy at MCRD PI", detail: "Schedule a walkthrough between Eric and Freddy at MCRD Parris Island.", section: "01 Acquisition", space: "Cx - Prospects", type: "cx", person: "Stephanie", due: "", source: "gchat" },
-    { task: "Kevin Dukes — build agreements", detail: "Reach out to Kevin Dukes re: 1) Builder Agreement between REA/GC with land basis + profit share; 2) JV spec build agreement (build for fee + % of profit).", section: "01 Acquisition", space: "Cx - Prospects", type: "cx", person: "Eric", due: "", source: "gchat" },
-    { task: "16 Mum Grace — permit, selections, designer call, plans", detail: "Put together construction permit + selections sheet; schedule call w/ designer to go over selections; send plans to usual suspects (include stucco folks).", section: "02 Conversion", space: "Cx - 16 Mum Grace (Herbstman/Simek)", type: "cx", person: "Stephanie", due: "", source: "gchat" },
-    { task: "1904 PP — send Allison $30k deposit invoice", detail: "Contract signed for the new build; send Allison the $30,000 deposit invoice.", section: "02 Conversion", space: "Cx - 1904 PP", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-    { task: "2507 Fripp — selections sheet", detail: "Put together a selections sheet for 2507 Fripp (roof color, etc. — fairly minor) per Witt Cox.", section: "02 Conversion", space: "Cx - 2507 Fripp St", type: "cx", person: "Stephanie", due: "", source: "gchat" },
-    { task: "1827 Ribaut — contact Lowe's re return", detail: "Contact Lowe's and get info on the return; should have processed by now.", section: "02 Conversion", space: "Ix - 1827 Ribaut Rd (Self-Storage)", type: "ix", person: "Nichole", due: "", source: "gchat" },
-    { task: "1827 Ribaut — add storage unit to website", detail: "Add storage unit to website that will eventually link to CC Storage sign-up.", section: "02 Conversion", space: "Ix - 1827 Ribaut Rd (Self-Storage)", type: "ix", person: "Stephanie", due: "", source: "gchat" },
-    { task: "609 Carteret — update Google listing (remove 'Toddle Town')", detail: "Update the Google business listing to remove 'Toddle Town'.", section: "03 Disposition", space: "Ix - 609 Carteret St", type: "marketing", person: "Unassigned", due: "", source: "gchat" },
-    { task: "137 Old Jericho — quote HWH/pan/expansion tank (HD or Lowe's)", detail: "Get a quote for HWH, pan, and expansion tank from Home Depot or Lowe's (cheaper than Pine's).", section: "Stabilized - Ix", space: "Ix - 137 Old Jericho", type: "ix", person: "Stephanie", due: "", source: "gchat" },
-    { task: "800 Paris — check escrow/closing deposit w/ AD Mortgage", detail: "Check with AD Mortgage / Nichole — likely they'll escrow it and a big deposit was made at closing when refi'd.", section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-    { task: "800 Paris Ave LLC insurance renewal", detail: "Policy expired 4/11/26; renewal $6,247.64. Decide pay-in-full vs financing. (Overdue — verify status.)", section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "accounting", person: "Nichole", due: "", source: "gchat" },
-    { task: "800 Paris — Snoddy motion light + 832B walkthrough", detail: "Schedule Snoddy for an additional motion light and to walk through 832B Paris Ave.", section: "Stabilized - Ix", space: "Ix - 800 Paris Ave", type: "ix", person: "Stephanie", due: "", source: "gchat" },
-    { task: "SAM.gov registration renewal — expires July 2", detail: "Renew SAM.gov federal contractor registration before it expires July 2.", section: "BPG - General Biz", space: "Email", type: "general", person: "Eric", due: "2026-07-02", source: "email" },
-    { task: "Lima One Capital — pay 2 outstanding invoices", detail: "Pay the two outstanding Lima One Capital invoices.", section: "BPG - General Biz", space: "Email", type: "accounting", person: "Nichole", due: "", source: "email" },
-    { task: "HOA remaining balances — 301/602/603 Battery Ln", detail: "Resolve remaining HOA balances on 301/602/603 Battery Ln.", section: "BPG - General Biz", space: "Email", type: "accounting", person: "Nichole", due: "", source: "email" },
-    { task: "Research 401k plan options for BPG", detail: "Research 401k plan options and provide specific recommendations for the company. (Jun 1 sync)", section: "BPG - General Biz", space: "Email", type: "accounting", person: "Nichole", due: "", source: "email" },
-    { task: "Wall Raven security deposit refund", detail: "Verify Wall Raven's address, process the security deposit refund via bill pay, and email to confirm the return process. (Jun 1 sync)", section: "BPG - General Biz", space: "Email", type: "accounting", person: "Nichole", due: "", source: "email" },
-    { task: "1106 Carteret (USCB) proposal — draft before ~Jul 14 Commission", detail: "Draft the 1106 Carteret acquisition/development proposal ahead of the ~July 14 USCB Commission meeting (Landon Jones presents offers). (Jun 1 sync)", section: "01 Acquisition", space: "Email", type: "cx", person: "Eric", due: "", source: "email" },
-    { task: "Prepare BPCON materials for LA", detail: "Prepare materials for BPCON in Los Angeles. (Jun 1 sync)", section: "BPG - General Biz", space: "Email", type: "general", person: "Austin", due: "", source: "email" },
-    { task: "Issue tenant non-renewal notices", detail: "Send non-renewal notices to tenants via first-class mail + certificate of mailing. (Jun 1 sync)", section: "Stabilized - Ix", space: "Email", type: "ix", person: "Austin", due: "", source: "email" },
-    { task: "Verify SC storage lease binding without signature", detail: "Research whether new SC storage lease agreements are binding without tenant signatures. (Jun 1 sync)", section: "Stabilized - Ix", space: "Email", type: "ix", person: "Austin", due: "", source: "email" },
-    { task: "Create project summary sheets for weekly billing", detail: "Create summary sheets for active projects to facilitate weekly billing reviews. (Jun 1 sync)", section: "BPG - General Biz", space: "Email", type: "accounting", person: "Nichole", due: "", source: "email" },
-    { task: "Respond to Wendy Barry outstanding email", detail: "Address Wendy Barry's outstanding inquiries via email. (Jun 1 sync)", section: "BPG - General Biz", space: "Email", type: "general", person: "Nichole", due: "", source: "email" },
-    { task: "CC Storage billing errors — running statement + $35 credit", detail: "Get a running statement from the vendor; verify the $35 credit applied and that incorrect daily rent charges were corrected. (Jun 4 standup)", section: "BPG - General Biz", space: "Email", type: "accounting", person: "Nichole", due: "", source: "email" },
-    { task: "Email Tony — monthly service frequency + invoice verbiage", detail: "Confirm monthly service frequency with Tony and ensure invoices reflect accurate billing verbiage. (Jun 4 standup)", section: "BPG - General Biz", space: "Email", type: "accounting", person: "Nichole", due: "", source: "email" },
-    { task: "Get missing receipts from Jarrett + update sheets", detail: "Request all missing receipts from Jarrett; update project tracking sheets and link expenses to jobs. (Jun 4 standup)", section: "BPG - General Biz", space: "Email", type: "accounting", person: "Nichole", due: "", source: "email" },
-    { task: "Don Kavanaugh — storage portal access + lease + balance", detail: "Grant Don Kavanaugh storage portal access; require lease signature and payment of outstanding balance (non-compliance = non-renewal). (Jun 4 standup)", section: "Stabilized - Ix", space: "Email", type: "ix", person: "Stephanie", due: "", source: "email" },
-    { task: "Separate FUB contact profiles under shared tag", detail: "Create individual FUB account profiles for each person currently grouped under a shared relationship tag. (Jun 4 standup)", section: "BPG - General Biz", space: "Email", type: "marketing", person: "Eric", due: "", source: "email" },
-    { task: "Sign quote from Rita @ AlphaGraphics (new BPG signage)", detail: "Get a formal price quote from Rita at Alpha Graphics for new BPG signage. (Jun 4 standup)", section: "BPG - General Biz", space: "Email", type: "marketing", person: "Stephanie", due: "", source: "email" },
-    { task: "Remove old Ribaut sign + concrete debris (after new install)", detail: "Dismantle and dispose of old storage facility signage + concrete debris once the new sign is installed. (Jun 4 standup)", section: "Stabilized - Ix", space: "Email", type: "ix", person: "Richard", due: "", source: "email" },
-    { task: "Check Michelle Simmons pricing email response", detail: "Log in and check whether Michelle Simmons responded to the pricing email. (Jun 4 standup)", section: "BPG - General Biz", space: "Email", type: "accounting", person: "Nichole", due: "", source: "email" },
-    { task: "Transfer gate SOP into master project SOP (Ribaut)", detail: "Move the gate SOP from Drive into the master project SOP for the Ribaut Rd project. (Jun 4 standup)", section: "BPG - General Biz", space: "Email", type: "general", person: "Austin", due: "", source: "email" },
-    { task: "All Side quote — 3 residential doors (800 Paris)", detail: "Get a quote from All Side for 3 residential doors with different designs and composite frames. (Jun 4 standup)", section: "Stabilized - Ix", space: "Email", type: "ix", person: "Stephanie", due: "", source: "email" },
-    { task: "Follow up w/ Tom Brooks re property project", detail: "Send a text or email follow-up to Tom Brooks regarding the property project discussion. (Jun 4 standup)", section: "01 Acquisition", space: "Email", type: "cx", person: "Eric", due: "", source: "email" },
-    { task: "Schedule audit time-blocks", detail: "Coordinate calendars to time-block sessions for auditing tasks. (Jun 4 standup)", section: "BPG - General Biz", space: "Email", type: "accounting", person: "Austin", due: "", source: "email" },
-    { task: "Gallagher insurance — competitor pricing docs", detail: "Provide Gallagher: current policy copies, a Statement of Values (addresses + COPE), and 5 years of loss runs.", section: "BPG - General Biz", space: "Projects Master", type: "accounting", person: "Nichole", due: "", source: "gdocs" },
-    { task: "Refi 27 Miller/67 Sams + 409 Carteret", detail: "Work the refi: P&L/BS for all entities, tax returns/extension, send docs to Christian; Eric send updated PFS to Nichole. (Maturities: 27 Miller/67 Sams Aug 19 '26; 409 Carteret Mar 1 '27.)", section: "03 Disposition", space: "Projects Master", type: "accounting", person: "Eric", due: "", source: "gdocs" },
-    { task: "Finalize monthly financial meeting template", detail: "Finalize the monthly financial meeting template, reports, etc.", section: "BPG - General Biz", space: "Projects Master", type: "accounting", person: "Nichole", due: "", source: "gdocs" },
-    { task: "1122 Emmons — cleaning fees + year-end breakdown", detail: "Nichole to discuss 1122 Emmons cleaning fees and year-end breakdown with Eric.", section: "BPG - General Biz", space: "Projects Master", type: "accounting", person: "Nichole", due: "", source: "gdocs" },
-    { task: "Decide Ribaut Storage hours vs fixed-fee contract", detail: "Discuss hours/fixed-fee contract structure for Ribaut Storage with Eric and Austin.", section: "BPG - General Biz", space: "Projects Master", type: "accounting", person: "Eric", due: "", source: "gdocs" },
-    { task: "Update construction contracts (cost-plus + design fees)", detail: "Update cost-plus contract w/ Kevin Dukes: fee schedule per trade, 10-15% fee on allowance overages, design/pricing fee for new builds; customer-facing + internal builder agreements.", section: "BPG - General Biz", space: "Projects Master", type: "general", person: "Eric", due: "", source: "gdocs" },
-    { task: "Close out BRB Acquisitions LLC", detail: "Final tax filings, close QB, close bank account, close EIN, dissolve with Secretary of State.", section: "BPG - General Biz", space: "Projects Master", type: "general", person: "Nichole", due: "", source: "gdocs" },
-    { task: "217 Salkehatchie lawsuit — F/U insurance attorneys", detail: "Follow up with insurance attorneys; currently going back and forth with claim adjuster.", section: "BPG - General Biz", space: "Projects Master", type: "general", person: "Eric", due: "", source: "gdocs" },
-    { task: "MCRD PI — contracting list + DBIDS base access", detail: "Get on the list / meet John Baise (FEAD contracting officer); arrange DBIDS base access for subs (RJP, Dave Schmidt, Austin, framers/concrete/carpenter).", section: "01 Acquisition", space: "Projects Master", type: "cx", person: "Austin", due: "", source: "gdocs" },
-    { task: "MCRD PI — concrete jobs (MCCS pool + new quote)", detail: "Concrete job at MCCS outdoor pool; new concrete job to quote (as of 5/22).", section: "01 Acquisition", space: "Projects Master", type: "cx", person: "Austin", due: "", source: "gdocs" },
-    { task: "Complete Richard Pratten onboarding", detail: "Finish onboarding: FUB number, credit cards (Amex/Chase/Ribaut), define project roles/responsibilities.", section: "BPG - General Biz", space: "Projects Master", type: "general", person: "Stephanie", due: "", source: "gdocs" },
-    { task: "Grant Austin Chase account permissions", detail: "Grant Austin access to Chase accounts without Eric's approval (Eric to action).", section: "BPG - General Biz", space: "Projects Master", type: "accounting", person: "Eric", due: "", source: "gdocs" },
-    { task: "72 Lost Island Rd — F/U Claudia Clare, offer re-quote", detail: "Closed May 30. F/U Claudia: estimate range was $125k-$175k (no engineered plans); happy to re-quote when plans ready; want the opportunity.", section: "01 Acquisition", space: "Projects Master", type: "cx", person: "Stephanie", due: "", source: "gdocs" },
-    { task: "1001 Craven St (Harvey & Battey) — prospect F/U", detail: "Follow up on the 1001 Craven St prospect (Harvey and Battey).", section: "01 Acquisition", space: "Projects Master", type: "cx", person: "Stephanie", due: "", source: "gdocs" },
-    { task: "Mike Trevino / NPS — concrete proposal + windows", detail: "Patio concrete redo proposal sent, awaiting boss approval; windows = BPG prime/consultant, Sutton sub.", section: "01 Acquisition", space: "Projects Master", type: "cx", person: "Stephanie", due: "", source: "gdocs" },
-    { task: "Pat Cross — 1305 Church St, refine plans + video call", detail: "Plans being refined; Cross may shop contractors. Offer a video call (last comm 4/21 & 5/11).", section: "01 Acquisition", space: "Projects Master", type: "cx", person: "Eric", due: "", source: "gdocs" },
-    { task: "18 Indigo Loop — materials 6/29 Grayco; F/U Jeff on doors", detail: "Materials arrive 6/29 at Grayco; no construction permit per ESB. Follow up Jeff on door approval (no grills on front; ok on side panels/transom).", section: "02 Conversion", space: "Projects Master", type: "cx", person: "Stephanie", due: "2026-06-29", source: "gdocs" },
-    { task: "Buy-sell cross-purchase agreement (Eric/Austin)", detail: "Draft the buy-sell cross-purchase agreement with Kevin Dukes for the Eric/Austin partnership.", section: "BPG - General Biz", space: "Projects Master", type: "general", person: "Eric", due: "", source: "gdocs" },
-    { task: "Politician signage on buildings", detail: "Place political signage (Josh Scallate / Thomas Grygowski) on 609 Carteret, 27 Miller, 67 Sams, 409 Carteret, 800 Paris, 606 Carteret, 1827 Ribaut, 137 Old Jericho, 614 Prince, 1122 Emmons.", section: "BPG - General Biz", space: "Projects Master", type: "marketing", person: "Stephanie", due: "", source: "gdocs" },
-    { task: "Build Rental KPI dashboard (per-property monthly)", detail: "Per-property monthly sheet: actual rent vs GSR, expenses, NOI, cashflow (monthly/YTD), % vacant days — input for cull/keep decisions.", section: "BPG - General Biz", space: "Projects Master", type: "general", person: "Austin", due: "", source: "gdocs" },
-    { task: "Draft Disposition + Acquisition SOP sections", detail: "[SMP] Disposition section of SOP (sales, lease listings, DD checklist, rentals Mx/turnover); [ESB] Acquisition section.", section: "BPG - General Biz", space: "Projects Master", type: "general", person: "Stephanie", due: "", source: "gdocs" },
-    { task: "513 Ribaut — bathroom/ADA compliance proposal", detail: "Provide proposal for bathroom & ADA compliance project at lawyer's commercial office (513 Ribaut).", section: "01 Acquisition", space: "Projects Master", type: "cx", person: "Stephanie", due: "", source: "gdocs" },
-    { task: "411 Port Republic (Nancy Brooks) — F/U proposal", detail: "Follow up on proposal sent 5/11/26.", section: "01 Acquisition", space: "Projects Master", type: "cx", person: "Stephanie", due: "", source: "gdocs" },
-    { task: "611 Linton (Rickabaugh) — follow up by EOW", detail: "Proposal sent; client confirmed receipt. Follow up by end of week.", section: "01 Acquisition", space: "Projects Master", type: "cx", person: "Stephanie", due: "", source: "gdocs" },
-    { task: "115 North Hermitage (Holmquist) — schedule walkthrough", detail: "Walkthrough pending — schedule it.", section: "01 Acquisition", space: "Projects Master", type: "cx", person: "Stephanie", due: "", source: "gdocs" },
-    { task: "Recruit more framer/carpenter crews", detail: "Need more framer/carpenter crews; build pipeline of trade partners.", section: "BPG - General Biz", space: "Projects Master", type: "general", person: "Stephanie", due: "", source: "gdocs" }
-  ];
+ {
+  "task": "Add items to battle rhythm in BPG-OS",
+  "detail": "@Stephanie please add items to battle rhythm in BPG-OS",
+  "section": "BPG - General Biz",
+  "space": "BPG - General",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "File DBM Construction COI",
+  "detail": "DBM Construction COI (5/13) sent & uploaded, workers comp included — please file",
+  "section": "BPG - General Biz",
+  "space": "BPG - General",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "Create welcome package for new subcontractors",
+  "detail": "Build subcontractor welcome package (open ~17 weeks)",
+  "section": "BPG - General Biz",
+  "space": "BPG - General",
+  "type": "general",
+  "person": "Nichole",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "Get Follow Up Boss to monthly subscription",
+  "detail": "@Nichole see if FUB can move to a monthly subscription",
+  "section": "BPG - General Biz",
+  "space": "BPG - General",
+  "type": "general",
+  "person": "Nichole",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "Prepare updated Accommodation Tax Form",
+  "detail": "@Stephanie @Nichole put together updated Accommodation Tax Form and flag when ready for review",
+  "section": "BPG - General Biz",
+  "space": "Accounting",
+  "type": "accounting",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "Add Austin as signer for BPG Vanguard",
+  "detail": "Add Austin as signer for BPG Vanguard (call 877-662-7447)",
+  "section": "BPG - General Biz",
+  "space": "Accounting",
+  "type": "accounting",
+  "person": "Austin",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "Resolve open Accounting reconciliation items",
+  "detail": "Nichole audit Qs: zero-out 25 Sams HOA fees, Ember to Viktor equity entries, amortization lines, $404,322 loan vs 65 Sams JE, Loan 0082 rollover",
+  "section": "BPG - General Biz",
+  "space": "Accounting",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "Send window-replacement lead info",
+  "detail": "Richard: send info for the prospect who wants windows replaced",
+  "section": "01 Acquisition",
+  "space": "Cx - Prospects",
+  "type": "cx",
+  "person": "Unassigned",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "Schedule MCRD PI walk-thru with Freddy",
+  "detail": "Schedule walk-thru between Stephanie and Freddy at MCRD PI",
+  "section": "01 Acquisition",
+  "space": "Cx - Prospects",
+  "type": "cx",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "Build proposal for 1305 Church St",
+  "detail": "1305 Church St (Cross) build proposal",
+  "section": "01 Acquisition",
+  "space": "Cx - 1305 Church St",
+  "type": "cx",
+  "person": "Eric",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "16 Mum Grace pre-construction package",
+  "detail": "1) construction permit 2) selections sheet 3) designer call 4) send plans to subs (incl stucco)",
+  "section": "02 Conversion",
+  "space": "Cx - 16 Mum Grace",
+  "type": "cx",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "18 Indigo Loop entry door — respond & measure",
+  "detail": "Respond to Popham on entry door; have Richard measure & confirm door dimensions",
+  "section": "02 Conversion",
+  "space": "Cx - 18 Indigo Loop",
+  "type": "cx",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "Send Witt & Sarah 2507 Fripp update",
+  "detail": "Send update: $5,000 progress invoice, selections sheet w/ instructions, progress note",
+  "section": "02 Conversion",
+  "space": "Cx - 2507 Fripp St",
+  "type": "cx",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "504 King St — gather damage info",
+  "detail": "Richard: get more info on what happened and what is damaged (garden during concrete work)",
+  "section": "02 Conversion",
+  "space": "Cx - 504 King St",
+  "type": "cx",
+  "person": "Unassigned",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "Add Shumate & Cavenaugh to lien tracker",
+  "detail": "@Stephanie add Shumate and Cavenaugh to the lien tracker",
+  "section": "02 Conversion",
+  "space": "Ix - 1827 Ribaut Rd",
+  "type": "ix",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "Arrange Ribaut auction newspaper listing",
+  "detail": "Auction ~July 20 — figure newspaper listing details for Pearson (paper, duration, cost); public by week of July 6",
+  "section": "02 Conversion",
+  "space": "Ix - 1827 Ribaut Rd",
+  "type": "ix",
+  "person": "Stephanie",
+  "due": "2026-07-06",
+  "source": "gchat"
+ },
+ {
+  "task": "Log Eric Douglas non-renewal notice",
+  "detail": "Eric Douglas received non-renewal notice by mail — add to tracker",
+  "section": "02 Conversion",
+  "space": "Ix - 1827 Ribaut Rd",
+  "type": "ix",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "Confirm Ribaut invoice adjusted",
+  "detail": "@Nichole confirm the invoice is actually adjusted (last correspondence)",
+  "section": "02 Conversion",
+  "space": "Ix - 1827 Ribaut Rd",
+  "type": "ix",
+  "person": "Nichole",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "Add storage unit to website (CC Storage signup)",
+  "detail": "Add storage unit to website linking to CC Storage sign-up",
+  "section": "02 Conversion",
+  "space": "Ix - 1827 Ribaut Rd",
+  "type": "ix",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "Update Google listing — remove Toddle Town",
+  "detail": "609 Carteret: update Google listing to remove old Toddle Town name (stale ~26 wks)",
+  "section": "03 Disposition",
+  "space": "Ix - 609 Carteret St",
+  "type": "ix",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "Check 800 Paris escrow/deposit at refi",
+  "detail": "Check w/ AD Mortgage (and Nichole) — likely escrowed and large deposit made at refi closing",
+  "section": "Stabilized - Ix",
+  "space": "Ix - 800 Paris Ave",
+  "type": "ix",
+  "person": "Nichole",
+  "due": "",
+  "source": "gchat"
+ },
+ {
+  "task": "27 Miller — navigate full-price offer & tenant",
+  "detail": "Full-price cash offer: $415k, 7/31 close, 7/2 DD, $4k earnest, only contingency CL-100, 3% buyer agent. Work tenant situation fairly (Kevin Dukes/Eli)",
+  "section": "03 Disposition",
+  "space": "Email",
+  "type": "ix",
+  "person": "Eric",
+  "due": "2026-07-31",
+  "source": "email"
+ },
+ {
+  "task": "Ribaut Storage drainage Round 2 design",
+  "detail": "Ready for Round 2 design of drainage & gravel improvements — coordinate with Tony",
+  "section": "02 Conversion",
+  "space": "Email",
+  "type": "ix",
+  "person": "Eric",
+  "due": "",
+  "source": "email"
+ },
+ {
+  "task": "Correct Viktor Group spelling on insurance policies",
+  "detail": "Policies show VIRTOR not Viktor Group; Ty O'Farrell fixing billing — get updated sheet & update files",
+  "section": "BPG - General Biz",
+  "space": "Email",
+  "type": "accounting",
+  "person": "Austin",
+  "due": "",
+  "source": "email"
+ },
+ {
+  "task": "Submit MEC re-appointment form",
+  "detail": "Fill out Military Enhancement Committee re-appointment form (Eric & Ed, County Reps); return to Megan w/ support letter",
+  "section": "BPG - General Biz",
+  "space": "Email",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "email"
+ },
+ {
+  "task": "Automate recurring ACH authorization",
+  "detail": "Set up recurring ACH debit to auto-process (currently manual monthly); Austin following up w/ Stephen",
+  "section": "BPG - General Biz",
+  "space": "Email",
+  "type": "accounting",
+  "person": "Austin",
+  "due": "",
+  "source": "email"
+ },
+ {
+  "task": "Provide refi docs to lender",
+  "detail": "Owe lender docs for 27 Miller/67 Sams & 409 Carteret refi (P&L, B/S, tax returns/extension); in Drive",
+  "section": "03 Disposition",
+  "space": "Email",
+  "type": "accounting",
+  "person": "Eric",
+  "due": "",
+  "source": "email"
+ },
+ {
+  "task": "Print 16 Mum Grace plans for permit",
+  "detail": "ARB approval received for sunroom; print plans & submit for permit (start ~6/22)",
+  "section": "02 Conversion",
+  "space": "Email",
+  "type": "cx",
+  "person": "Stephanie",
+  "due": "2026-06-22",
+  "source": "email"
+ },
+ {
+  "task": "Call Capital Waste re: billing",
+  "detail": "Nichole: contact Capital Waste to resolve billing and remove the $55 invoice",
+  "section": "BPG - General Biz",
+  "space": "Email",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "",
+  "source": "email"
+ },
+ {
+  "task": "Set up Ribaut ACH transfers",
+  "detail": "Nichole: configure ACH transfers between Wells Fargo, Ribaut Storage, and Live Oak accounts",
+  "section": "02 Conversion",
+  "space": "Email",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "",
+  "source": "email"
+ },
+ {
+  "task": "Quarterly COI audit (start July 1)",
+  "detail": "Nichole & Stephanie: quarterly review of certificates of insurance starting July 1",
+  "section": "BPG - General Biz",
+  "space": "Email",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "2026-07-01",
+  "source": "email"
+ },
+ {
+  "task": "Submit Zach new-hire paperwork",
+  "detail": "Stephanie: get contact info & process paperwork for new hire Zach (Schmidt's son-in-law)",
+  "section": "BPG - General Biz",
+  "space": "Email",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "email"
+ },
+ {
+  "task": "Order company merch & license plates",
+  "detail": "Stephanie: purchase company merch & license plates by end of next week",
+  "section": "BPG - General Biz",
+  "space": "Email",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "email"
+ },
+ {
+  "task": "Add Kavanaugh & Shoemate to lien tracker",
+  "detail": "Stephanie: add Kavanaugh and Shoemate to the lien tracker spreadsheet",
+  "section": "02 Conversion",
+  "space": "Email",
+  "type": "ix",
+  "person": "Stephanie",
+  "due": "",
+  "source": "email"
+ },
+ {
+  "task": "Finalize Richard employment letter",
+  "detail": "Richard Pratten letter finalized (all signed, 6/1 start); Austin to review once more",
+  "section": "BPG - General Biz",
+  "space": "Email",
+  "type": "general",
+  "person": "Austin",
+  "due": "",
+  "source": "email"
+ },
+ {
+  "task": "Accept 1904 Pigeon Point proposal",
+  "detail": "Accept 1904 proposal via email for Eric; include manhole invert locations/depths + service utility locates",
+  "section": "02 Conversion",
+  "space": "Email",
+  "type": "cx",
+  "person": "Stephanie",
+  "due": "",
+  "source": "email"
+ },
+ {
+  "task": "Track 800 Paris door delivery ETA",
+  "detail": "Stephanie: request ETA for new doors at 800 Paris Ave",
+  "section": "Stabilized - Ix",
+  "space": "Email",
+  "type": "ix",
+  "person": "Stephanie",
+  "due": "",
+  "source": "email"
+ },
+ {
+  "task": "Follow up Conrath re: 614 Prince",
+  "detail": "Eric: follow up w/ Conrath on 614 Prince to finalize path (JV/build)",
+  "section": "03 Disposition",
+  "space": "Email",
+  "type": "ix",
+  "person": "Eric",
+  "due": "",
+  "source": "email"
+ },
+ {
+  "task": "Contact 72 Lost Island re: engineer plans",
+  "detail": "Stephanie: contact 72 Lost Island reps re: missing engineer plans",
+  "section": "01 Acquisition",
+  "space": "Email",
+  "type": "cx",
+  "person": "Stephanie",
+  "due": "",
+  "source": "email"
+ },
+ {
+  "task": "Finalize 2025 audits",
+  "detail": "Eric: complete audit work this week; Austin ~40% through Viktor P&L; clear Nichole's audit tasks",
+  "section": "BPG - General Biz",
+  "space": "Email",
+  "type": "accounting",
+  "person": "Eric",
+  "due": "",
+  "source": "email"
+ },
+ {
+  "task": "Gallagher insurance competitor pricing pack",
+  "detail": "Gather current policies, Statement of Values w/ addresses + COPE, 5-yr loss runs for Gallagher review",
+  "section": "BPG - General Biz",
+  "space": "Projects Master",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Refi 27 Miller/67 Sams & 409 Carteret",
+  "detail": "Work refi; send Christian docs (P&L, B/S all entities, tax returns/extension)",
+  "section": "03 Disposition",
+  "space": "Projects Master",
+  "type": "accounting",
+  "person": "Eric",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Send updated PFS to Nichole",
+  "detail": "Eric: send updated personal financial statement to Nichole",
+  "section": "BPG - General Biz",
+  "space": "Projects Master",
+  "type": "accounting",
+  "person": "Eric",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Finalize Monthly Financial Meeting template",
+  "detail": "Nichole: finalize template, reports, and schedule working sessions",
+  "section": "BPG - General Biz",
+  "space": "Projects Master",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Reconcile April books",
+  "detail": "Reconcile April books incl Ribaut CC Storage fees",
+  "section": "BPG - General Biz",
+  "space": "Projects Master",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Decide Ribaut Storage fee structure",
+  "detail": "Discuss hours vs fixed-fee contract for Ribaut Storage with EB & AH",
+  "section": "02 Conversion",
+  "space": "Projects Master",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Grant Austin account access",
+  "detail": "Grant Austin permissions to access accounts (Chase) without Eric approval",
+  "section": "BPG - General Biz",
+  "space": "Projects Master",
+  "type": "accounting",
+  "person": "Eric",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Build Rental KPI dashboard",
+  "detail": "Monthly per-property: rent vs GSR, expenses, NOI, cashflow, vacancy %",
+  "section": "BPG - General Biz",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Recruit more framer/carpenter crews",
+  "detail": "Need more framing/carpentry crews; FUB tag list to Eric",
+  "section": "BPG - General Biz",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Draft BPG-OS SOP sections",
+  "detail": "SMP: Disposition SOP (rentals Mx checklist, turnover); ESB: Acquisition SOP; rework Battle Rhythm into BPG-OS",
+  "section": "BPG - General Biz",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Update construction contracts",
+  "detail": "Cost-plus contract (ESB); 10-15% allowance-overage fee; design/build fee; builder & JV agreements w/ Kevin Dukes",
+  "section": "BPG - General Biz",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Close out BRB Acquisitions",
+  "detail": "Final tax filings, close QB, bank account, EIN, and Sec of State registration",
+  "section": "BPG - General Biz",
+  "space": "Projects Master",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Create estimate next-steps/expectations doc",
+  "detail": "Doc to accompany estimates/proposals explaining post-signing timeline & expectations",
+  "section": "BPG - General Biz",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Rebook BPCON night on points",
+  "detail": "Austin: rebook one BPCON night using points",
+  "section": "BPG - General Biz",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Austin",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Complete Richard onboarding",
+  "detail": "QB (RJP), W4/direct deposit, BPG email, FUB number, credit cards (Amex/Chase/Ribaut), add to all GChat spaces",
+  "section": "BPG - General Biz",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Build BizDev referral network",
+  "detail": "ID key referral people (Summerall, Mussell, Schmidt; Greco/Edenfield/Guerrero); drip campaign to stay top of mind",
+  "section": "01 Acquisition",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "MCRD PI govt contracting setup",
+  "detail": "Subs DBIDS base access, pick up IDs (RJP/Schmidt/Austin/trades), meet John Baise (FEAD), send hours/process to subs",
+  "section": "01 Acquisition",
+  "space": "Projects Master",
+  "type": "cx",
+  "person": "Eric",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Legal items with Kevin Dukes",
+  "detail": "Buy-sell cross-purchase agreement; review Ribaut docs/TPP; construction agreements; 217 Salkehatchie lawsuit f/u",
+  "section": "BPG - General Biz",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Ribaut permanent signage",
+  "detail": "3x6 sign + lighting plan (reverse-lit per Town of PR), Alphagraphics permit, USPS mailbox; directional/lockout signage",
+  "section": "02 Conversion",
+  "space": "Projects Master",
+  "type": "marketing",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "BPG Construction project signage",
+  "detail": "Order 3 signs + frames (new medium); signs for 504 King & 1911 Darby; move 1012 Mustelidae sign",
+  "section": "BPG - General Biz",
+  "space": "Projects Master",
+  "type": "marketing",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Execute Ribaut POAM",
+  "detail": "Everyone tackle assigned POAM tasks (high importance)",
+  "section": "02 Conversion",
+  "space": "Projects Master",
+  "type": "ix",
+  "person": "Austin",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Ribaut CAPEX punch list",
+  "detail": "Signage/Knox box, mobile home rehab (EFG deck paint), storage doors/locks (assess vacant units), drainage green-light Tony (~$8-10k), gutters (Ken Longo)",
+  "section": "02 Conversion",
+  "space": "Projects Master",
+  "type": "ix",
+  "person": "Austin",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Ribaut tenant migration (urgent)",
+  "detail": "Onboard all tenants to new software, leases, autopay, TPP; set bulk pricing; Kevin reviews docs",
+  "section": "02 Conversion",
+  "space": "Projects Master",
+  "type": "ix",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Ribaut lien & OPS",
+  "detail": "Begin lien process w/ Teresa Pearson (Austin certified letter); send investor POAM/quarterly update",
+  "section": "02 Conversion",
+  "space": "Projects Master",
+  "type": "ix",
+  "person": "Austin",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "606 Carteret exterior work",
+  "detail": "Fence, gutters, pecan tree removal",
+  "section": "03 Disposition",
+  "space": "Projects Master",
+  "type": "ix",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "609 Carteret / 614 Prince development",
+  "detail": "Conrath JV or paper spec; review Marcie's plans; ramp/step into 609 unit 2 for tenant",
+  "section": "03 Disposition",
+  "space": "Projects Master",
+  "type": "ix",
+  "person": "Eric",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "800 Paris water-intrusion fixes",
+  "detail": "Re-caulk front, seal around 8x8 posts (EFG), replace commercial door thresholds, raise residential doors (~$2k/door)",
+  "section": "Stabilized - Ix",
+  "space": "Projects Master",
+  "type": "ix",
+  "person": "Austin",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "2507 Fripp permitting & takeoff",
+  "detail": "Whitaker Labs results in permit box, as-built survey, order QuickTie cables (Bluffton), ESB review takeoff/RFIs",
+  "section": "02 Conversion",
+  "space": "Projects Master",
+  "type": "cx",
+  "person": "Eric",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "1012 Mustelidae finish-out",
+  "detail": "Epoxy floor PO, schedule EFG paint, screen (Diamond Porches PO $2,650), remove portajon + post-con DD, professional photos",
+  "section": "02 Conversion",
+  "space": "Projects Master",
+  "type": "cx",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "401/403 Scott St close-out",
+  "detail": "Get reviews, post-construction DD items, professional photos",
+  "section": "03 Disposition",
+  "space": "Projects Master",
+  "type": "cx",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Pretto weekly due-outs",
+  "detail": "Order 504 King material, get Ribaut sign proof/design, update vacancies list",
+  "section": "BPG - General Biz",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gdocs"
+ },
+ {
+  "task": "Tenant collections & onboarding",
+  "detail": "Hit delinquent tenants to pay; onboard all Ribaut tenants ASAP; incorporate TPP",
+  "section": "02 Conversion",
+  "space": "Projects Master",
+  "type": "ix",
+  "person": "Stephanie",
+  "due": "",
+  "source": "gdocs"
+ }
+];
 
 // ── Sort / expand state ───────────────────────────────────────────────────
 let sortCol = null, sortDir = 1;
