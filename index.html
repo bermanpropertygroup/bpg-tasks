@@ -1326,7 +1326,7 @@ renderTable();
  function ensureCards(){var un=document.getElementById("cnt-unassigned");if(!un)return;
   var unCard=un.parentElement,row=unCard.parentElement;if(!row)return;
   PEOPLE.forEach(function(p){var id="cnt-"+p.toLowerCase();if(document.getElementById(id))return;
-   var c=unCard.cloneNode(true);c.className="card c-"+p.toLowerCase();
+   var c=unCard.cloneNode(true);c.className="card c-"+p.toLowerCase();c.setAttribute("onclick","filterByPerson('"+p+"')");
    if(c.children[0]){c.children[0].id=id;c.children[0].textContent="0";}
    if(c.children[1]){c.children[1].textContent=p;}
    row.insertBefore(c,unCard);});}
