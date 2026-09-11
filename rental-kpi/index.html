@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>BPG Rental KPI Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:#0f1419; --panel:#1a2332; --panel2:#243044; --text:#e7eef8; --muted:#8b9bb4;
+  --accent:#3b82f6; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444; --line:#2a3a51;
+  --radius:12px; --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+* { box-sizing:border-box; }
+body { margin:0; font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.45; }
+.wrap { max-width:1280px; margin:0 auto; padding:24px 20px 64px; }
+header h1 { margin:0 0 6px; font-size:1.55rem; letter-spacing:-0.02em; }
+header .sub { color:var(--muted); font-size:0.92rem; }
+.note { background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:12px 14px; color:var(--muted); font-size:0.88rem; margin:14px 0 20px; }
+.tiles { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; margin-bottom:22px; }
+@media (max-width:1000px) { .tiles { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:520px) { .tiles { grid-template-columns:1fr; } }
+.tile { background:linear-gradient(180deg,var(--panel),var(--panel2)); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px; }
+.tile .lbl { color:var(--muted); font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; }
+.tile .val { font-size:1.55rem; font-weight:700; margin-top:4px; }
+.tile .hint { color:var(--muted); font-size:0.8rem; margin-top:4px; }
+.panel { background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; margin-bottom:18px; }
+.panel h2 { margin:0 0 12px; font-size:1.1rem; }
+.table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+table { width:100%; border-collapse:collapse; font-size:0.88rem; }
+th, td { padding:10px 10px; border-bottom:1px solid var(--line); vertical-align:top; text-align:left; }
+th { color:var(--muted); font-weight:600; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.03em; background:var(--panel); }
+td.num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+tr.uc { background:rgba(245,158,11,0.08); }
+.sub { color:var(--muted); font-size:0.78rem; margin-top:2px; }
+.badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:0.72rem; font-weight:600; background:#334155; color:#e2e8f0; }
+.badge.warn { background:rgba(245,158,11,0.2); color:#fbbf24; }
+.badge.bad { background:rgba(239,68,68,0.2); color:#f87171; }
+.badge.ok { background:rgba(34,197,94,0.2); color:#4ade80; }
+.muted { color:var(--muted); }
+.grid2 { display:grid; grid-template-columns:1.2fr 1fr; gap:18px; }
+@media (max-width:900px) { .grid2 { grid-template-columns:1fr; } }
+ul.clean { margin:0; padding-left:18px; }
+ul.clean li { margin:6px 0; }
+footer { color:var(--muted); font-size:0.8rem; margin-top:28px; }
+canvas { max-height:280px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>BPG Rental KPI Dashboard</h1>
+  <div class="sub">Berman Property Group · QBO report-based · Last refreshed: Sep 11, 2026 · 11:16 AM ET · Data through Aug 2026 (TYTLM)</div>
+</header>
+
+<div class="note">
+  Read-only GitHub Pages mirror. Stephanie/Nichole status &amp; note edits happen in Projects Master / Chat — not on this static page.
+  Portfolio: 21 properties / 35 units (excl. 1827 Ribaut storage &amp; 614 Prince lot). 27 Miller &amp; 67 Sams kept as <strong>under contract</strong> (not closed as of Sep 11, 2026).
+</div>
+
+<section class="tiles">
+  <div class="tile"><div class="lbl">Occupancy</div><div class="val">33/35</div><div class="hint">94% · RUNNING-reconciled</div></div>
+  <div class="tile"><div class="lbl">Collections %</div><div class="val">87%</div><div class="hint">Rent-roll proxy · $454,338 / $523,819</div></div>
+  <div class="tile"><div class="lbl">YTD Net Income</div><div class="val">$44,281</div><div class="hint">Jan–Aug QBO CF · props with CSVs</div></div>
+  <div class="tile"><div class="lbl">Below-market gap</div><div class="val">TBD</div><div class="hint">Market comps not refreshed this run</div></div>
+  <div class="tile"><div class="lbl">Open maintenance</div><div class="val">10</div><div class="hint">From RUNNING + decisions</div></div>
+</section>
+
+<section class="panel">
+  <h2>Monthly net income (clean chart)</h2>
+  <p class="sub" style="margin-top:-6px;margin-bottom:10px;">Excludes 800 Paris Feb one-time refi distortion from the plotted series (raw YTD NI still includes it in the table).</p>
+  <canvas id="niChart" height="100"></canvas>
+</section>
+
+<section class="panel">
+  <h2>Per-property performance</h2>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Property / Entity</th><th class="num">Units</th><th class="num">Collected vs expected</th>
+        <th class="num">Coll %</th><th class="num">Occ</th><th class="num">YTD NI</th>
+        <th class="num">DSCR act / pro</th><th>Status / notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="">
+      <td><strong>1122 Emmons (STR)</strong><div class="sub">Ember Invest</div></td>
+      <td class="num">1</td>
+      <td class="num">$40,800<div class="sub">of $40,800</div></td>
+      <td class="num">100%</td>
+      <td class="num">1/1</td>
+      <td class="num">$8,466</td>
+      <td class="num">1.69<div class="sub">pro 1.55</div></td>
+      <td>STR active<div class="sub">HVAC ductwork — Kyle 9/22–9/28.</div></td>
+    </tr><tr class="">
+      <td><strong>153 Williams</strong><div class="sub">Ember Invest</div></td>
+      <td class="num">1</td>
+      <td class="num">$13,200<div class="sub">of $13,200</div></td>
+      <td class="num">100%</td>
+      <td class="num">1/1</td>
+      <td class="num">$1,653</td>
+      <td class="num">1.37<div class="sub">pro 2.26</div></td>
+      <td>Occupied<div class="sub"></div></td>
+    </tr><tr class="">
+      <td><strong>23 White Dogwood</strong><div class="sub">Ember Invest</div></td>
+      <td class="num">2</td>
+      <td class="num">$24,800<div class="sub">of $24,800</div></td>
+      <td class="num">100%</td>
+      <td class="num">2/2</td>
+      <td class="num">$11,345</td>
+      <td class="num">2.00<div class="sub">pro 1.53</div></td>
+      <td>Occupied — Unit A renewal signed; Unit B renewing (lease pending sig)<div class="sub">Unit B expires 10/31/26.</div></td>
+    </tr><tr class="">
+      <td><strong>25 Sams 2A</strong><div class="sub">Ember Invest</div></td>
+      <td class="num">1</td>
+      <td class="num">$10,800<div class="sub">of $10,800</div></td>
+      <td class="num">100%</td>
+      <td class="num">1/1</td>
+      <td class="num">$3,177</td>
+      <td class="num">1.87<div class="sub">pro 1.12</div></td>
+      <td>Occupied — renewal pending signed extension (confirm)<div class="sub">Lease ended 8/31; Calie said renewing. Moisture/mildew closet; dryer tech 9/8.</div></td>
+    </tr><tr class="">
+      <td><strong>2905 Second</strong><div class="sub">Ember Invest</div></td>
+      <td class="num">1</td>
+      <td class="num">$13,600<div class="sub">of $13,600</div></td>
+      <td class="num">100%</td>
+      <td class="num">1/1</td>
+      <td class="num">$5,330</td>
+      <td class="num">1.94<div class="sub">pro 1.80</div></td>
+      <td>Occupied — new lease 7/25/26<div class="sub">Move-in repair list from SHM.</div></td>
+    </tr><tr class="">
+      <td><strong>301 Battery</strong><div class="sub">Ember Invest</div></td>
+      <td class="num">1</td>
+      <td class="num">$13,600<div class="sub">of $13,600</div></td>
+      <td class="num">100%</td>
+      <td class="num">1/1</td>
+      <td class="num">$6,488</td>
+      <td class="num">2.30<div class="sub">pro 1.70</div></td>
+      <td>Occupied<div class="sub"></div></td>
+    </tr><tr class="">
+      <td><strong>602 Battery</strong><div class="sub">Ember Invest</div></td>
+      <td class="num">1</td>
+      <td class="num">$13,400<div class="sub">of $13,400</div></td>
+      <td class="num">100%</td>
+      <td class="num">1/1</td>
+      <td class="num">$7,467</td>
+      <td class="num">2.58<div class="sub">pro 1.91</div></td>
+      <td>Occupied — lease ends 9/30, NOT renewing (Elvis)<div class="sub">List when vacant. Elvis possible move to 2203 801/802.</div></td>
+    </tr><tr class="">
+      <td><strong>603 Battery</strong><div class="sub">Ember Invest</div></td>
+      <td class="num">1</td>
+      <td class="num">$12,400<div class="sub">of $12,400</div></td>
+      <td class="num">100%</td>
+      <td class="num">1/1</td>
+      <td class="num">$7,591</td>
+      <td class="num">2.74<div class="sub">pro 1.86</div></td>
+      <td>Occupied<div class="sub"></div></td>
+    </tr><tr class="">
+      <td><strong>606 Carteret</strong><div class="sub">Ember Invest</div></td>
+      <td class="num">5</td>
+      <td class="num">$54,400<div class="sub">of $70,800</div></td>
+      <td class="num">77%</td>
+      <td class="num">4/5</td>
+      <td class="num">$-1,690</td>
+      <td class="num">0.97<div class="sub">pro 0.88</div></td>
+      <td>4/5 occupied — Unit 1 vacant (listed $1,850); Unit 2 lease ended 8/31 (not renewing)<div class="sub">Unit 1 vacant since 6/30; price → $1,850 (9/1); walkthrough 9/11. Cottage leased 7/27. Unit 3 dehumidifier quote $5.7k. Mx $650 approved.</div></td>
+    </tr><tr class="">
+      <td><strong>137 Old Jericho</strong><div class="sub">Viktor Group</div></td>
+      <td class="num">2</td>
+      <td class="num">$24,000<div class="sub">of $24,000</div></td>
+      <td class="num">100%</td>
+      <td class="num">2/2</td>
+      <td class="num">$1,315</td>
+      <td class="num">1.08<div class="sub">pro 0.94</div></td>
+      <td>Occupied — renewal awaiting one co-tenant signature (B)<div class="sub">Roof repair $1,150 Two Brothers — Austin approved; ~9/10.</div></td>
+    </tr><tr class="">
+      <td><strong>25 Sams 3B</strong><div class="sub">Viktor Group</div></td>
+      <td class="num">1</td>
+      <td class="num">$12,600<div class="sub">of $12,600</div></td>
+      <td class="num">100%</td>
+      <td class="num">1/1</td>
+      <td class="num">$1,066</td>
+      <td class="num">1.13<div class="sub">pro 0.77</div></td>
+      <td>Occupied<div class="sub"></div></td>
+    </tr><tr class="">
+      <td><strong>25 Sams 3D</strong><div class="sub">Viktor Group</div></td>
+      <td class="num">1</td>
+      <td class="num">$12,000<div class="sub">of $12,000</div></td>
+      <td class="num">100%</td>
+      <td class="num">1/1</td>
+      <td class="num">$-691</td>
+      <td class="num">0.92<div class="sub">pro 0.69</div></td>
+      <td>Occupied<div class="sub"></div></td>
+    </tr><tr class="">
+      <td><strong>409 Carteret</strong><div class="sub">Viktor Group</div></td>
+      <td class="num">2</td>
+      <td class="num">$40,836<div class="sub">of $40,836</div></td>
+      <td class="num">100%</td>
+      <td class="num">2/2</td>
+      <td class="num">$-697</td>
+      <td class="num">0.96<div class="sub">pro 1.54</div></td>
+      <td>Occupied (commercial)<div class="sub">OPEN DECISION: HVAC ductwork $12k + 2-ton $6.5k. Kyle walkthrough pending.</div></td>
+    </tr><tr class="">
+      <td><strong>609 Carteret</strong><div class="sub">Viktor Group</div></td>
+      <td class="num">2</td>
+      <td class="num">$0<div class="sub">of $35,081</div></td>
+      <td class="num">0%</td>
+      <td class="num">2/2</td>
+      <td class="num">$-16,910</td>
+      <td class="num">0.56<div class="sub">pro 0.50</div></td>
+      <td>Occupied<div class="sub"></div></td>
+    </tr><tr class="">
+      <td><strong>800 Paris</strong><div class="sub">Viktor Group</div></td>
+      <td class="num">8</td>
+      <td class="num">$94,487<div class="sub">of $112,487</div></td>
+      <td class="num">84%</td>
+      <td class="num">7/8</td>
+      <td class="num">$-12,642</td>
+      <td class="num">0.80<div class="sub">pro 1.19</div></td>
+      <td>7/8 occupied — 828B vacant (paint done, needs clean); 820B renewal pending<div class="sub">828B balcony door ordered 8/21 (~9/18 arrive). Punch list / EFG paint 9/7–9/9. Rent roll still shows Dylan Heath — RUNNING says vacant (auto-corrected).</div></td>
+    </tr><tr class="">
+      <td><strong>2203 First Blvd</strong><div class="sub">2203 First Blvd 800 LLC</div></td>
+      <td class="num">3</td>
+      <td class="num">$38,000<div class="sub">of $38,000</div></td>
+      <td class="num">100%</td>
+      <td class="num">3/3</td>
+      <td class="num">$23,012</td>
+      <td class="num">2.26<div class="sub">pro 1.74</div></td>
+      <td>3/3 occupied (801/802/803)<div class="sub">BR overrides: 801=1/1, 802=1/1, 803=3/2.</div></td>
+    </tr><tr class=" uc">
+      <td><strong>27 Miller</strong><div class="sub">BPG LLC</div></td>
+      <td class="num">1</td>
+      <td class="num">$17,448<div class="sub">of $17,448</div></td>
+      <td class="num">100%</td>
+      <td class="num">1/1</td>
+      <td class="num">— <span class="muted">no CF</span></td>
+      <td class="num">—<div class="sub">pro 0.79</div></td>
+      <td><span class="badge warn">Under contract</span> UNDER CONTRACT — closing path open (target ~9/18); NOT closed as of 9/11<div class="sub">Kitchen Tune Up. Kevin path: $130k paydown + partial release locked. B Nash asked 6-mo tenant extension. KEEP until closed.</div></td>
+    </tr><tr class=" uc">
+      <td><strong>67 Sams</strong><div class="sub">BPG LLC</div></td>
+      <td class="num">1</td>
+      <td class="num">$17,967<div class="sub">of $17,967</div></td>
+      <td class="num">100%</td>
+      <td class="num">1/1</td>
+      <td class="num">— <span class="muted">no CF</span></td>
+      <td class="num">—<div class="sub">pro 0.78</div></td>
+      <td><span class="badge warn">Under contract</span> UNDER CONTRACT — closing 9/18 (ADJALA); NOT closed as of 9/11<div class="sub">Sheds to move/sell before closing. KEEP until closed.</div></td>
+    </tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="sub">DSCR actual ≈ (avg monthly CF Net Income + monthly debt service) / monthly debt service. Proforma DSCR from SREO. Collections are rent-roll proxies pending unit-level P&amp;L TxDetail parse.</p>
+</section>
+
+<div class="grid2">
+<section class="panel">
+  <h2>Maintenance tracker</h2>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Property</th><th>Item</th><th>State</th><th>Detail</th></tr></thead>
+    <tbody><tr><td>606 Carteret</td><td>Unit 1 vacant listing / mx</td><td><span class="badge bad">open</span></td><td>Kitchen floor hole, stair tread, weather strip, lattice. $650 SHM estimate approved.</td></tr><tr><td>606 Carteret</td><td>Unit 3 whole-home dehumidifier</td><td><span class="badge warn">decision</span></td><td>Watkins quote $5,714.46 (9/11).</td></tr><tr><td>606 Carteret</td><td>Fence / gutters / pecan tree</td><td><span class="badge bad">open</span></td><td>Richard/Elvis build fence during downtime.</td></tr><tr><td>409 Carteret</td><td>HVAC + ductwork</td><td><span class="badge warn">decision</span></td><td>$12k + $6.5k — see Open Decisions.</td></tr><tr><td>828 B Paris</td><td>Balcony door install</td><td><span class="badge bad">open</span></td><td>Door ordered; install after ~9/18 arrival.</td></tr><tr><td>828 B Paris</td><td>Post-reno clean</td><td><span class="badge bad">open</span></td><td>Paint done; needs cleaning. Former tenant cleaning-fee dispute.</td></tr><tr><td>800 Paris</td><td>Concrete / water punch list</td><td><span class="badge ok">recent</span></td><td>Work 9/2–9/9; EFG paint 9/7–9/9.</td></tr><tr><td>137 Old Jericho</td><td>Roof repair</td><td><span class="badge bad">open</span></td><td>$1,150 Two Brothers; Austin approved; ~9/10.</td></tr><tr><td>1122 Emmons</td><td>HVAC ductwork</td><td><span class="badge bad">open</span></td><td>Kyle 9/22–9/28.</td></tr><tr><td>25 Sams 2A</td><td>Moisture / dryer</td><td><span class="badge bad">open</span></td><td>Closet mildew; dryer tech 9/8; duct re-assessment pending.</td></tr><tr><td>27 Miller</td><td>Landscaping lease violation</td><td><span class="badge bad">open</span></td><td>Violation 8/28; under contract.</td></tr></tbody>
+  </table>
+  </div>
+</section>
+<section class="panel">
+  <h2>Open decisions</h2>
+  <ul class="clean"><li><strong>409 Carteret — HVAC + crawlspace ductwork:</strong> $12,000 ductwork + $6,500 for 2-ton unit. Replace duct only (keep 2013 Carrier) or both? Kyle walkthrough pending.</li><li><strong>828 B Paris — Balcony door (Alside):</strong> Ordered 8/21; arrive ~9/18; Elvis/RJP install. Confirm schedule.</li></ul>
+  <h2 style="margin-top:18px;">Data check / reconciliation</h2>
+  <ul class="clean"><li><strong>800 Paris:</strong> Rent roll shows 828B Dylan Heath Paid; RUNNING says vacant post-reno. → <em>auto-corrected to vacant</em></li><li><strong>606 Carteret:</strong> Unit 1 vacant; Cottage leased 7/27; Unit 2 ending. → <em>Status from RUNNING (fresher than rent roll).</em></li><li><strong>27 Miller:</strong> Still UNDER CONTRACT as of 2026-09-11 — not yet closed. → <em>Kept on dashboard with under-contract flag.</em></li><li><strong>67 Sams:</strong> Still UNDER CONTRACT as of 2026-09-11 — not yet closed. → <em>Kept on dashboard with under-contract flag.</em></li></ul>
+</section>
+</div>
+
+<section class="panel">
+  <h2>Gaps &amp; next-run notes</h2>
+  <ul class="clean"><li>No per-property rental-income (collections) CSVs this run — CF Stmt only has Net Income. Collections % is rent-roll proxy (occupied × scheduled rent × 8 mo), not QBO cash receipts.</li><li>Missing QBO CF for 27 Miller and 67 Sams (BPG LLC commercial) — no CF_TYTLM emails in Sep 11 push.</li><li>Ember_QBO_Sync entity P&amp;L has blank Aug rental income (only mortgage interest) — per-property CF used for Aug NI.</li><li>Drive fallback folder 1IcPwN-vQ6-zKRdhPgzglSy5nkvzHpq78 still empty.</li><li>Market-rent comps not refreshed — below-market gap tile pending (v4 was ~$3,484/mo / 15 units).</li><li>P&amp;L TxDetail_w/Cust emails available but not unit-parsed this run — next run should restore Customer-before-Name collection attribution.</li><li>25 Sams 2A signed extension still unconfirmed.</li></ul>
+</section>
+
+<footer>
+  Source: Gmail QBO CF_TYTLM (Sep 11, 2026 ~07:00 ET) · SREO / RentRoll · Projects Master RUNNING DISPOSITION · Ember_QBO_Sync.<br/>
+  Hosting: bermanpropertygroup.github.io/bpg-rental-kpi · COO owns monthly run · CFO owns QBO feed.
+</footer>
+</div>
+<script>
+const ctx=document.getElementById('niChart');
+new Chart(ctx,{
+  type:'bar',
+  data:{
+    labels:["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+    datasets:[{
+      label:'Portfolio NI (clean)',
+      data:[-40830.0, 13350.0, 11961.0, 16022.0, 10193.0, 13981.0, 4724.0, 16439.0],
+      backgroundColor:'rgba(59,130,246,0.75)',
+      borderRadius:6,
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{ legend:{ labels:{ color:'#8b9bb4' } } },
+    scales:{
+      x:{ ticks:{ color:'#8b9bb4' }, grid:{ color:'#2a3a51' } },
+      y:{ ticks:{ color:'#8b9bb4', callback:v=>'$'+v.toLocaleString() }, grid:{ color:'#2a3a51' } }
+    }
+  }
+});
+</script>
+</body>
+</html>
