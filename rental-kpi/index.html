@@ -286,10 +286,11 @@ tr.grouprow td{background:var(--surface2);border-top:1px solid var(--baseline);
       <button id="groupToggle" type="button">Grouped by entity</button>
     </div>
     <div class="tbl-scroll" style="margin-top:10px"><table id="ptable"></table></div>
-    <div class="pill-note" style="margin-top:8px"><b>Collected / Expenses / Net income YTD</b> are actuals
-    from each entity&rsquo;s QuickBooks books (Jan&ndash;Aug 2026, cash basis, transaction detail by customer).
-    27 Miller and 67 Sams are the exception &mdash; the BPG file mixes rentals with construction, so their
-    numbers are allocated pro-rata from the entity total. Proforma CF and DSCR remain the SREO model,
+    <div class="pill-note" style="margin-top:8px"><b>Net income / expenses / net cash YTD</b> are from each
+    entity&rsquo;s per-property Statements of Cash Flows (Jan&ndash;Aug 2026, cash basis).
+    <b>Collections %</b> this run is a rent-roll proxy (occupied &times; scheduled rent &times; 8 months), not QBO cash receipts.
+    No P&amp;L TxDetail CSVs arrived, so unit-level collection attribution was not parsed.
+    27 Miller and 67 Sams have no CF (BPG books mix rentals with construction). Proforma CF and DSCR remain the SREO model,
     kept side by side so model-vs-reality gaps are visible.</div>
     <div class="pill-note"><b>Vacant-days tracking:</b> the frame for &ldquo;% of vacant days for the year&rdquo;
     is in the expanded rows, but it needs move-in / move-out history from Stinger Home Management (or a
@@ -299,13 +300,12 @@ tr.grouprow td{background:var(--surface2);border-top:1px solid var(--baseline);
 
   <section class="foot narrow">
     <h3>Data coverage &amp; how to read this</h3>
-    <p><b>Actuals</b> (collected, expenses, net income, net cash) come from each entity&rsquo;s QuickBooks books for
-    Jan&ndash;Aug 2026, cash basis: P&amp;L transaction detail by customer plus per-property Statements of Cash Flows,
-    pushed to Gmail as scheduled TYTLM reports. Properties are customers and units are sub-customers in QBO, which
-    is what makes the per-property split possible. Entity totals reconcile to the penny against each company P&amp;L.
-    <b>Expected figures</b> &mdash; GSR, proforma expenses, NOI, CF, DSCR &mdash; come from the SREO workbook and are
-    kept alongside the actuals rather than replaced, so model-vs-reality gaps stay visible.
-    <b>Market bands</b> refresh from public listing data with each run.</p>
+    <p><b>Actuals</b> for net income and net cash come from per-property Statements of Cash Flows for
+    Jan&ndash;Aug 2026, cash basis, pushed to Gmail as scheduled TYTLM reports.
+    <b>Collections %</b> this run is a rent-roll proxy, not transaction-detail cash receipts. Entity P&amp;L penny-reconcile was not run (no TxDetail).
+    <b>Expected figures</b> (GSR, proforma expenses, NOI, CF, DSCR) come from the SREO workbook and stay
+    alongside the actuals, so model-vs-reality gaps stay visible.
+    <b>Market bands</b> are reused from 23 Aug 2026 (Zumper / RentCafe), not refreshed this rebuild.</p>
     <h3>Reading the actuals honestly</h3>
     <p>Cash-basis monthly figures are lumpy by nature: Jan&ndash;Feb activity for several properties was journaled in
     February, tenants pay in catch-up batches, and insurance/tax entries land in single months. Judge properties on
@@ -316,7 +316,7 @@ tr.grouprow td{background:var(--surface2);border-top:1px solid var(--baseline);
     <p>1827 Ribaut Rd (self-storage &mdash; has its own investor reporting) and 614 Prince St (vacant lot, no income).</p>
     <h3>Definitions</h3>
     <p>GSR = gross scheduled rent. NOI = GSR &minus; vacancy loss &minus; operating expenses (before debt service).
-    Cash flow = NOI &minus; principal &amp; interest. YTD = Jan&ndash;Aug 2026 (7 closed months).</p>
+    Cash flow = NOI &minus; principal &amp; interest. YTD = Jan&ndash;Aug 2026 (8 closed months).</p>
     <p><b>DSCR appears twice, and the two mean different things.</b> <i>DSCR proforma</i> is the SREO model:
     budgeted NOI &divide; scheduled debt service — what the property should do in a normal year.
     <i>DSCR actual</i> is what it did: collected income &minus; operating expenses, divided by interest plus
