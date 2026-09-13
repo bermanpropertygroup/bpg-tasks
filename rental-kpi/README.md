@@ -1,22 +1,7 @@
 # BPG Rental KPI Dashboard
 
-Read-only portfolio KPI dashboard for Berman Property Group rentals.
+Public board (interim host): https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/
 
-**Live:** https://bermanpropertygroup.github.io/bpg-rental-kpi/
+Built from the bermanpropertygroup.com site HTML template with Jan–Aug 2026 closed-month QBO CF actuals (Sep 11 TYTLM push). Read-only GitHub Pages — no savebar/LIVE overlays.
 
-## Scope
-- 21 rental properties / 35 units across Ember Invest, Viktor Group, 2203 First Blvd 800 LLC, BPG LLC commercial
-- Excludes 1827 Ribaut (storage) and 614 Prince (lot)
-- 27 Miller / 67 Sams kept while under contract (remove only after close)
-
-## Data
-Report-based (no live QBO connector). Monthly COO run pulls:
-1. Gmail QBO CF_TYTLM / StmtCF CSVs (`02 Accounting/QBO Reports`)
-2. SREO workbook (debt service, proforma DSCR, rent roll)
-3. Projects Master RUNNING / DISPOSITION (status, maintenance)
-4. Ember_QBO_Sync sheet (Ember gaps)
-
-Status/notes edits happen in Projects Master / Chat — not on this static page.
-
-## Publish
-`index.html` on `main` → GitHub Pages (root).
+Preferred dedicated repo `bermanpropertygroup/bpg-rental-kpi` is blocked (PAT lacks createRepository).
