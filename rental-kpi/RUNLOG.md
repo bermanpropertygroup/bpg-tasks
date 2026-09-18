@@ -1,5 +1,18 @@
 # BPG Rental KPI — Run Log
 
+## 2026-09-18 — Eric feedback fix (DSCR, Actual CF, below-market, tiles)
+
+**Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/  
+**Stamp:** Sep 18, 2026 · 2:49 PM ET  
+
+### Fixes
+1. Below-market: `renderEntityCards()` runs **after** comps; entity below sums to portfolio 17 (Ember 8 + Viktor 7 + 2203 2).
+2. Removed redundant Rental units / Occupied tiles (subheader keeps props·units·occ).
+3. DSCR = (NI + interest add-back) ÷ (scheduled P&I × months). Ember ~1.34 (was 0.65 from post-interest NI ÷ inflated debtSvc).
+4. Actual CF/mo = NI − principal (after P&I). 2203 uses entity cash increase (~$1,571/mo, was $3,954). Paris cleanCash Mar–Aug after P&I ~$1,776 (was −$4,584 raw net-cash w/ capex).
+5. Viktor/Paris NI counted once via parisGroup.
+
+
 ## 2026-09-18 — FULL RERUN (API customer CF + By-Entity UI)
 
 **Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/  
