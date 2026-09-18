@@ -1,5 +1,27 @@
 # BPG Rental KPI — Run Log
 
+## 2026-09-18 — FULL RERUN (API customer CF + By-Entity UI)
+
+**Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/  
+**Stamp:** Sep 18, 2026 · 1:18 PM ET  
+**Period:** Jan–Aug 2026 / as_of 2026-08-31  
+
+### Data
+- Live QBO: entity P&L BM + CashFlow BM + ProfitAndLossDetail (all 4 companies) — OK.
+- Per-customer CashFlow BM Month for 17 property customers (ember/viktor/2203/bpg) — **0 errors**. Sample: Ember 153 Williams cust=4; Viktor 800 Paris cust=10; BPG 67 Sams cust=433; 2203 cust=1; 3B/3D cust=16/17.
+- Property `actNi`/`actCash` from API CF (Net Income / Net cash increase). **No Sep-11 email CSV** for property CF.
+- Entity sparks still true BM monthly series; portfolioCollections = Σ sparks.
+- 27 Miller excluded; market ±5% bands + marketSnap guard retained.
+
+### UI
+- By Entity cards: snapshot metric grid (units, occ, expected, NI, CF, DSCR, below-market) + spark.
+- Open items / Recently completed / property table: entity expand/collapse headers.
+- Template `templates/dashboard.html` synced from published board.
+
+### Next run should
+- Keep customer CF BM primary; never reintroduce email CF while API succeeds.
+- Confirm 828 B baths with Eric; keep Residence type.
+
 ## 2026-09-18 — KPI HOTFIX (marketSnap crash + ±5% bands + portfolio BM sum)
 
 **Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/  
