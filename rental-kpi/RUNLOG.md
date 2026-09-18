@@ -1,5 +1,52 @@
 # BPG Rental KPI — Run Log
 
+## 2026-09-18 — KPI FIX REBUILD (entity sparks + Jan–Aug labels + discrepancies)
+
+**Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/ (interim)  
+**Stamp:** Sep 18, 2026 · 12:40 PM ET  
+**Period:** Jan–Aug 2026 / as_of 2026-08-31  
+
+### Fixes
+1. `DATA.entities.*.inc` replaced flat monthly averages with live QBO cash P&L BM Month series (Ember/Viktor/2203 Total Income; Viktor + Other Income; BPG = Rental+NNN only).
+2. All Jan–Jul / Jan&ndash;Jul UI leftovers → Jan–Aug / TYTLM through 2026-08-31 (grep = 0).
+3. `DATA.discrepancies` expanded to 14 conflict rows (Miller closed, 67 Sams slip, vacancies, renewals, delinquency cured, entity-spark meta, BPG split gap).
+4. Skill patched: entity `inc` must be true monthly BM series — never averages.
+
+### API
+- Live re-pull ProfitAndLoss Cash summarize_column_by=Month for ember/viktor/2203/bpg 2026-01-01→2026-08-31 — all OK.
+- Property CF still Sep 11 TYTLM email CSVs (through Aug); entity CashFlow API present but property-by-customer CF not fully swapped this fix pass.
+- No email CSV P&L fallback.
+
+### Next run should
+- Keep entity.inc from BM Month; assert len(set(inc))>1 (or document true flat).
+- Prefer CashFlow API customer filters for property NI/cash when available.
+- Confirm 25 Sams 2a signed term vs SREO; 137 Unit B co-tenant signature; 606 Unit 2 extension terms.
+
+
+## 2026-09-18 — KPI FIX REBUILD (entity sparks + Jan–Aug labels + discrepancies)
+
+**Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/ (interim)  
+**Stamp:** Sep 18, 2026 · 12:40 PM ET  
+**Period:** Jan–Aug 2026 / as_of 2026-08-31  
+
+### Fixes
+1. `DATA.entities.*.inc` replaced flat monthly averages with live QBO cash P&L BM Month series (Ember/Viktor/2203 Total Income; Viktor + Other Income; BPG = Rental+NNN only).
+2. All Jan–Jul / Jan&ndash;Jul UI leftovers → Jan–Aug / TYTLM through 2026-08-31 (grep = 0).
+3. `DATA.discrepancies` expanded to 14 conflict rows (Miller closed, 67 Sams slip, vacancies, renewals, delinquency cured, entity-spark meta, BPG split gap).
+4. Skill patched: entity `inc` must be true monthly BM series — never averages.
+
+### API
+- Live re-pull ProfitAndLoss Cash summarize_column_by=Month for ember/viktor/2203/bpg 2026-01-01→2026-08-31 — all OK.
+- Property CF still Sep 11 TYTLM email CSVs (through Aug); entity CashFlow API present but property-by-customer CF not fully swapped this fix pass.
+- No email CSV P&L fallback.
+
+### Next run should
+- Keep entity.inc from BM Month; assert len(set(inc))>1 (or document true flat).
+- Prefer CashFlow API customer filters for property NI/cash when available.
+- Confirm 25 Sams 2a signed term vs SREO; 137 Unit B co-tenant signature; 606 Unit 2 extension terms.
+
+
+
 ## 2026-09-18 — full monthly TEST RUN (Jan–Aug 2026 / as_of 2026-08-31)
 
 **Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/ (interim; dedicated `bpg-rental-kpi` still 404 / create blocked)  
