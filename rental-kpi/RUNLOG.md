@@ -1,5 +1,23 @@
 # BPG Rental KPI — Run Log
 
+## 2026-09-18 — KPI HOTFIX (marketSnap crash + ±5% bands + portfolio BM sum)
+
+**Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/  
+**Stamp:** Sep 18, 2026 · 1:00 PM ET  
+
+### Fixes
+1. Guarded `marketSnap` (skip missing bands / null apartmentAvg / null YoY) — was throwing on `pr.bands['1'][0]` when `portRoyal.bands={}`, blanking market + dq + maint.
+2. Beaufort bands → ±5% ranges (1BR `[1378,1522]` etc.). Port Royal BR bands populated (low-sample OK).
+3. 828 B typed **Residence** + estBeds 3 so `800 Paris Ave (N)` market group paints.
+4. `portfolioCollections.collected` = month-wise sum of entity BM sparks (Ember+Viktor+2203+BPG Rental+NNN). Documented in collectionsNote. Not Claude CSV SoT.
+5. Skill/verification/data-shape: marketSnap + ±5% + portfolio definition locks.
+
+### Proof
+- marketSnap unit-test: Beaufort+PR rows, `$1,378–$1,522`, no null%.
+- Paris residential comps: 4 (820B/824B/828B/832B).
+- discrepancies 14, maintenance 10, Jan–Jul leftovers 0.
+
+
 ## 2026-09-18 — KPI FIX REBUILD (entity sparks + Jan–Aug labels + discrepancies)
 
 **Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/ (interim)  
