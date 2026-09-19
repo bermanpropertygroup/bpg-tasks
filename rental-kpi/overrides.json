@@ -1,8 +1,8 @@
 {
   "status": {},
   "maint": {},
-  "collapse": {},
-  "updatedAt": "2026-09-18T22:07:07.884291",
-  "note": "Rebuild merges this file into LIVE so Eric status/collapse picks survive. Client also mirrors to localStorage keys bpg-rental-kpi-overrides and bpg-rental-kpi-sec.",
-  "mergeRule": "On rebuild: load overrides.json \u2192 seed LIVE block; on edit: localStorage write-through + this file updated on next publish/commit when save available."
+  "updatedAt": "2026-09-18T22:09:49.838217",
+  "path": "rental-kpi/overrides.json",
+  "note": "Shared SoT for editable statuses (Leased - new tenant, etc.). Rebuild merges into LIVE. Collapse prefs = localStorage only (bpg-rental-kpi-sec), not this file.",
+  "mergeRule": "On rebuild: load overrides.json \u2192 seed LIVE/OVERRIDES_FILE. On edit: persistOverrides() updates window.__BPG_OVERRIDES__; commit this file so republish keeps Eric picks."
 }
