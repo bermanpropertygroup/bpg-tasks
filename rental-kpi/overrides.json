@@ -1,8 +1,14 @@
 {
-  "status": {},
+  "status": {
+    "10|Cottage": {
+      "status": "occupied",
+      "note": "Lease started 7/27/26 \u2014 Occupied (Eric QA)",
+      "_by": "rebuild",
+      "_at": "2026-09-18"
+    }
+  },
   "maint": {},
-  "updatedAt": "2026-09-18T22:09:49.838217",
+  "updatedAt": "2026-09-19T02:25:31.888452+00:00",
   "path": "rental-kpi/overrides.json",
-  "note": "Shared SoT for editable statuses (Leased - new tenant, etc.). Rebuild merges into LIVE. Collapse prefs = localStorage only (bpg-rental-kpi-sec), not this file.",
-  "mergeRule": "On rebuild: load overrides.json \u2192 seed LIVE/OVERRIDES_FILE. On edit: persistOverrides() updates window.__BPG_OVERRIDES__; commit this file so republish keeps Eric picks."
+  "note": "localStorage OV_KEY immediate; commit on republish (Eric 10:22pm)"
 }
