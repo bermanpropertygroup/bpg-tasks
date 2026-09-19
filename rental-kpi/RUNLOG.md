@@ -189,3 +189,10 @@ Gmail CF_TYTLM Sep 11 ~07:00 ET + Ember StmtCF; SREO; Projects Master RUNNING; E
 
 ---
 *(Paste into Drive runlog doc 1f1igpJyefgpqb0Ta8YopJWwuJMvVv89Kn2tzivD2TTw — Drive MCP cannot append Doc body.)*
+
+## 2026-09-18 10:20 PM ET — Eric 10:02pm + QA return
+- Section collapse: moved `.sec-head` bind to top-level `initSectionCollapse` (was nested in th sort → dead).
+- 606 Cottage: status=Occupied, leaseStart=2026-07-27, Jul vacant collReason cleared; Watkins dehumidifier → ordered (Stephanie 9/1).
+- 2203: unit coll Feb–Apr pro-rata from entity Income; 609 Feb same gate fix.
+- QA gates in data-check + skill; Leased - new tenant lease opts; overrides.json + localStorage.
+- URL: https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/
