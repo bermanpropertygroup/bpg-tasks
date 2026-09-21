@@ -2,13 +2,13 @@
   "status": {
     "10|Cottage": {
       "status": "occupied",
-      "note": "Lease started 7/27/26 \u2014 Occupied (Eric QA)",
+      "note": "Lease started 7/27/26 — Occupied (Eric QA)",
       "_by": "rebuild",
       "_at": "2026-09-18"
     }
   },
   "maint": {},
-  "updatedAt": "2026-09-19T02:25:31.888452+00:00",
+  "updatedAt": "2026-09-21T14:15:43.003Z",
   "path": "rental-kpi/overrides.json",
-  "note": "localStorage OV_KEY immediate; commit on republish (Eric 10:22pm)"
+  "note": "Weekly partial 2026-09-21; merge on load; localStorage OV_KEY immediate; commit on republish"
 }
