@@ -1,5 +1,34 @@
 # BPG Rental KPI — Run Log
 
+## 2026-09-21 — Weekly partial (ops-only, Monday)
+
+**Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/ (interim; dedicated `bpg-rental-kpi` still PAT 404)  
+**Stamp:** Sep 21, 2026 · 10:30 AM ET  
+**Scope:** Chat + RUNNING + Stinger/Gmail only. No QBO rebuild. Dual T&I deferred to 12th.
+
+### Material
+1. **23 White Dogwood Unit B** — lease extension **SIGNED** (Stephanie Chat 9/17; RUNNING). Was “renewing / signature pending.” ≤90d rail → ok.
+2. **606 Carteret Unit 1** — asking rent **$1,800** (was $1,850; Chat 9/17). Still Vacant / listed (MLS via TGG 9/17). No occupancy flip.
+
+### Not material / unchanged
+- Vacants unchanged: 606 Unit 1, 606 Unit 2, 828 B.
+- 27 Miller already removed (closed ~9/17).
+- 67 Sams still under contract (Dawn $385k / Nov) — no new path this week.
+- 25 Sams 2a / 137 Unit B signatures still unconfirmed.
+- 828 B balcony door: ETA ~9/18 passed; receipt/install unconfirmed — left open.
+- WO 115508 (2203 quarterly pest) = routine; not board decision.
+- 609 electric WO: Carmen closing (no tenant contact) — not on open-decision list.
+
+### Sources
+Chat REST OK (OAuth refresh from secret-backups). RUNNING Drive doc OK. Gmail Stinger/Rentvine OK.
+
+### Next run should
+- Confirm 828 B balcony door received/installed.
+- Confirm 25 Sams 2a + 137 B signatures.
+- Monthly 12th: full QBO + dual T&I run-rate.
+
+---
+
 ## 2026-09-18 — Eric feedback fix (DSCR, Actual CF, below-market, tiles)
 
 **Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/  
@@ -189,10 +218,3 @@ Gmail CF_TYTLM Sep 11 ~07:00 ET + Ember StmtCF; SREO; Projects Master RUNNING; E
 
 ---
 *(Paste into Drive runlog doc 1f1igpJyefgpqb0Ta8YopJWwuJMvVv89Kn2tzivD2TTw — Drive MCP cannot append Doc body.)*
-
-## 2026-09-18 10:20 PM ET — Eric 10:02pm + QA return
-- Section collapse: moved `.sec-head` bind to top-level `initSectionCollapse` (was nested in th sort → dead).
-- 606 Cottage: status=Occupied, leaseStart=2026-07-27, Jul vacant collReason cleared; Watkins dehumidifier → ordered (Stephanie 9/1).
-- 2203: unit coll Feb–Apr pro-rata from entity Income; 609 Feb same gate fix.
-- QA gates in data-check + skill; Leased - new tenant lease opts; overrides.json + localStorage.
-- URL: https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/
