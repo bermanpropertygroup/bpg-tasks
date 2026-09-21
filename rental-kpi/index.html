@@ -47,6 +47,11 @@ h1,h2,h3{font-family:"Archivo",system-ui,sans-serif;text-wrap:balance;margin:0}
 .hdr h1{font-size:1.45rem;font-weight:700;letter-spacing:.01em}
 .hdr .sub{font-size:.85rem;opacity:.85}
 .asof{display:flex;gap:8px;flex-wrap:wrap;font-size:.75rem}
+.refresh-stamp{margin-top:8px;font-size:.95rem;font-weight:700;letter-spacing:.01em;
+  color:#fff;background:rgba(255,255,255,.18);display:inline-block;
+  padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.35)}
+.refresh-stamp b{font-weight:800}
+
 .asof span{background:rgba(255,255,255,.14);border-radius:999px;padding:3px 10px}
 section{margin-top:26px}
 .sec-label{font-size:.72rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
@@ -216,6 +221,7 @@ section.sec-collapsed .sec-head .caret{transform:rotate(-90deg)}
     <div>
       <h1>Rental Portfolio KPIs</h1>
       <div class="sub">Berman Property Group &middot; monthly performance review</div>
+      <div class="refresh-stamp" id="refreshStamp"><b>Last refreshed:</b> Sep 21, 2026 · 2:42 PM ET</div>
     </div>
     <div class="asof">
       <span>SREO / rent roll: Aug 20, 2026</span>
@@ -6104,7 +6110,7 @@ const DATA = {
   "reconciledAt": "2026-09-21T10:30:00-04:00",
   "collectionsMode": "qbo-api-cash-pnl-bm-rental-scoped",
   "collectionsNote": "PORTFOLIO COLLECTIONS = Σ entity cash P&L BM monthly income (Ember TI + Viktor TI+OI + 2203 TI + BPG Rental+NNN). Property NI/cash from live QBO CashFlow customer=<Id> Month BM. Entity sparks match BM. 27 Miller excluded (closed). TxDetail-with-Customer pulled for all four companies.",
-  "rebuildStamp": "Sep 21, 2026 · 10:30 AM ET",
+  "rebuildStamp":"Sep 21, 2026 · 2:42 PM ET",
   "dataPeriod": "Jan–Aug 2026",
   "removedProps": [
     "27 Miller Dr W"
@@ -7521,6 +7527,14 @@ try{
     if(loc&&loc.maint) LIVE.maint=Object.assign(LIVE.maint||{}, loc.maint);
   }
 }catch(e){}
+
+
+/* Top chrome: always show DATA.rebuildStamp (Eric 2026-09-21 lock) */
+(function syncRefreshStamp(){
+  const el=document.getElementById('refreshStamp');
+  if(!el||!DATA||!DATA.rebuildStamp) return;
+  el.innerHTML='<b>Last refreshed:</b> '+String(DATA.rebuildStamp).replace(/</g,'');
+})();
 
 /* ---------- save: republish the page with the new LIVE block ---------- */
 document.getElementById('savebtn').addEventListener('click', async ()=>{
