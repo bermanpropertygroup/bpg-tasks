@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1911 Darby Drive — Berman Property Group</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&display=swap">
+<style>
+:root{
+  /* BPG brand: logo dark blue ~#142846, Morning Brief #1e3a4c→#2c5364, gold accent */
+  --ground:#f4f6f8; --surface:#ffffff; --surface2:#eef2f6;
+  --ink:#1c2430; --ink2:#3a4654; --muted:#8a96a3; --grid:#e2e8ef;
+  --brand:#142846; --brand-mid:#1e3a4c; --brand-light:#2a6f8f;
+  --brand-ink:#ffffff; --accent:#c9a227; --accent-soft:#8a7340;
+  --good:#2f7d4a; --good-text:#1f5a35; --warn:#c9a227; --crit:#c45c26;
+  --ring:rgba(20,40,70,.12); --chip:#e8eef5; --pos:#2a6f8f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;}
+.wrap{max-width:960px;margin:0 auto;padding:20px 20px 56px}
+h1,h2,h3{font-family:"Archivo",system-ui,sans-serif;text-wrap:balance;margin:0}
+.banner{background:#e8eef5;border:1px solid #b7c9dc;color:#1e3a4c;
+  border-radius:10px;padding:10px 14px;font-size:.82rem;margin-bottom:14px}
+.brandbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.brandbar img{height:44px;width:auto;display:block}
+.brandbar .co{font-family:"Archivo",system-ui,sans-serif;font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--brand-mid)}
+.hdr{background:linear-gradient(135deg,var(--brand) 0%,var(--brand-mid) 55%,#2c5364 100%);color:var(--brand-ink);border-radius:12px;
+  padding:22px 24px;display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;justify-content:space-between;
+  border-bottom:3px solid var(--accent)}
+.hdr h1{font-size:1.4rem;font-weight:700}
+.hdr .addr{font-size:.9rem;opacity:.9;margin-top:4px}
+.hdr .meta{font-size:.78rem;opacity:.85;margin-top:10px}
+.asof{display:flex;gap:8px;flex-wrap:wrap;font-size:.75rem}
+.asof span{background:rgba(255,255,255,.14);border-radius:999px;padding:3px 10px}
+.asof span.gold{background:color-mix(in srgb,var(--accent) 28%,transparent);color:#fff8e0;border:1px solid color-mix(in srgb,var(--accent) 55%,transparent)}
+.bar > i{background:linear-gradient(90deg,var(--brand-light),var(--accent)) !important}
+.dot.now{background:var(--brand-light);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand-light) 30%,transparent)}
+.phase.now{border-color:color-mix(in srgb,var(--accent) 55%,var(--ring))}
+.doc:hover{border-color:var(--brand-light)}
+.foot .mark{color:var(--brand-mid);font-weight:600}
+section{margin-top:26px}
+.sec-label{font-size:.72rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.status{background:var(--surface);border:1px solid var(--ring);border-radius:12px;padding:16px 18px;
+  display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:14px}
+@media (max-width:720px){.status{grid-template-columns:1fr}}
+.status .k{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.status .v{font-family:"Archivo",system-ui,sans-serif;font-size:1.15rem;font-weight:700;margin-top:4px}
+.bar{height:8px;background:var(--surface2);border-radius:999px;margin-top:10px;overflow:hidden;grid-column:1/-1}
+.bar > i{display:block;height:100%;width:42%;background:var(--brand);border-radius:999px}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:720px){.tiles{grid-template-columns:repeat(2,1fr)}}
+.tile{background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:12px 14px}
+.tile .v{font-family:"Archivo",system-ui,sans-serif;font-size:1.35rem;font-weight:700;line-height:1.15;font-variant-numeric:tabular-nums}
+.tile .l{font-size:.75rem;color:var(--ink2);margin-top:2px}
+.tile .n{font-size:.7rem;color:var(--muted);margin-top:4px}
+.tbl-scroll{overflow-x:auto;border:1px solid var(--ring);border-radius:12px;background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:.86rem}
+th{text-align:left;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);
+  padding:11px 14px;border-bottom:1px solid var(--grid);background:var(--surface2)}
+td{padding:11px 14px;border-bottom:1px solid var(--grid);font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:none}
+.badge{font-size:.72rem;font-weight:600;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.b-ok{background:color-mix(in srgb,var(--good) 14%,transparent);color:var(--good-text)}
+.b-open{background:color-mix(in srgb,var(--pos) 14%,transparent);color:var(--pos)}
+.b-due{background:color-mix(in srgb,var(--warn) 22%,transparent);color:var(--ink)}
+.phases{display:grid;gap:10px}
+.dot{width:12px;height:12px;border-radius:50%;justify-self:center}
+.dot.done{background:var(--good)}
+.dot.now{background:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 25%,transparent)}
+.dot.next{background:var(--chip);border:1px solid var(--grid)}
+.phase .name{font-weight:600;font-size:.92rem}
+.phase .hint{font-size:.78rem;color:var(--ink2)}
+
+.phase{display:block;background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:0;overflow:hidden}
+.phase-head{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:12px 14px}
+.phase.now{border-color:color-mix(in srgb,var(--brand) 45%,var(--ring))}
+.subs{border-top:1px solid var(--grid);padding:4px 14px 10px 42px;display:grid;gap:2px}
+.sub{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:baseline;padding:7px 0;border-top:1px solid var(--grid);font-size:.84rem}
+.sub:first-child{border-top:none}
+.sub .lab{color:var(--ink)}
+.sub .lab .tag{font-size:.68rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-left:6px}
+.sub .when{font-size:.72rem;color:var(--muted);margin-top:2px}
+.b-pass{background:color-mix(in srgb,var(--good) 14%,transparent);color:var(--good-text)}
+.b-up{background:var(--chip);color:var(--ink2)}
+.docs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.doc{background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:14px 16px;text-decoration:none;color:inherit}
+.doc:hover{border-color:var(--brand)}
+.doc .t{font-weight:600;font-size:.9rem}
+.doc .s{font-size:.75rem;color:var(--muted);margin-top:4px}
+
+.phase-head{cursor:pointer;user-select:none;list-style:none}
+.phase-head::-webkit-details-marker{display:none}
+.phase-head .chev{width:14px;height:14px;margin-left:6px;display:inline-block;transition:transform .15s ease;opacity:.7;vertical-align:-1px}
+.phase[open] .phase-head .chev{transform:rotate(90deg)}
+.phase-head .name-row{display:flex;align-items:center;gap:4px}
+.phase .count{font-size:.72rem;font-weight:600;color:var(--muted);margin-left:6px}
+.foot{margin-top:36px;font-size:.75rem;color:var(--muted);text-align:center}
+</style>
+<style>
+.tile .v{font-size:1.25rem}
+.disclaimer{font-size:.78rem;color:var(--ink2);margin-top:8px;line-height:1.45}
+.inv .when{font-size:.75rem;color:var(--muted);font-weight:400;margin-top:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="banner"><strong>Demo for Eric review</strong> — real 1911 Darby data as of Sep 24, 2026. Not published. Cost-plus job: estimate is not a fixed contract sum.</div>
+
+  <div class="brandbar">
+    <img src="bpg-logo-name.png" alt="Berman Property Group">
+    <div class="co">Client project portal</div>
+  </div>
+
+  <header class="hdr">
+    <div>
+      <h1>1911 Darby Drive</h1>
+      <div class="addr">Beaufort, SC 29902 · Detached 3-car garage · Cost plus</div>
+      <div class="meta">Allison &amp; Tony Greco · BPG: Stephanie Pretto · Austin Hartman</div>
+    </div>
+    <div class="asof">
+      <span>As of Sep 24, 2026</span>
+      <span class="gold">Real-data demo</span>
+      <span>Complete-by Nov 30, 2026</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-label">Project status</div>
+    <div class="status">
+      <div>
+        <div class="k">Current phase</div>
+        <div class="v">Insulation</div>
+      </div>
+      <div>
+        <div class="k">Permit</div>
+        <div class="v" style="font-size:1rem">BLDR-000540-2026</div>
+      </div>
+      <div>
+        <div class="k">Next milestone</div>
+        <div class="v" style="font-size:1rem">Roofing · Sep 30–Oct 2 <span style="font-weight:500;opacity:.85">(tentative)</span></div>
+      </div>
+      <div class="bar" aria-hidden="true"><i style="width:55%"></i></div>
+    </div>
+    <p class="disclaimer">Progress bar is illustrative only (no verified % complete in project files). Rough-in inspections passed Sep 22–23.</p>
+  </section>
+
+  <section>
+    <div class="sec-label">Money</div>
+    <div class="tiles">
+      <div class="tile">
+        <div class="v">$155,948.42</div>
+        <div class="l">Exhibit A estimate</div>
+        <div class="n">Range $140k–$160k · +20% cost plus</div>
+      </div>
+      <div class="tile">
+        <div class="v">$82,170.35</div>
+        <div class="l">Paid to date</div>
+        <div class="n">Invoices 001–004</div>
+      </div>
+      <div class="tile">
+        <div class="v">$20,000.00</div>
+        <div class="l">Open invoice</div>
+        <div class="n">INV-005 · due Sep 25</div>
+      </div>
+      <div class="tile">
+        <div class="v">$53,778.07</div>
+        <div class="l">Remaining vs estimate</div>
+        <div class="n">Directional · cost plus</div>
+      </div>
+    </div>
+    <p class="disclaimer">Open change orders: none on file. Management fee $8,000 per agreement (billing status not confirmed in this pull).</p>
+  </section>
+
+  <section>
+    <div class="sec-label">Invoices</div>
+    <div class="tbl-scroll inv">
+      <table>
+        <thead>
+          <tr><th>Date</th><th>Invoice</th><th>Amount</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>2026-04-15</td><td>INV-GRE-1911-26-001<div class="when">Deposit (10% of estimate)</div></td><td>$17,170.35</td><td><span class="badge b-ok">Paid</span></td></tr><tr><td>2026-08-06</td><td>INV-GRE-1911-26-002<div class="when">Progress payment #1</div></td><td>$20,000.00</td><td><span class="badge b-ok">Paid</span></td></tr><tr><td>2026-08-26</td><td>INV-GRE-1911-26-003<div class="when">Progress payment #2</div></td><td>$25,000.00</td><td><span class="badge b-ok">Paid</span></td></tr><tr><td>2026-09-04</td><td>INV-GRE-1911-26-004<div class="when">Progress payment #3</div></td><td>$20,000.00</td><td><span class="badge b-ok">Paid</span></td></tr><tr><td>2026-09-18</td><td>INV-GRE-1911-26-005<div class="when">Progress payment #4</div></td><td>$20,000.00</td><td><span class="badge b-due">Due 2026-09-25</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Build sequence</div>
+    <div class="phases">
+      <details class="phase">
+        <summary class="phase-head"><span class="dot done"></span><div><div class="name-row"><span class="name">Pre-Construction</span><span class="count">3 items</span><span class="chev">▸</span></div><div class="hint">Agreement, permit, selections</div></div><span class="badge b-ok">Done</span></summary>
+        <div class="subs">
+          <div class="sub"><div class="lab">Signed Cost Plus Agreement<div class="when">2026-06-04</div></div><span class="badge b-ok">Done</span></div><div class="sub"><div class="lab">Permit BLDR-000540-2026 approved<div class="when">2026-07-20 (permit docs in Drive)</div></div><span class="badge b-ok">Done</span></div><div class="sub"><div class="lab">SoW / selections worksheets<div class="when"></div></div><span class="badge b-ok">Done</span></div>
+        </div>
+      </details>
+      <details class="phase">
+        <summary class="phase-head"><span class="dot done"></span><div><div class="name-row"><span class="name">Site Prep / Demolition</span><span class="count">5 items</span><span class="chev">▸</span></div><div class="hint">Clearing through foundation prep</div></div><span class="badge b-ok">Done</span></summary>
+        <div class="subs">
+          <div class="sub"><div class="lab">Site prep / land clearing (TC Lawncare)<div class="when"></div></div><span class="badge b-ok">Done</span></div><div class="sub"><div class="lab">811 locate<div class="when"></div></div><span class="badge b-ok">Done</span></div><div class="sub"><div class="lab">Compaction test<span class="tag">Inspection</span><div class="when"></div></div><span class="badge b-pass">Passed</span></div><div class="sub"><div class="lab">Termite pretreatment<div class="when"></div></div><span class="badge b-ok">Done</span></div><div class="sub"><div class="lab">Pre-pour inspection<span class="tag">Inspection</span><div class="when">Passed</div></div><span class="badge b-pass">Passed</span></div>
+        </div>
+      </details>
+      <details class="phase">
+        <summary class="phase-head"><span class="dot done"></span><div><div class="name-row"><span class="name">Rough-In</span><span class="count">5 items</span><span class="chev">▸</span></div><div class="hint">Slab, framing, MEP · inspections passed</div></div><span class="badge b-ok">Done</span></summary>
+        <div class="subs">
+          <div class="sub"><div class="lab">Foundation / slab (C&amp;C Concrete PO $13,200)<div class="when"></div></div><span class="badge b-ok">Done</span></div><div class="sub"><div class="lab">Framing (J&amp;P)<div class="when">Framing/electrical rough-in inspection PASS Sep 23</div></div><span class="badge b-ok">Done</span></div><div class="sub"><div class="lab">Nailing / sheathing / underground electric inspection<span class="tag">Inspection</span><div class="when">2026-09-22</div></div><span class="badge b-pass">Passed</span></div><div class="sub"><div class="lab">Framing and electrical rough-in inspection<span class="tag">Inspection</span><div class="when">2026-09-23</div></div><span class="badge b-pass">Passed</span></div><div class="sub"><div class="lab">Plumbing rough-in<div class="when">Confirming permit approach</div></div><span class="badge b-up">TBD</span></div>
+        </div>
+      </details>
+      <details class="phase now">
+        <summary class="phase-head"><span class="dot now"></span><div><div class="name-row"><span class="name">Insulation</span><span class="count">2 items</span><span class="chev">▸</span></div><div class="hint">Current phase</div></div><span class="badge b-open">In progress</span></summary>
+        <div class="subs">
+          <div class="sub"><div class="lab">Closed-cell spray foam / insulation<div class="when"></div></div><span class="badge b-open">In progress</span></div><div class="sub"><div class="lab">Insulation inspection<span class="tag">Inspection</span><div class="when"></div></div><span class="badge b-up">Upcoming</span></div>
+        </div>
+      </details>
+      <details class="phase now">
+        <summary class="phase-head"><span class="dot now"></span><div><div class="name-row"><span class="name">Finishes</span><span class="count">7 items</span><span class="chev">▸</span></div><div class="hint">Roof, openings, exterior, doors</div></div><span class="badge b-open">In progress</span></summary>
+        <div class="subs">
+          <div class="sub"><div class="lab">Roof system / dry-in<div class="when">tentative 2026-09-30 to 2026-10-02</div></div><span class="badge b-up">Upcoming</span></div><div class="sub"><div class="lab">Windows &amp; doors (arrive week of 9/28 per Projects Master)<div class="when"></div></div><span class="badge b-up">Upcoming</span></div><div class="sub"><div class="lab">Windows/doors &amp; flashing inspection<span class="tag">Inspection</span><div class="when"></div></div><span class="badge b-up">Upcoming</span></div><div class="sub"><div class="lab">Drywall (Magic Work quote $6,400)<div class="when"></div></div><span class="badge b-open">In progress</span></div><div class="sub"><div class="lab">Cypress trim / Hardie / exterior finishes<div class="when"></div></div><span class="badge b-open">In progress</span></div><div class="sub"><div class="lab">Garage doors<div class="when">Coordinating delivery / install</div></div><span class="badge b-open">In progress</span></div><div class="sub"><div class="lab">Electrical final / Final inspection / CO<span class="tag">Inspection</span><div class="when"></div></div><span class="badge b-up">Upcoming</span></div>
+        </div>
+      </details>
+      <details class="phase">
+        <summary class="phase-head"><span class="dot next"></span><div><div class="name-row"><span class="name">Punch / Final / CO</span><span class="count">1 items</span><span class="chev">▸</span></div><div class="hint">Contract complete-by 2026-11-30</div></div><span class="badge b-up">Upcoming</span></summary>
+        <div class="subs">
+          <div class="sub"><div class="lab">Punch list / CO<div class="when">Contract complete-by 11/30/2026</div></div><span class="badge b-up">Upcoming</span></div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Docs &amp; photos</div>
+    <div class="docs">
+      <a class="doc" href="https://drive.google.com/file/d/1pZJed7iRlYGwmK95hXRWOG825-bA_8z3/view" target="_blank" rel="noopener"><div class="t">Construction agreement</div><div class="s">Signed Jun 4, 2026 · Drive</div></a>
+      <a class="doc" href="https://photos.app.goo.gl/m2LAyLE5T3M2JaBr6" target="_blank" rel="noopener"><div class="t">Photo album</div><div class="s">Shared project photos</div></a>
+      <a class="doc" href="https://drive.google.com/drive/folders/1eFkgLXGSfmpTvLESXL-Q0BwIPIqr3htE" target="_blank" rel="noopener"><div class="t">Project folder</div><div class="s">BPG Drive · working files</div></a>
+    </div>
+  </section>
+
+  <p class="foot"><span class="mark">Berman Property Group</span> · 1911 Darby real-data demo · bermanpropertygroup.com</p>
+</div>
+</body>
+</html>
