@@ -111,10 +111,20 @@ tr:last-child td{border-bottom:none}
 .disclaimer{font-size:.78rem;color:var(--ink2);margin-top:8px;line-height:1.45}
 .inv .when{font-size:.75rem;color:var(--muted);font-weight:400;margin-top:2px}
 </style>
+<style>
+/* Pay now */
+.pay-btn{display:inline-flex;align-items:center;gap:4px;background:var(--accent);color:var(--brand);font-family:"Archivo",system-ui,sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.02em;line-height:1;text-decoration:none;border-radius:999px;padding:6px 12px;white-space:nowrap;border:1px solid color-mix(in srgb,var(--accent) 70%,var(--brand));box-shadow:0 1px 2px var(--ring)}
+.pay-btn:hover{background:color-mix(in srgb,var(--accent) 85%,#fff)}
+.pay-btn:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.tile .pay-btn{margin-top:8px}
+td .pay-btn{margin-left:8px;padding:4px 10px;font-size:.7rem;vertical-align:middle}
+.b-late{background:color-mix(in srgb,var(--crit) 14%,transparent);color:#8a3a14}
+@media (max-width:720px){td .pay-btn{display:flex;width:max-content;margin:6px 0 0}.inv th,.inv td{padding-left:9px;padding-right:9px}}
+</style>
 </head>
 <body>
 <div class="wrap">
-  <div class="banner"><strong>Demo for Eric review:</strong> real 1911 Darby data as of Sep 24, 2026. Not published. Cost-plus job: estimate is not a fixed contract sum.</div>
+  <div class="banner"><strong>Project update:</strong> 1911 Darby as of Sep 28, 2026. Cost-plus job: estimate is not a fixed contract sum.</div>
 
   <div class="brandbar">
     <img src="bpg-logo-name.png" alt="Berman Property Group">
@@ -128,8 +138,7 @@ tr:last-child td{border-bottom:none}
       <div class="meta">Allison &amp; Tony Greco · BPG: Stephanie Pretto · Austin Hartman</div>
     </div>
     <div class="asof">
-      <span>As of Sep 24, 2026</span>
-      <span class="gold">Real-data demo</span>
+      <span>As of Sep 28, 2026</span>
       <span>Complete-by Nov 30, 2026</span>
     </div>
   </header>
@@ -194,6 +203,7 @@ tr:last-child td{border-bottom:none}
         <div class="v">$20,000.00</div>
         <div class="l">Open invoice</div>
         <div class="n">INV-005 · due Sep 25</div>
+        <a class="pay-btn" href="https://connect.intuit.com/t/scs-v1-b18125935fce4da58a2b9b2efa25fe0d5d5f70a473914d99b0cd26952fd7ffec9a4fd8c079544b49a32317dc5ddbf49b-1?locale=en_US&amp;cta=v3invoicelink" target="_blank" rel="noopener" aria-label="Pay invoice INV-GRE-1911-26-005 online">Pay now</a>
       </div>
       <div class="tile">
         <div class="v">$53,778.07</div>
@@ -212,7 +222,7 @@ tr:last-child td{border-bottom:none}
           <tr><th>Date</th><th>Invoice</th><th>Amount</th><th>Status</th></tr>
         </thead>
         <tbody>
-          <tr><td>2026-04-15</td><td>INV-GRE-1911-26-001<div class="when">Deposit (10% of estimate)</div></td><td>$17,170.35</td><td><span class="badge b-ok">Paid</span></td></tr><tr><td>2026-08-06</td><td>INV-GRE-1911-26-002<div class="when">Progress payment #1</div></td><td>$20,000.00</td><td><span class="badge b-ok">Paid</span></td></tr><tr><td>2026-08-26</td><td>INV-GRE-1911-26-003<div class="when">Progress payment #2</div></td><td>$25,000.00</td><td><span class="badge b-ok">Paid</span></td></tr><tr><td>2026-09-04</td><td>INV-GRE-1911-26-004<div class="when">Progress payment #3</div></td><td>$20,000.00</td><td><span class="badge b-ok">Paid</span></td></tr><tr><td>2026-09-18</td><td>INV-GRE-1911-26-005<div class="when">Progress payment #4</div></td><td>$20,000.00</td><td><span class="badge b-due">Due 2026-09-25</span></td></tr>
+          <tr><td>2026-04-15</td><td>INV-GRE-1911-26-001<div class="when">Deposit (10% of estimate)</div></td><td>$17,170.35</td><td><span class="badge b-ok">Paid</span></td></tr><tr><td>2026-08-06</td><td>INV-GRE-1911-26-002<div class="when">Progress payment #1</div></td><td>$20,000.00</td><td><span class="badge b-ok">Paid</span></td></tr><tr><td>2026-08-26</td><td>INV-GRE-1911-26-003<div class="when">Progress payment #2</div></td><td>$25,000.00</td><td><span class="badge b-ok">Paid</span></td></tr><tr><td>2026-09-04</td><td>INV-GRE-1911-26-004<div class="when">Progress payment #3</div></td><td>$20,000.00</td><td><span class="badge b-ok">Paid</span></td></tr><tr><td>2026-09-18</td><td>INV-GRE-1911-26-005<div class="when">Progress payment #4</div></td><td>$20,000.00</td><td><span class="badge b-late">Past due · Sep 25</span><a class="pay-btn" href="https://connect.intuit.com/t/scs-v1-b18125935fce4da58a2b9b2efa25fe0d5d5f70a473914d99b0cd26952fd7ffec9a4fd8c079544b49a32317dc5ddbf49b-1?locale=en_US&amp;cta=v3invoicelink" target="_blank" rel="noopener" aria-label="Pay invoice INV-GRE-1911-26-005 online">Pay now</a></td></tr>
         </tbody>
       </table>
     </div>
@@ -227,7 +237,7 @@ tr:last-child td{border-bottom:none}
     </div>
   </section>
 
-  <p class="foot"><span class="mark">Berman Property Group</span> · 1911 Darby real-data demo · bermanpropertygroup.com</p>
+  <p class="foot"><span class="mark">Berman Property Group</span> · 1911 Darby client portal · bermanpropertygroup.com</p>
 </div>
 <script>
 // On narrow screens, scroll the phase bar so the "We are here" marker is centered.
