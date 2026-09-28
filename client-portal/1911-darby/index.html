@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>1911 Darby Drive — Berman Property Group</title>
+<title>1911 Darby Drive | Berman Property Group</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&display=swap">
 <style>
@@ -35,20 +35,15 @@ h1,h2,h3{font-family:"Archivo",system-ui,sans-serif;text-wrap:balance;margin:0}
 .asof{display:flex;gap:8px;flex-wrap:wrap;font-size:.75rem}
 .asof span{background:rgba(255,255,255,.14);border-radius:999px;padding:3px 10px}
 .asof span.gold{background:color-mix(in srgb,var(--accent) 28%,transparent);color:#fff8e0;border:1px solid color-mix(in srgb,var(--accent) 55%,transparent)}
-.bar > i{background:linear-gradient(90deg,var(--brand-light),var(--accent)) !important}
-.dot.now{background:var(--brand-light);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand-light) 30%,transparent)}
-.phase.now{border-color:color-mix(in srgb,var(--accent) 55%,var(--ring))}
 .doc:hover{border-color:var(--brand-light)}
 .foot .mark{color:var(--brand-mid);font-weight:600}
 section{margin-top:26px}
 .sec-label{font-size:.72rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
 .status{background:var(--surface);border:1px solid var(--ring);border-radius:12px;padding:16px 18px;
   display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:14px}
-@media (max-width:720px){.status{grid-template-columns:1fr}}
+@media (max-width:720px){.status{grid-template-columns:minmax(0,1fr)}}
 .status .k{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
 .status .v{font-family:"Archivo",system-ui,sans-serif;font-size:1.15rem;font-weight:700;margin-top:4px}
-.bar{height:8px;background:var(--surface2);border-radius:999px;margin-top:10px;overflow:hidden;grid-column:1/-1}
-.bar > i{display:block;height:100%;width:42%;background:var(--brand);border-radius:999px}
 .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 @media (max-width:720px){.tiles{grid-template-columns:repeat(2,1fr)}}
 .tile{background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:12px 14px}
@@ -65,37 +60,50 @@ tr:last-child td{border-bottom:none}
 .b-ok{background:color-mix(in srgb,var(--good) 14%,transparent);color:var(--good-text)}
 .b-open{background:color-mix(in srgb,var(--pos) 14%,transparent);color:var(--pos)}
 .b-due{background:color-mix(in srgb,var(--warn) 22%,transparent);color:var(--ink)}
-.phases{display:grid;gap:10px}
-.dot{width:12px;height:12px;border-radius:50%;justify-self:center}
-.dot.done{background:var(--good)}
-.dot.now{background:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 25%,transparent)}
-.dot.next{background:var(--chip);border:1px solid var(--grid)}
-.phase .name{font-weight:600;font-size:.92rem}
-.phase .hint{font-size:.78rem;color:var(--ink2)}
-
-.phase{display:block;background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:0;overflow:hidden}
-.phase-head{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:12px 14px}
-.phase.now{border-color:color-mix(in srgb,var(--brand) 45%,var(--ring))}
-.subs{border-top:1px solid var(--grid);padding:4px 14px 10px 42px;display:grid;gap:2px}
-.sub{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:baseline;padding:7px 0;border-top:1px solid var(--grid);font-size:.84rem}
-.sub:first-child{border-top:none}
-.sub .lab{color:var(--ink)}
-.sub .lab .tag{font-size:.68rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-left:6px}
-.sub .when{font-size:.72rem;color:var(--muted);margin-top:2px}
-.b-pass{background:color-mix(in srgb,var(--good) 14%,transparent);color:var(--good-text)}
-.b-up{background:var(--chip);color:var(--ink2)}
 .docs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 .doc{background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:14px 16px;text-decoration:none;color:inherit}
 .doc:hover{border-color:var(--brand)}
 .doc .t{font-weight:600;font-size:.9rem}
 .doc .s{font-size:.75rem;color:var(--muted);margin-top:4px}
 
-.phase-head{cursor:pointer;user-select:none;list-style:none}
-.phase-head::-webkit-details-marker{display:none}
-.phase-head .chev{width:14px;height:14px;margin-left:6px;display:inline-block;transition:transform .15s ease;opacity:.7;vertical-align:-1px}
-.phase[open] .phase-head .chev{transform:rotate(90deg)}
-.phase-head .name-row{display:flex;align-items:center;gap:4px}
-.phase .count{font-size:.72rem;font-weight:600;color:var(--muted);margin-left:6px}
+/* Horizontal major-phase timeline */
+.timeline{grid-column:1/-1;min-width:0;margin-top:6px;padding-top:14px;border-top:1px solid var(--grid)}
+.tl-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.tl-head .k{margin:0}
+.tl-head .pct{font-size:.78rem;color:var(--ink2)}
+.tl-head .pct b{font-family:"Archivo",system-ui,sans-serif;color:var(--brand);font-weight:700}
+.tl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.tl-inner{position:relative;min-width:600px;padding-top:26px}
+.tl-track{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;height:12px}
+.tl-track span{border-radius:3px;background:var(--surface2);border:1px solid var(--grid);overflow:hidden;position:relative}
+.tl-track span:first-child{border-radius:999px 3px 3px 999px}
+.tl-track span:last-child{border-radius:3px 999px 999px 3px}
+.tl-track span.done{background:var(--brand);border-color:var(--brand)}
+.tl-track span.now{background:linear-gradient(90deg,var(--brand-light) 0%,var(--accent) 45%,var(--surface2) 45%);border-color:color-mix(in srgb,var(--accent) 60%,var(--grid))}
+.tl-track span.started{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--accent) 30%,var(--surface2)) 0 5px,var(--surface2) 5px 10px);border-color:color-mix(in srgb,var(--accent) 35%,var(--grid))}
+.tl-here{position:absolute;top:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.tl-here .flag{background:var(--accent);color:var(--brand);font-family:"Archivo",system-ui,sans-serif;font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:2px 8px;white-space:nowrap}
+.tl-here .stem{width:2px;height:22px;background:var(--accent);margin-top:1px}
+.tl-steps{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.tl-steps li{display:flex;flex-direction:column;gap:3px;padding-right:6px}
+.tl-steps .num{font-size:.68rem;font-weight:600;color:var(--muted);letter-spacing:.05em}
+.tl-steps .nm{font-family:"Archivo",system-ui,sans-serif;font-weight:600;font-size:.84rem;line-height:1.2;color:var(--ink)}
+.tl-steps .st{font-size:.72rem;color:var(--ink2);line-height:1.3}
+.tl-steps .st .nw{white-space:nowrap}
+.tl-steps li.upcoming .nm{color:var(--ink2)}
+.tl-steps li.now .nm{color:var(--brand)}
+.tl-steps .badge{align-self:flex-start;margin-top:2px}
+.b-up{background:var(--chip);color:var(--ink2)}
+.b-now{background:color-mix(in srgb,var(--accent) 24%,transparent);color:#5c4a12}
+.b-start{background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent-soft)}
+.tl-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.7rem;color:var(--muted);margin-top:12px}
+.tl-legend i{display:inline-block;width:14px;height:8px;border-radius:2px;margin-right:5px;vertical-align:0;border:1px solid var(--grid)}
+.tl-legend .lg-done{background:var(--brand);border-color:var(--brand)}
+.tl-legend .lg-now{background:linear-gradient(90deg,var(--brand-light),var(--accent))}
+.tl-legend .lg-start{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--accent) 30%,var(--surface2)) 0 3px,var(--surface2) 3px 6px)}
+.tl-legend .lg-up{background:var(--surface2)}
+.tl-hint{display:none;font-size:.7rem;color:var(--muted);margin-top:6px}
+@media (max-width:720px){.tl-scroll{margin:0 -4px;padding:0 4px 6px}.tl-hint{display:block}}
 .foot{margin-top:36px;font-size:.75rem;color:var(--muted);text-align:center}
 </style>
 <style>
@@ -106,7 +114,7 @@ tr:last-child td{border-bottom:none}
 </head>
 <body>
 <div class="wrap">
-  <div class="banner"><strong>Demo for Eric review</strong> — real 1911 Darby data as of Sep 24, 2026. Not published. Cost-plus job: estimate is not a fixed contract sum.</div>
+  <div class="banner"><strong>Demo for Eric review:</strong> real 1911 Darby data as of Sep 24, 2026. Not published. Cost-plus job: estimate is not a fixed contract sum.</div>
 
   <div class="brandbar">
     <img src="bpg-logo-name.png" alt="Berman Property Group">
@@ -141,9 +149,32 @@ tr:last-child td{border-bottom:none}
         <div class="k">Next milestone</div>
         <div class="v" style="font-size:1rem">Roofing · Sep 30–Oct 2 <span style="font-weight:500;opacity:.85">(tentative)</span></div>
       </div>
-      <div class="bar" aria-hidden="true"><i style="width:55%"></i></div>
+      <div class="timeline" role="group" aria-label="Major build phases">
+        <div class="tl-head">
+          <div class="k">Where we are</div>
+          <div class="pct">Roughly <b>55%</b> through the build</div>
+        </div>
+        <div class="tl-scroll">
+          <div class="tl-inner">
+            <div class="tl-here" style="left:55%" aria-hidden="true"><span class="flag">We are here</span><span class="stem"></span></div>
+            <div class="tl-track" aria-hidden="true">
+              <span class="done"></span><span class="done"></span><span class="done"></span><span class="now"></span><span class="started"></span><span></span>
+            </div>
+            <ol class="tl-steps">
+              <li class="done"><span class="num">01</span><span class="nm">Pre-Construction</span><span class="st">Agreement, permit, selections</span><span class="badge b-ok">Done</span></li>
+              <li class="done"><span class="num">02</span><span class="nm">Site Prep / Demolition</span><span class="st">Clearing through foundation prep</span><span class="badge b-ok">Done</span></li>
+              <li class="done"><span class="num">03</span><span class="nm">Rough-In</span><span class="st">Inspections passed <span class="nw">Sep 22&ndash;23</span></span><span class="badge b-ok">Done</span></li>
+              <li class="now" aria-current="step"><span class="num">04</span><span class="nm">Insulation</span><span class="st">Current phase</span><span class="badge b-now">In progress</span></li>
+              <li class="started"><span class="num">05</span><span class="nm">Finishes</span><span class="st">Roof, openings, exterior, doors</span><span class="badge b-start">Underway</span></li>
+              <li class="upcoming"><span class="num">06</span><span class="nm">Punch / Final / CO</span><span class="st">Complete-by <span class="nw">Nov 30, 2026</span></span><span class="badge b-up">Upcoming</span></li>
+            </ol>
+          </div>
+        </div>
+        <div class="tl-hint">Swipe to see all phases</div>
+        <div class="tl-legend" aria-hidden="true"><span><i class="lg-done"></i>Done</span><span><i class="lg-now"></i>Current</span><span><i class="lg-start"></i>Started in parallel</span><span><i class="lg-up"></i>Upcoming</span></div>
+      </div>
     </div>
-    <p class="disclaimer">Progress bar is illustrative only (no verified % complete in project files). Rough-in inspections passed Sep 22–23.</p>
+    <p class="disclaimer">Phase position is approximate (no verified % complete in project files). Some Finishes work is already underway alongside Insulation. Rough-in inspections passed Sep 22–23.</p>
   </section>
 
   <section>
@@ -188,48 +219,6 @@ tr:last-child td{border-bottom:none}
   </section>
 
   <section>
-    <div class="sec-label">Build sequence</div>
-    <div class="phases">
-      <details class="phase">
-        <summary class="phase-head"><span class="dot done"></span><div><div class="name-row"><span class="name">Pre-Construction</span><span class="count">3 items</span><span class="chev">▸</span></div><div class="hint">Agreement, permit, selections</div></div><span class="badge b-ok">Done</span></summary>
-        <div class="subs">
-          <div class="sub"><div class="lab">Signed Cost Plus Agreement<div class="when">2026-06-04</div></div><span class="badge b-ok">Done</span></div><div class="sub"><div class="lab">Permit BLDR-000540-2026 approved<div class="when">2026-07-20 (permit docs in Drive)</div></div><span class="badge b-ok">Done</span></div><div class="sub"><div class="lab">SoW / selections worksheets<div class="when"></div></div><span class="badge b-ok">Done</span></div>
-        </div>
-      </details>
-      <details class="phase">
-        <summary class="phase-head"><span class="dot done"></span><div><div class="name-row"><span class="name">Site Prep / Demolition</span><span class="count">5 items</span><span class="chev">▸</span></div><div class="hint">Clearing through foundation prep</div></div><span class="badge b-ok">Done</span></summary>
-        <div class="subs">
-          <div class="sub"><div class="lab">Site prep / land clearing (TC Lawncare)<div class="when"></div></div><span class="badge b-ok">Done</span></div><div class="sub"><div class="lab">811 locate<div class="when"></div></div><span class="badge b-ok">Done</span></div><div class="sub"><div class="lab">Compaction test<span class="tag">Inspection</span><div class="when"></div></div><span class="badge b-pass">Passed</span></div><div class="sub"><div class="lab">Termite pretreatment<div class="when"></div></div><span class="badge b-ok">Done</span></div><div class="sub"><div class="lab">Pre-pour inspection<span class="tag">Inspection</span><div class="when">Passed</div></div><span class="badge b-pass">Passed</span></div>
-        </div>
-      </details>
-      <details class="phase">
-        <summary class="phase-head"><span class="dot done"></span><div><div class="name-row"><span class="name">Rough-In</span><span class="count">5 items</span><span class="chev">▸</span></div><div class="hint">Slab, framing, MEP · inspections passed</div></div><span class="badge b-ok">Done</span></summary>
-        <div class="subs">
-          <div class="sub"><div class="lab">Foundation / slab (C&amp;C Concrete PO $13,200)<div class="when"></div></div><span class="badge b-ok">Done</span></div><div class="sub"><div class="lab">Framing (J&amp;P)<div class="when">Framing/electrical rough-in inspection PASS Sep 23</div></div><span class="badge b-ok">Done</span></div><div class="sub"><div class="lab">Nailing / sheathing / underground electric inspection<span class="tag">Inspection</span><div class="when">2026-09-22</div></div><span class="badge b-pass">Passed</span></div><div class="sub"><div class="lab">Framing and electrical rough-in inspection<span class="tag">Inspection</span><div class="when">2026-09-23</div></div><span class="badge b-pass">Passed</span></div><div class="sub"><div class="lab">Plumbing rough-in<div class="when">Confirming permit approach</div></div><span class="badge b-up">TBD</span></div>
-        </div>
-      </details>
-      <details class="phase now">
-        <summary class="phase-head"><span class="dot now"></span><div><div class="name-row"><span class="name">Insulation</span><span class="count">2 items</span><span class="chev">▸</span></div><div class="hint">Current phase</div></div><span class="badge b-open">In progress</span></summary>
-        <div class="subs">
-          <div class="sub"><div class="lab">Closed-cell spray foam / insulation<div class="when"></div></div><span class="badge b-open">In progress</span></div><div class="sub"><div class="lab">Insulation inspection<span class="tag">Inspection</span><div class="when"></div></div><span class="badge b-up">Upcoming</span></div>
-        </div>
-      </details>
-      <details class="phase now">
-        <summary class="phase-head"><span class="dot now"></span><div><div class="name-row"><span class="name">Finishes</span><span class="count">7 items</span><span class="chev">▸</span></div><div class="hint">Roof, openings, exterior, doors</div></div><span class="badge b-open">In progress</span></summary>
-        <div class="subs">
-          <div class="sub"><div class="lab">Roof system / dry-in<div class="when">tentative 2026-09-30 to 2026-10-02</div></div><span class="badge b-up">Upcoming</span></div><div class="sub"><div class="lab">Windows &amp; doors (arrive week of 9/28 per Projects Master)<div class="when"></div></div><span class="badge b-up">Upcoming</span></div><div class="sub"><div class="lab">Windows/doors &amp; flashing inspection<span class="tag">Inspection</span><div class="when"></div></div><span class="badge b-up">Upcoming</span></div><div class="sub"><div class="lab">Drywall (Magic Work quote $6,400)<div class="when"></div></div><span class="badge b-open">In progress</span></div><div class="sub"><div class="lab">Cypress trim / Hardie / exterior finishes<div class="when"></div></div><span class="badge b-open">In progress</span></div><div class="sub"><div class="lab">Garage doors<div class="when">Coordinating delivery / install</div></div><span class="badge b-open">In progress</span></div><div class="sub"><div class="lab">Electrical final / Final inspection / CO<span class="tag">Inspection</span><div class="when"></div></div><span class="badge b-up">Upcoming</span></div>
-        </div>
-      </details>
-      <details class="phase">
-        <summary class="phase-head"><span class="dot next"></span><div><div class="name-row"><span class="name">Punch / Final / CO</span><span class="count">1 items</span><span class="chev">▸</span></div><div class="hint">Contract complete-by 2026-11-30</div></div><span class="badge b-up">Upcoming</span></summary>
-        <div class="subs">
-          <div class="sub"><div class="lab">Punch list / CO<div class="when">Contract complete-by 11/30/2026</div></div><span class="badge b-up">Upcoming</span></div>
-        </div>
-      </details>
-    </div>
-  </section>
-
-  <section>
     <div class="sec-label">Docs &amp; photos</div>
     <div class="docs">
       <a class="doc" href="https://drive.google.com/file/d/1pZJed7iRlYGwmK95hXRWOG825-bA_8z3/view" target="_blank" rel="noopener"><div class="t">Construction agreement</div><div class="s">Signed Jun 4, 2026 · Drive</div></a>
@@ -240,5 +229,11 @@ tr:last-child td{border-bottom:none}
 
   <p class="foot"><span class="mark">Berman Property Group</span> · 1911 Darby real-data demo · bermanpropertygroup.com</p>
 </div>
+<script>
+// On narrow screens, scroll the phase bar so the "We are here" marker is centered.
+(function(){var sc=document.querySelector('.tl-scroll'),h=document.querySelector('.tl-here');
+if(!sc||!h)return;function c(){if(sc.scrollWidth>sc.clientWidth){sc.scrollLeft=h.offsetLeft-sc.clientWidth/2;}}
+c();window.addEventListener('load',c);window.addEventListener('resize',c);})();
+</script>
 </body>
 </html>
