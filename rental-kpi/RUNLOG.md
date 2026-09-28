@@ -1,5 +1,46 @@
 # BPG Rental KPI — Run Log
 
+## 2026-09-28 — Weekly partial (ops-only, Monday)
+
+**Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/ (interim; dedicated `bpg-rental-kpi` may still be PAT-blocked)  
+**Stamp:** Sep 28, 2026 · 10:05 AM ET  
+**Scope:** Chat + RUNNING + Stinger/Gmail only. No QBO rebuild. Dual T&I deferred to 12th.
+
+### Material
+1. **602 Battery Ln** — **Vacant** (tenant moved out 9/23; Chat move-out report 9/25; RUNNING inspection Oct 2). Was occupied through 9/30 / not renewing.
+2. **606 Carteret Unit 1** — asking rent **$1,750** (RUNNING Calie 9/24; was $1,800 on 9/21 board). Still vacant / listed.
+3. **67 Sams Point Rd** — Dawn backup promoted to primary 9/22 (Greco). **DD Oct 9 · close Oct 29** (was DD 10/16 / Nov on prior board).
+4. **153 Williams** — sewer/drain WO #115458 ~$4,250 **approved** 9/25 (Eric verbal) — added to open maint.
+5. **828 B** — Kimberly Masi lead (missed 9/25 showing → SHM); balcony door still unconfirmed. Still vacant @ $2,250.
+6. **137 Old Jericho** — tree trim (Karr ~9/23) added; Unit B co-tenant signature still unconfirmed.
+7. **606 Unit 2** — status field reconciled to Vacant (lease ended 8/31; already in vacant count).
+
+### Occupancy
+**30/34 (~88%)** — vacant: 606 U1, 606 U2, 828 B, 602 Battery.
+
+### Conflicts printed
+- 606 U1 asking: Chat 9/17 $1,800 vs RUNNING 9/24 $1,750 → preferred RUNNING.
+- 67 Sams timeline: board Nov/10/16 vs Greco 9/22 Oct 9/Oct 29 → preferred Greco + calendar + RUNNING.
+- 602 Battery: lease-end 9/30 on board vs moved-out 9/23 Chat/RUNNING → preferred Chat/RUNNING.
+
+### Not material / unchanged
+- 23 White Dogwood B extension still SIGNED.
+- 25 Sams 2a signed extension still unconfirmed.
+- 409 HVAC decision still open.
+- 27 Miller remains excluded (closed).
+- Routine WOs (2203 803 freon, 2905 Second leak, stove/washer estimates) not board decisions.
+
+### Sources
+Chat REST OK (secret-backups OAuth). RUNNING Drive doc OK. Gmail Stinger/Rentvine/Greco OK.
+
+### Next run should
+- Confirm 828 B door received/installed; Masi/SHM application outcome.
+- Confirm 25 Sams 2a + 137 B signatures.
+- 602 Battery turn complete → list.
+- Monthly 12th: full QBO + dual T&I run-rate.
+
+---
+
 ## 2026-09-21 — Weekly partial (ops-only, Monday)
 
 **Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/ (interim; dedicated `bpg-rental-kpi` still PAT 404)  

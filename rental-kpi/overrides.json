@@ -5,10 +5,22 @@
       "note": "Lease started 7/27/26 — Occupied (Eric QA)",
       "_by": "rebuild",
       "_at": "2026-09-18"
+    },
+    "4|": {
+      "status": "vacant",
+      "note": "Moved out 9/23/26 — Vacant (weekly 9/28)",
+      "_by": "weekly-partial",
+      "_at": "2026-09-28"
+    },
+    "10|Unit 1": {
+      "status": "vacant",
+      "note": "Asking $1,750 (RUNNING 9/24)",
+      "_by": "weekly-partial",
+      "_at": "2026-09-28"
     }
   },
   "maint": {},
-  "updatedAt": "2026-09-21T14:15:43.003Z",
+  "updatedAt": "2026-09-28T14:02:38.235Z",
   "path": "rental-kpi/overrides.json",
-  "note": "Weekly partial 2026-09-21; merge on load; localStorage OV_KEY immediate; commit on republish"
+  "note": "Weekly partial 2026-09-28; merge on load; commit on republish"
 }

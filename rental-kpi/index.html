@@ -221,7 +221,7 @@ section.sec-collapsed .sec-head .caret{transform:rotate(-90deg)}
     <div>
       <h1>Rental Portfolio KPIs</h1>
       <div class="sub">Berman Property Group &middot; monthly performance review</div>
-      <div class="refresh-stamp" id="refreshStamp"><b>Last refreshed:</b> Sep 21, 2026 · 2:42 PM ET</div>
+      <div class="refresh-stamp" id="refreshStamp"><b>Last refreshed:</b> Sep 28, 2026 · 10:05 AM ET</div>
     </div>
     <div class="asof">
       <span>SREO / rent roll: Aug 20, 2026</span>
@@ -372,7 +372,7 @@ section.sec-collapsed .sec-head .caret{transform:rotate(-90deg)}
    is rewritten when someone saves a status change from the page itself.
    ============================================================================ */
 const LIVE = {}; /*__LIVE_END__*/
-const OVERRIDES_FILE = {"status":{"10|Cottage":{"status":"occupied","note":"Lease started 7/27/26 \u2014 Occupied (Eric QA)","_by":"rebuild","_at":"2026-09-18"}},"maint":{},"updatedAt":"2026-09-21T14:15:43.003Z","path":"rental-kpi/overrides.json","note":"Weekly partial 2026-09-21; merge on load; localStorage OV_KEY immediate; commit on republish"}; /*__OV_END__*/ /* rebuilt from rental-kpi/overrides.json */
+const OVERRIDES_FILE = {"status": {"10|Cottage": {"status": "occupied", "note": "Lease started 7/27/26 — Occupied (Eric QA)", "_by": "rebuild", "_at": "2026-09-18"}, "4|": {"status": "vacant", "note": "Moved out 9/23/26 — Vacant (weekly 9/28)", "_by": "weekly-partial", "_at": "2026-09-28"}, "10|Unit 1": {"status": "vacant", "note": "Asking $1,750 (RUNNING 9/24)", "_by": "weekly-partial", "_at": "2026-09-28"}}, "maint": {}, "updatedAt": "2026-09-28T14:02:38.235Z", "path": "rental-kpi/overrides.json", "note": "Weekly partial 2026-09-28; merge on load; commit on republish"}; /*__OV_END__*/ /* rebuilt from rental-kpi/overrides.json */
 
 /* Capture the pristine document pieces BEFORE anything renders, so the page can
    republish itself without ever serializing mutated DOM. */
@@ -989,14 +989,14 @@ const DATA = {
       "unitsDetail": [
         {
           "unit": null,
-          "tenant": "Brian Lindsey",
+          "tenant": null,
           "type": "Residence",
           "rent": 1675,
           "gsr": 1675,
-          "status": null,
+          "status": "Vacant",
           "leaseStart": "2025-10-01",
           "leaseEnd": "2026-09-30",
-          "notes": "Lease ends 9/30/26 — Elvis NOT renewing. List after vacant (unit not tidy). Elvis (prospect for 2203 801/802) non-responsive.",
+          "notes": "Tenant (Brian Lindsey / Elvis) moved out 9/23/26 (lease was through 9/30). Move-out report 9/25: unit rough — cleaning, junk removal, bulbs, minor items; SHM WOs in progress. Move-out inspection Oct 2. List after turn.",
           "estBeds": 2,
           "bedsEst": false,
           "sfv": 1055,
@@ -2283,12 +2283,12 @@ const DATA = {
           "unit": "Unit 1",
           "tenant": null,
           "type": "Residence",
-          "rent": 1800,
+          "rent": 1750,
           "gsr": 2050,
           "status": "Vacant",
           "leaseStart": null,
           "leaseEnd": null,
-          "notes": "Vacant since 6/30/26. Price cut to $1,800 (Stephanie Chat 9/17; was $1,850). Still listed; MLS via TGG requested 9/17. Weatherstrip Unit 1 street door remaining.",
+          "notes": "Vacant since 6/30/26. Price cut to $1,750 (RUNNING CURRENT / Calie 9/24; was $1,800 on 9/17 board, was $1,850 before that). No interest per Calie 9/24. SHM video walkthrough with PM; QR yard sign; listing audit. MLS via TGG still in flight (Gmail 9/22 working on listings).",
           "estBeds": 2,
           "bedsEst": true,
           "sfv": 1065,
@@ -2316,14 +2316,14 @@ const DATA = {
         },
         {
           "unit": "Unit 2",
-          "tenant": "Summer Cox-ST Rental",
+          "tenant": null,
           "type": "Residence",
           "rent": 1850,
           "gsr": 1850,
-          "status": null,
+          "status": "Vacant",
           "leaseStart": "2026-05-23",
           "leaseEnd": "2026-08-31",
-          "notes": "Lease ended 8/31/26 — NOT renewing (was furnished/STR). Rent roll update requested.",
+          "notes": "Lease ended 8/31/26 — NOT renewing (was furnished/STR; Summer Cox). Vacant; rent-roll update requested. Asking held at $1,850 pending list/refresh.",
           "estBeds": 1,
           "bedsEst": true,
           "sfv": 500,
@@ -2584,7 +2584,7 @@ const DATA = {
           "status": null,
           "leaseStart": "2024-11-01",
           "leaseEnd": "2027-10-31",
-          "notes": "NOT closed 9/18. Prior ADJALA 9/18 path slipped. New offer 9/17 (Dawn via Eli): $385k, DD 10/16, close Nov, $10k EM, 5% BAC. KEEP under contract.",
+          "notes": "UNDER CONTRACT (Dawn). Prior ADJALA/9/18 path released; backup promoted to primary 9/22 (Greco/Eli). Contract effective 9/22/26; DD ends Oct 9 2026 6pm; close Oct 29 2026. Not contingent on buyer sale. Tenant Sea Island Soulstice through 2027-10-31 until sale closes.",
           "estBeds": null,
           "sfv": 1225,
           "collByMonth": null,
@@ -4094,7 +4094,7 @@ const DATA = {
           "status": "Vacant",
           "leaseStart": null,
           "leaseEnd": null,
-          "notes": "Vacant post-reno. Paint done; needs post-construction clean. Listed ~9/9 at $2,250 (RUNNING). Balcony door Alside quote ordered 8/21, ETA ~9/18.",
+          "notes": "Vacant post-reno. Listed ~9/9 at $2,250 (RUNNING). Paint done; needs post-construction clean. Lead: Kimberly Masi walkthrough 9/25 — missed (grandson); info given to SHM to continue (Chat). Balcony door Alside ordered 8/21, ETA ~9/18; Austin asked 9/24 if delivering — receipt/install still UNCONFIRMED.",
           "estBeds": 3,
           "sfv": 1680,
           "collByMonth": [
@@ -4669,7 +4669,7 @@ const DATA = {
     ],
     "4": [
       {
-        "t": "Lease ends 9/30 — Elvis NOT renewing. List when vacant.",
+        "t": "Vacant as of 9/23 move-out — turn / list after inspection Oct 2.",
         "k": "warn"
       }
     ],
@@ -5282,12 +5282,12 @@ const DATA = {
   "statusUpdates": {
     "10|Unit 1": {
       "occupancy": "vacant",
-      "note": "Vacant since 6/30/26. Price cut to $1,800 (Chat 9/17 Stephanie). MLS listing requested via TGG 9/17. No leads per SHM.",
+      "note": "Vacant since 6/30/26. Price cut to $1,750 (RUNNING CURRENT / Calie 9/24; was $1,800 on 9/17 board, was $1,850 before that). No interest per Calie 9/24. SHM video walkthrough with PM; QR yard sign; listing audit. MLS via TGG still in flight (Gmail 9/22 working on listings).",
       "k": "warn"
     },
     "10|Unit 2": {
       "occupancy": "vacant",
-      "note": "Lease ended 8/31/26 — NOT renewing (was furnished/STR). Rent roll update requested.",
+      "note": "Lease ended 8/31/26 — NOT renewing (was furnished/STR; Summer Cox). Vacant; rent-roll update requested. Asking held at $1,850 pending list/refresh.",
       "k": "warn"
     },
     "10|Cottage": {
@@ -5301,8 +5301,8 @@ const DATA = {
       "k": "ok"
     },
     "4|": {
-      "renewal": "not renewing",
-      "note": "Lease ends 9/30/26 — Elvis NOT renewing. List after vacant (unit not tidy). Elvis (prospect for 2203 801/802) non-responsive.",
+      "occupancy": "vacant",
+      "note": "Tenant (Brian Lindsey / Elvis) moved out 9/23/26 (lease was through 9/30). Move-out report 9/25: unit rough — cleaning, junk removal, bulbs, minor items; SHM WOs in progress. Move-out inspection Oct 2. List after turn.",
       "k": "warn"
     },
     "6|": {
@@ -5317,7 +5317,7 @@ const DATA = {
     },
     "21|828 B": {
       "occupancy": "vacant",
-      "note": "Vacant post-reno. Paint done; needs post-construction clean. Listed ~9/9 at $2,250 (RUNNING). Balcony door Alside quote ordered 8/21, ETA ~9/18.",
+      "note": "Vacant post-reno. Listed ~9/9 at $2,250 (RUNNING). Paint done; needs post-construction clean. Lead: Kimberly Masi walkthrough 9/25 — missed (grandson); info given to SHM to continue (Chat). Balcony door Alside ordered 8/21, ETA ~9/18; Austin asked 9/24 if delivering — receipt/install still UNCONFIRMED.",
       "k": "warn"
     },
     "7|Unit A": {
@@ -5342,7 +5342,7 @@ const DATA = {
     },
     "12|": {
       "sale": "under contract",
-      "note": "NOT closed 9/18. Prior ADJALA 9/18 path slipped. New offer 9/17 (Dawn via Eli): $385k, DD 10/16, close Nov, $10k EM, 5% BAC. KEEP under contract.",
+      "note": "UNDER CONTRACT (Dawn). Prior ADJALA/9/18 path released; backup promoted to primary 9/22 (Greco/Eli). Contract effective 9/22/26; DD ends Oct 9 2026 6pm; close Oct 29 2026. Not contingent on buyer sale. Tenant Sea Island Soulstice through 2027-10-31 until sale closes.",
       "k": "warn"
     },
     "18|": {
@@ -5396,10 +5396,10 @@ const DATA = {
       "unit": "828 B",
       "item": "Balcony door install",
       "status": "ongoing",
-      "when": "2026-09-18",
+      "when": "2026-09-28",
       "who": "Elvis / RJP",
       "cost": null,
-      "note": "Door ordered 8/21; ETA ~9/18. As of weekly 9/21: no Chat/Gmail confirm of receipt/install — leave open."
+      "note": "Door ordered 8/21; ETA ~9/18. As of weekly 9/28: Austin asked 9/24 if delivering today — no Chat/Gmail confirm of receipt/install — leave open."
     },
     {
       "pid": 21,
@@ -5450,6 +5450,36 @@ const DATA = {
       "who": "BPG",
       "cost": null,
       "note": "Violation 8/28; property under contract."
+    },
+    {
+      "pid": 1,
+      "unit": null,
+      "item": "Sewer / drain repipe (WO #115458)",
+      "status": "approved",
+      "when": "2026-09-25",
+      "who": "SeaBreeze / SHM",
+      "cost": 4250,
+      "note": "Roots under slab + back-pitch; snaked as temp clear. Eric verbal approval 9/25 to proceed (Gmail Re: ESTIMATE APPROVAL REQ). Include Stephanie on traffic."
+    },
+    {
+      "pid": 17,
+      "unit": null,
+      "item": "Tree trimming (roof protection)",
+      "status": "scheduled",
+      "when": "2026-09-23",
+      "who": "Austin Karr / Action Tree",
+      "cost": 700,
+      "note": "Chat 9/22: Karr trim ~9/23; ~$700 lift. Carmen had approved without BPG permission (noted). SHM to alert tenants."
+    },
+    {
+      "pid": 4,
+      "unit": null,
+      "item": "Move-out turn (clean / junk / minor)",
+      "status": "ongoing",
+      "when": "2026-09-25",
+      "who": "SHM",
+      "cost": null,
+      "note": "Move-out report 9/25 (Stephanie Chat). Calie putting WOs. Inspection Oct 2. Then list."
     }
   ],
   "maintCompleted": {
@@ -6105,12 +6135,33 @@ const DATA = {
       "now": "decision >14d",
       "src": "QA",
       "action": "WARN"
+    },
+    {
+      "prop": "606 Carteret St Unit 1",
+      "type": "asking rent",
+      "conflict": "Chat 9/17 Stephanie cut to $1,800; RUNNING CURRENT (Calie 9/24) says price reduction to $1,750. Prefer fresher RUNNING → $1,750.",
+      "resolution": "Set rent/asking $1,750; note both sources.",
+      "src": "RUNNING + prior Chat"
+    },
+    {
+      "prop": "602 Battery Ln",
+      "type": "occupancy",
+      "conflict": "Board 9/21 still showed tenant through 9/30 not renewing; RUNNING + Chat 9/25 show moved out 9/23.",
+      "resolution": "Flip status Vacant; Chat/RUNNING beat lease-end date.",
+      "src": "RUNNING CURRENT + Ix-602 Chat"
+    },
+    {
+      "prop": "67 Sams Point Rd",
+      "type": "sale timeline",
+      "conflict": "Board 9/21 had DD 10/16 / Nov close from 9/17 offer note; Greco 9/22 email + calendar + RUNNING: DD Oct 9 / close Oct 29.",
+      "resolution": "Update to Greco primary-contract dates.",
+      "src": "Gmail Greco 9/22 + calendar invites + RUNNING"
     }
   ],
-  "reconciledAt": "2026-09-21T10:30:00-04:00",
+  "reconciledAt": "2026-09-28T10:05:00-04:00",
   "collectionsMode": "qbo-api-cash-pnl-bm-rental-scoped",
   "collectionsNote": "PORTFOLIO COLLECTIONS = Σ entity cash P&L BM monthly income (Ember TI + Viktor TI+OI + 2203 TI + BPG Rental+NNN). Property NI/cash from live QBO CashFlow customer=<Id> Month BM. Entity sparks match BM. 27 Miller excluded (closed). TxDetail-with-Customer pulled for all four companies.",
-  "rebuildStamp":"Sep 21, 2026 · 2:42 PM ET",
+  "rebuildStamp": "Sep 28, 2026 · 10:05 AM ET",
   "dataPeriod": "Jan–Aug 2026",
   "removedProps": [
     "27 Miller Dr W"
@@ -6124,7 +6175,7 @@ const DATA = {
     {
       "prop": "828 Paris Ave B",
       "item": "Balcony door",
-      "detail": "Alside quote ordered 8/21, ETA ~9/18. Weekly 9/21: arrival/install still unconfirmed — confirm with Elvis/RJP."
+      "detail": "Alside ordered 8/21, ETA ~9/18. Weekly 9/28: delivery/install still unconfirmed (Austin asked 9/24). Confirm with Elvis/RJP."
     },
     {
       "prop": "25 Sams Point 2a",
@@ -6133,8 +6184,8 @@ const DATA = {
     },
     {
       "prop": "67 Sams Point Rd",
-      "item": "Sale path",
-      "detail": "9/18 ADJALA close slipped. New 9/17 offer $385k / Nov close — respond."
+      "item": "Sale closing path",
+      "detail": "Under contract Dawn (primary as of 9/22). DD Oct 9 · close Oct 29. Monitor Greco/Eli/Harvey & Battey; sheds/gravel move before close (RUNNING)."
     }
   ],
   "provenance": {
@@ -6309,16 +6360,16 @@ const DATA = {
       }
     },
     "rentRoll": "SREO workbook (prior run)",
-    "status": "RUNNING + Stinger/Gmail + GChat Ix-606 Carteret pull 2026-09-18 10:25pm ET (Chat/RUNNING beat SREO vacant)",
+    "status": "Weekly partial 2026-09-28: Chat REST + RUNNING Drive + Stinger/Gmail (no QBO). Chat/RUNNING beat SREO vacant.",
     "market": "Beaufort: Zumper rent-research 2026-09-18 (overall + 0–4BR). Port Royal overall: Zumper 2026-09-18 (lowSample, 11 listings). Port Royal 0–3BR: PadMapper city apartment medians as of 2026-09-06. Bands = median × 0.95/1.05 rounded. Pack: /workspace/research/beaufort-port-royal-rents-2026-09-18/pack.md. RentCafe / Apartments.com not used (blocked).",
     "csvFallback": false,
     "hierarchyRule": "Multi-unit buildings: pull PARENT customer CashFlow (QBO includes subcustomers). Do not sum parent+units (double-count). Do not use unit/building-only when parent holds debt/OpEx. If parent includes an excluded sibling (614 Prince), subtract that customer's CF.",
     "monthlyActuals": "Per-customer cash ProfitAndLoss Month BM for Income/OpEx/NOI/Mortgage interest/Other income/NI; principal from CashFlow financing / financing[]. 609 = cust39−40. 2203 interest from entity P&L. Paris combined cust=10 only."
   },
   "occupancy": {
-    "occupied": 31,
+    "occupied": 30,
     "total": 34,
-    "vacant": 3
+    "vacant": 4
   },
   "cfDefinition": "Actual CF/mo = NI − principal (CF financing). Expand table = verified QBO cash P&L stack (Income → OpEx → NOI → Mortgage interest / Other income → NI) then − Principal → Cash after P&I.",
   "hierarchyFix": {
