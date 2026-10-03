@@ -1,5 +1,25 @@
 # BPG Rental KPI — Run Log
 
+## 2026-10-03 — Full rebuild (Jan–Sep 2026, live QBO cash)
+
+**Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/ (interim; dedicated `bpg-rental-kpi` still not available to the PAT)
+**Scope:** Full rebuild: QBO cash P&L BM + P&L Detail (Customer) + CashFlow per customer, Jan 1–Sep 30; Chat REST + RUNNING (Oct 3) + Gmail + Gemini notes for ops. ytdMonths=9. Dual T&I run-rate DEFERRED.
+
+### Data-through (Sep is PARTIAL where books are behind)
+- **Ember:** books end 9/21 (last P&L txn 9/18); Sep mortgage interest + principal NOT posted; Sep income $20.6K vs ~$26.7K normal. NOT current.
+- **Viktor:** books end 9/8 (no Sep interest on 609 / 409; OpEx light). **2203:** ends 9/8 (no Sep interest/principal). **BPG:** current 10/3.
+- Page shows per-entity "books thru" chips, an amber banner, † on Sep columns/flags, and a "Jan–Aug final" line on partial entity cards.
+
+### Changes vs 9/28 board
+- Rollover to Jan–Sep; Ember Jun restated (+$765.11: 1122 Emmons +$518.25, 602 Battery +$12.50, unattributed +$234.36).
+- 2203 Actual CF now NI − principal (was net-cash-increase w/ bridge rows). Paris DSCR window now Apr–Sep.
+- 67 Sams (cust 433): Sep NI −$1,749.81 incl. $4,311.10 HomeSpring interest (Jan–Aug HomeSpring ~$33K still on parent 430 — allocation inconsistency flagged).
+- 27 Miller $405K sale posted to cust 431 in Sep (excluded). Market overall medians refreshed 10/3 (Zumper); BR bands carried from 9/18.
+- Ops: 828 B door delivered 9/30; 602 Battery inspection done; 606 U1 128 DOM; 409 HVAC Watkins $9,300 vs Lang; Cottage WO #115751; Calie left Stinger 10/2.
+
+### Did not reconcile
+Ember entity-vs-property income residuals (Jan +5,317.13, Feb −4,700, Jun +234.36, Jul +3,000); 23 White Dogwood Sep (−$1,512.50); 609 Carteret parent-level income ~$512–536/mo Jan–Aug; 828 B collected $2,250/mo Jan–Aug while vacant; missing Sep mortgage postings (Ember, 2203, 609, 409).
+
 ## 2026-09-28 — Weekly partial (ops-only, Monday)
 
 **Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/ (interim; dedicated `bpg-rental-kpi` may still be PAT-blocked)  

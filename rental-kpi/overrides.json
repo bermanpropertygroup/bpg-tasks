@@ -20,7 +20,7 @@
     }
   },
   "maint": {},
-  "updatedAt": "2026-09-28T14:02:38.235Z",
+  "updatedAt": "2026-10-03T15:43:18.000Z",
   "path": "rental-kpi/overrides.json",
-  "note": "Weekly partial 2026-09-28; merge on load; commit on republish"
+  "note": "Full rebuild 2026-10-03 (Jan–Sep); merge on load; commit on republish"
 }
