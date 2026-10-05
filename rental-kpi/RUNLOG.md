@@ -1,5 +1,28 @@
 # BPG Rental KPI — Run Log
 
+## 2026-10-05 — Weekly partial (ops-only, Monday) — BUILT, PUBLISH BLOCKED
+
+**Target:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/ (live still shows Oct 3, 2026 · 11:44 AM ET full rebuild)
+**Stamp (built):** Oct 5, 2026 · 9:58 AM ET. Local commit (HEAD, ahead 1) in /workspace/bpg-tasks-publish (ahead 1, NOT pushed: GH_TOKEN empty in routine shell).
+**Base:** Oct 3 full rebuild (Jan–Sep, live QBO). No QBO re-pull. Dual T&I deferred to 12th.
+
+### Material
+1. **606 Carteret Unit 2** — Stephanie 10/4 prospect email: furnished, available end Nov / early Dec, $1,800 (board: vacant since 8/31, $1,850). Kept Vacant (no lease evidence); ask → $1,800; conflict printed.
+2. **828 B** — Stephanie 10/4 email quoted $1,750; Stinger listing still $2,250 on 10/5. Kept $2,250; conflict printed. Austin 10/4 questioned Masi credit.
+3. New lead Beth Hartle (10/4) for 606 U1 / U2 / 828 B, CC Stinger leasing.
+
+### Not material
+- 409 Carteret refi inquiry (Futures Funding, call Wed 10/7) is financing, not board ops.
+- RUNNING last modified 10/3 2:39 AM ET (already in Oct 3 build). No Stinger mail since 10/3. Occupancy 30/34 unchanged.
+
+### Next run should
+- Push the local HEAD commit (or rebuild from /workspace/rental-kpi/wk1005) once GH_TOKEN is available.
+- Resolve 606 U2 status (occupied/held through Nov?) and 828 B asking rent.
+- 67 Sams DD ends Oct 9; close Oct 29.
+- Monthly 12th: full QBO + dual T&I run-rate.
+
+---
+
 ## 2026-10-03 — Full rebuild (Jan–Sep 2026, live QBO cash)
 
 **Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/ (interim; dedicated `bpg-rental-kpi` still not available to the PAT)

@@ -17,10 +17,16 @@
       "note": "Asking $1,750 (RUNNING 9/24)",
       "_by": "weekly-partial",
       "_at": "2026-09-28"
+    },
+    "10|Unit 2": {
+      "status": "vacant",
+      "note": "Asking $1,800; Stephanie 10/4 says available end Nov/early Dec (confirm)",
+      "_by": "weekly-partial",
+      "_at": "2026-10-05"
     }
   },
   "maint": {},
-  "updatedAt": "2026-10-03T15:43:18.000Z",
+  "updatedAt": "2026-10-05T13:58:11.000Z",
   "path": "rental-kpi/overrides.json",
-  "note": "Full rebuild 2026-10-03 (Jan–Sep); merge on load; commit on republish"
+  "note": "Weekly partial 2026-10-05; merge on load; commit on republish"
 }
