@@ -226,6 +226,7 @@
   #bpg-menu .menu-label { padding:7px 14px 2px; font-size:.66rem; text-transform:uppercase; letter-spacing:.6px; color:#888; font-weight:700; }
   #bpg-menu .menu-note { padding:4px 14px 6px; font-size:.72rem; color:#888; line-height:1.4; }
   #bpg-menu hr { border:0; border-top:1px solid #eef0f5; margin:5px 0; }
+  .team-note { font-size:.75rem; color:#555; font-weight:600; white-space:nowrap; }
   #bpg-toast { position:fixed; left:50%; bottom:22px; transform:translateX(-50%); max-width:560px; background:#1a1a2e; color:#fff; padding:10px 16px; border-radius:10px; font-size:.84rem; box-shadow:0 6px 24px rgba(0,0,0,.25); z-index:101; display:none; }
   #bpg-toast.err { background:#b71c1c; }
 </style>
@@ -302,6 +303,7 @@
       <option value="handoff">Hand-offs</option>
     </select>
   </span>
+  <span id="team-note" class="team-note" hidden></span>
   <button class="clear-btn" onclick="clearFilters()">✕ Clear</button>
 </div>
 
@@ -2719,8 +2721,9 @@ const TASKS = [
   "status": "open"
  }
 ];
-const BUILD_ID = "20261008161110";
+const BUILD_ID = "20261008162720";
 window.DASH_APP_URL = "https://script.google.com/a/macros/bermanpropertygroupllc.com/s/AKfycbxm4nCug0xDXB_Aqu7a_tQ3Xlc5LDtEJcL48r-E_NOTiSdw35PpJK4ddx5BtM2mr7UH/exec";
+window.DASH_READ_URL = "";
 
 // ── Sort// ── Sort / expand state ───────────────────────────────────────────────────
 let sortCol = null, sortDir = 1;
@@ -3075,25 +3078,72 @@ renderTable();
 
   window.bpgState = function(t){ return (t && t.key && store[t.key]) || null; };
   window.bpgIsDone = function(t){ return !!bpgState(t); };
-  // A click on this device wins. Otherwise the status baked in at rebuild.
+  function sha1hex(msg){
+    function rot(n, x){ return (n << x) | (n >>> (32 - x)); }
+    var bytes = unescape(encodeURIComponent(msg)), l = bytes.length, words = [], i, t;
+    for (i = 0; i < l; i++) words[i >> 2] = (words[i >> 2] || 0) | (bytes.charCodeAt(i) << (24 - (i % 4) * 8));
+    words[l >> 2] = (words[l >> 2] || 0) | (0x80 << (24 - (l % 4) * 8));
+    words[(((l + 8) >> 6) + 1) * 16 - 1] = l * 8;
+    var h0 = 0x67452301, h1 = 0xEFCDAB89, h2 = 0x98BADCFE, h3 = 0x10325476, h4 = 0xC3D2E1F0;
+    for (i = 0; i < words.length; i += 16){
+      var w = [];
+      for (t = 0; t < 16; t++) w[t] = words[i + t] | 0;
+      for (t = 16; t < 80; t++) w[t] = rot(w[t - 3] ^ w[t - 8] ^ w[t - 14] ^ w[t - 16], 1);
+      var a = h0, b = h1, c = h2, d = h3, e = h4, f, k, temp;
+      for (t = 0; t < 80; t++){
+        if (t < 20){ f = (b & c) | (~b & d); k = 0x5A827999; }
+        else if (t < 40){ f = b ^ c ^ d; k = 0x6ED9EBA1; }
+        else if (t < 60){ f = (b & c) | (b & d) | (c & d); k = 0x8F1BBCDC; }
+        else { f = b ^ c ^ d; k = 0xCA62C1D6; }
+        temp = (rot(a, 5) + f + e + k + w[t]) | 0;
+        e = d; d = c; c = rot(b, 30); b = a; a = temp;
+      }
+      h0 = (h0 + a) | 0; h1 = (h1 + b) | 0; h2 = (h2 + c) | 0; h3 = (h3 + d) | 0; h4 = (h4 + e) | 0;
+    }
+    return [h0, h1, h2, h3, h4].map(function(h){ return ('00000000' + (h >>> 0).toString(16)).slice(-8); }).join('');
+  }
+  window.bpgPublicKey = function(key){
+    key = String(key || '');
+    return /^[a-f0-9]{16}$/.test(key) ? key : sha1hex(key).slice(0, 16);
+  };
+  var team = {}, teamAt = 0;
+  // A click on this device wins when it is newer than the team snapshot. Otherwise the team status, then the rebuilt status.
+  function clickAct(t){
+    var local = bpgState(t);
+    var teamAct = team[bpgPublicKey(t && t.key)];
+    if (local && local.act && (!teamAct || (local.at || 0) >= teamAt)) return local.act;
+    if (teamAct) return teamAct;
+    return (local && local.act) || '';
+  }
+  window.bpgClickAct = clickAct;
   window.bpgStatus = function(t){
-    var st = bpgState(t);
-    if (st && st.act) return st.act;
+    var act = clickAct(t);
+    if (act) return act;
     return (t && t.status) || 'open';
   };
   window.bpgMatchStatus = function(t, f){
     if (!f) return true;
-    var act = (bpgState(t) || {}).act || '';
+    var act = clickAct(t);
     if (f === 'open') return !act && ((t.status || 'open') === 'open');
     if (f === 'reassigned') return act === 'reassigned' || (!act && !!t.reassignedFrom);
     if (f === 'handedoff') return act === 'handedoff' || (!act && t.source === 'handoff');
     return act === f;
   };
+  window.bpgApplyTeam = function(data){
+    if (!data || data.ok === false || !data.statuses) return;
+    team = data.statuses; teamAt = Date.parse(data.at) || Date.now();
+    var note = document.getElementById('team-note');
+    if (note){
+      var label = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit' }).format(new Date(teamAt));
+      note.hidden = false; note.textContent = 'Team updates as of ' + label + ' ET';
+    }
+    if (window.renderTable) renderTable();
+  };
   var STATUS_RANK = { open:'0', done:'1', promoted:'2', dismissed:'3', reassigned:'4', handedoff:'5', deleted:'6' };
   window.bpgStatusRank = function(t){ return STATUS_RANK[bpgStatus(t)] || '9'; };
   window.bpgRowClass = function(t){
-    var st = bpgState(t); if (!st) return '';
-    return ' is-done' + ((st.act === 'done' || st.act === 'dismissed' || st.act === 'deleted') ? ' strike' : '');
+    var act = clickAct(t); if (!act) return '';
+    return ' is-done' + ((act === 'done' || act === 'dismissed' || act === 'deleted') ? ' strike' : '');
   };
   function kind(t){
     if (t.source === 'email' || t.source === 'handoff') return 'board';
@@ -3105,13 +3155,18 @@ renderTable();
       case 'dismissed': return 'Not relevant';
       case 'promoted': return 'Now a task ✓';
       case 'deleted': return 'Deleted';
-      case 'reassigned': return 'Reassigned to ' + (st.to || '?');
-      case 'handedoff': return 'Handed to ' + (st.to || '?');
+      case 'reassigned': return st.to ? 'Reassigned to ' + st.to : 'Reassigned';
+      case 'handedoff': return st.to ? 'Handed to ' + st.to : 'Handed off';
       default: return 'Done ✓';
     }
   }
   window.bpgDoneCell = function(t, idx){
+    var act = clickAct(t);
     var st = bpgState(t);
+    if (act) {
+      var shown = (st && st.act === act) ? st : { act: act };
+      return '<span class="done-pill st-' + esc(act) + '">' + esc(stateLabel(shown)) + '</span>';
+    }
     if (st) return '<span class="done-pill st-' + esc(st.act) + '">' + esc(stateLabel(st)) + '</span>';
     if (!t.key) return '';
     return '<span class="done-actions"><button class="complete-btn" onclick="bpgAct(event,' + idx + ',\'complete\')" title="Mark complete as yourself">Complete</button>' +
@@ -3241,6 +3296,22 @@ renderTable();
   }
   fromHash();
   window.addEventListener('hashchange', fromHash);
+  function pullTeam(){
+    var url = window.DASH_READ_URL || '';
+    if (!url) return;
+    var cb = 'bpgTeamStatus_' + Math.floor(Math.random() * 1e9).toString(36);
+    var done = false;
+    window[cb] = function(data){ if (done) return; done = true; try { delete window[cb]; } catch (e) {} try { bpgApplyTeam(data); } catch (e2) {} };
+    var tag = document.createElement('script');
+    tag.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'action=statuses&format=js&cb=' + cb;
+    tag.onerror = function(){ done = true; try { delete window[cb]; } catch (e) {} };
+    document.body.appendChild(tag);
+    setTimeout(function(){ if (!done) { done = true; try { delete window[cb]; } catch (e) {} } }, 15000);
+  }
+  window.bpgPullTeam = pullTeam;
+  pullTeam();
+  setInterval(pullTeam, 180000);
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) pullTeam(); });
 })();
 renderTable();
 </script>
