@@ -205,15 +205,28 @@
   .table-wrap { overflow-x:auto; }
   tr.task-row td.done-cell { white-space:nowrap; padding-left:6px; padding-right:6px; }
   th#th-done { padding-left:6px; padding-right:6px; }
+  .done-actions { display:inline-flex; align-items:center; gap:4px; }
   button.complete-btn { border:1px solid #2e7d32; background:#fff; color:#2e7d32; border-radius:7px; padding:3px 8px; font-size:.72rem; font-weight:700; cursor:pointer; }
   button.complete-btn:hover { background:#e8f5e9; }
-  button.complete-btn[disabled] { opacity:.6; cursor:wait; }
+  button.complete-btn[disabled], button.more-btn[disabled] { opacity:.6; cursor:wait; }
+  button.more-btn { border:1px solid #cfd5e3; background:#fff; color:#555; border-radius:7px; padding:2px 7px; font-size:.8rem; font-weight:700; line-height:1.2; cursor:pointer; }
+  button.more-btn:hover { background:#f0f3fa; }
   .done-pill { display:inline-block; font-size:.72rem; font-weight:700; color:#2e7d32; background:#e8f5e9; padding:3px 9px; border-radius:7px; }
+  .done-pill.st-dismissed, .done-pill.st-deleted { color:#666; background:#eee; }
+  .done-pill.st-reassigned, .done-pill.st-handedoff { color:#0d47a1; background:#e3f2fd; }
   tr.task-row.is-done td { opacity:.45; }
-  tr.task-row.is-done td.task-name-cell { text-decoration:line-through; }
+  tr.task-row.is-done.strike td.task-name-cell { text-decoration:line-through; }
   tr.task-row.is-done td.done-cell { opacity:1; text-decoration:none; }
   .sync-age { font-size:.68rem; color:#888; font-weight:500; margin-top:2px; }
-  #bpg-toast { position:fixed; left:50%; bottom:22px; transform:translateX(-50%); max-width:560px; background:#1a1a2e; color:#fff; padding:10px 16px; border-radius:10px; font-size:.84rem; box-shadow:0 6px 24px rgba(0,0,0,.25); z-index:99; display:none; }
+  .src-handoff { background:#e3f2fd; color:#0d47a1; }
+  #bpg-menu { position:fixed; display:none; background:#fff; border:1px solid #dde2ee; border-radius:10px; box-shadow:0 8px 28px rgba(0,0,0,.18); min-width:220px; max-width:280px; z-index:100; padding:6px 0; font-size:.82rem; }
+  #bpg-menu .menu-item { display:block; width:100%; text-align:left; padding:7px 14px; background:none; border:0; cursor:pointer; color:#1a1a2e; text-decoration:none; font:inherit; }
+  #bpg-menu .menu-item:hover { background:#f5f7ff; }
+  #bpg-menu .menu-item.danger { color:#c62828; }
+  #bpg-menu .menu-label { padding:7px 14px 2px; font-size:.66rem; text-transform:uppercase; letter-spacing:.6px; color:#888; font-weight:700; }
+  #bpg-menu .menu-note { padding:4px 14px 6px; font-size:.72rem; color:#888; line-height:1.4; }
+  #bpg-menu hr { border:0; border-top:1px solid #eef0f5; margin:5px 0; }
+  #bpg-toast { position:fixed; left:50%; bottom:22px; transform:translateX(-50%); max-width:560px; background:#1a1a2e; color:#fff; padding:10px 16px; border-radius:10px; font-size:.84rem; box-shadow:0 6px 24px rgba(0,0,0,.25); z-index:101; display:none; }
   #bpg-toast.err { background:#b71c1c; }
 </style>
 </head>
@@ -222,7 +235,7 @@
 <header>
   <div>
     <h1>📋 BPG All-Tasks Dashboard</h1>
-    <p>STAGING · Berman Property Group · Tasks API · Snapshot of Oct 8, 2026 · 1:58 PM ET · 117 tasks</p>
+    <p>STAGING · Berman Property Group · Tasks API · Snapshot of Oct 8, 2026 · 1:58 PM ET · 116 tasks</p>
     <div class="source-pills">
       <span class="source-pill pill-gchat">✓ Tasks API</span>
     </div>
@@ -234,7 +247,7 @@
   </div>
 </header>
 
-<div class="staging-banner">Staging copy for testing click-to-complete. The live board is <a href="../">here</a>. SYNC note items older than 7 days are hidden on this copy.</div>
+<div class="staging-banner">Staging copy for testing task board actions. The live board is <a href="../">here</a>. SYNC note items older than 7 days are hidden on this copy.</div>
 <div class="controls">
   <span><label>🔍</label><input type="text" id="search" placeholder="Search tasks, spaces, people..."></span>
   <span><label>Section:</label>
@@ -274,6 +287,7 @@
       <option value="tasks-chat">Tasks · Chat</option>
       <option value="tasks-docs">Tasks · Docs</option>
       <option value="email">Email</option>
+      <option value="handoff">Hand-offs</option>
     </select>
   </span>
   <button class="clear-btn" onclick="clearFilters()">✕ Clear</button>
@@ -313,7 +327,7 @@
           <th onclick="sortTable('person')"  id="th-person">Assigned To <span class="sort-icon">↕</span></th>
           <th onclick="sortTable('due')"     id="th-due">Due <span class="sort-icon">↕</span></th>
           <th onclick="sortTable('updated')" id="th-updated">Updated <span class="sort-icon">↕</span></th>
-          <th id="th-done">Done</th>
+          <th onclick="sortTable('done')" id="th-done">Done <span class="sort-icon">↕</span></th>
           <th onclick="sortTable('source')"  id="th-source">Source <span class="sort-icon">↕</span></th>
         </tr>
       </thead>
@@ -2120,26 +2134,6 @@ const TASKS = [
   "key": "03d56d2bc02890a7"
  },
  {
-  "task": "Collect Permit: Retrieve the 513 Rebo permit from the city once the notarized documents are accepted",
-  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
-  "section": "SYNC notes",
-  "space": "",
-  "type": "general",
-  "person": "Eric",
-  "due": "",
-  "source": "email",
-  "sid": "",
-  "tid": "",
-  "did": "",
-  "openUrl": "",
-  "originUrl": "",
-  "updated": "",
-  "parent": "",
-  "position": "",
-  "noteDate": "2026-10-01",
-  "key": "acb21885b8ff4028"
- },
- {
   "task": "Schedule Training: Schedule a 3 hour training session between Eric and Richard for Thursday",
   "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
   "section": "SYNC notes",
@@ -2680,7 +2674,7 @@ const TASKS = [
   "key": "347f4e7806fe2cbb"
  }
 ];
-const BUILD_ID = "20261008151046";
+const BUILD_ID = "20261008153945";
 window.DASH_APP_URL = "https://script.google.com/a/macros/bermanpropertygroupllc.com/s/AKfycbxm4nCug0xDXB_Aqu7a_tQ3Xlc5LDtEJcL48r-E_NOTiSdw35PpJK4ddx5BtM2mr7UH/exec";
 
 // ── Sort// ── Sort / expand state ───────────────────────────────────────────────────
@@ -2751,6 +2745,7 @@ function taskTitleHtml(t) {
 }
 function sourcePill(s) {
   if (s==='tasks-docs'||s==='gdocs') return `<span class="src-pill src-gdocs">Docs</span>`;
+  if (s==='handoff') return `<span class="src-pill src-handoff">Hand-off</span>`;
   if (s==='email') return `<span class="src-pill src-email">Email</span>`;
   if (s==='tasks-personal') return `<span class="src-pill src-gchat">Personal</span>`;
   if (s==='tasks-chat'||s==='gchat') return `<span class="src-pill src-gchat">Chat</span>`;
@@ -2758,10 +2753,11 @@ function sourcePill(s) {
 }
 
 
-function doneCellHtml(t, idx) {
-  if (window.bpgIsDone && bpgIsDone(t)) return '<span class="done-pill">Done ✓</span>';
-  if (!t.key) return '';
-  return `<button class="complete-btn" onclick="bpgComplete(event, ${idx})" title="Mark complete as yourself">Complete</button>`;
+function doneCellHtml(t, idx) { return window.bpgDoneCell ? bpgDoneCell(t, idx) : ''; }
+function rowHint(t) {
+  if (t.source === 'email' && t.noteDate) return `From SYNC ${esc(t.noteDate)}` + (t.reassignedFrom ? ` · reassigned from ${esc(t.reassignedFrom)}` : '');
+  if (t.source === 'handoff') return `Handed off by ${esc(t.handoffFrom || '?')}` + (t.noteDate ? ` on ${esc(t.noteDate)}` : '') + (t.reassignedFrom ? ` · reassigned from ${esc(t.reassignedFrom)}` : '');
+  return '';
 }
 
 // ── Filter ────────────────────────────────────────────────────────────────
@@ -2771,7 +2767,7 @@ function getFilteredTasks() {
   const fP = document.getElementById('filter-person').value;
   const fSp= document.getElementById('filter-space').value;
   const fSrc=document.getElementById('filter-source').value;
-  return TASKS.map((t,i)=>({...t,_idx:i})).filter(t => {
+  return TASKS.map((t,i)=>({...t,_idx:i,done:(window.bpgIsDone&&bpgIsDone(t))?'1':'0'})).filter(t => {
     if (q && ![t.task,t.detail,t.space,t.person,t.section].some(f=>(f||'').toLowerCase().includes(q))) return false;
     if (fS  && t.section!==fS)  return false;
     if (fP  && t.person !==fP)  return false;
@@ -2811,7 +2807,7 @@ function renderTable() {
 
     // Main row
     const tr = document.createElement('tr');
-    tr.className = 'task-row' + (isOpen ? ' expanded' : '') + (window.bpgIsDone && bpgIsDone(t) ? ' is-done' : '');
+    tr.className = 'task-row' + (isOpen ? ' expanded' : '') + (window.bpgRowClass ? bpgRowClass(t) : '');
     tr.dataset.idx = idx;
     tr.onclick = () => toggleDetail(idx);
     tr.innerHTML = `
@@ -2822,7 +2818,7 @@ function renderTable() {
           <div>
             ${t.openUrl ? `<a class="task-open-link" href="${escAttr(t.openUrl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(t.task)}</a>` : esc(t.task)}
             ${t.parent && t.parentTitle ? `<div class="parent-hint">of: ${esc(t.parentTitle)}</div>` : ''}
-            ${t.source === 'email' && t.noteDate ? `<div class="sync-age">From SYNC ${esc(t.noteDate)}</div>` : ''}
+            ${rowHint(t) ? `<div class="sync-age">${rowHint(t)}</div>` : ''}
           </div>
         </div>
       </td>
@@ -3005,14 +3001,17 @@ renderTable();
 })();
 </script>
 <!--/BPG-ENH-V1-->
-<div id="bpg-toast"></div>
+<div id="bpg-toast" role="status"></div>
 
 <script id="bpg-complete-js">
-/* Click-to-complete (staging). Opens the BPG Dashboard Complete web app, which runs as the
-   signed-in person, so nobody can close someone else's task. No keys live on this page. */
+/* Task board actions (staging). Every action opens the BPG Dashboard Complete web app, which runs as the
+   signed-in person, so nobody can change someone else's Google Tasks. No keys live on this page. */
 (function(){
   var APP = window.DASH_APP_URL || '';
-  var LS = 'bpgDashDone:v1';
+  var LS = 'bpgDashDone:v1', SS = 'bpgPending:v1';
+  var PEOPLE = ['Eric', 'Stephanie', 'Nichole', 'Austin', 'Richard'];
+  var NEW_ACTIONS = { promote:1, dismiss:1, reassign:1, deletetask:1, handoff:1 };
+  var STATE_FOR = { complete:'done', syncdone:'done', dismiss:'dismissed', promote:'promoted', reassign:'reassigned', deletetask:'deleted', handoff:'handedoff' };
   var store = {};
   try { store = JSON.parse(localStorage.getItem(LS) || '{}') || {}; } catch (e) { store = {}; }
   var now = Date.now();
@@ -3022,53 +3021,158 @@ renderTable();
   });
   function save(){ try { localStorage.setItem(LS, JSON.stringify(store)); } catch (e) {} }
   save();
-  window.bpgIsDone = function(t){ return !!(t && t.key && store[t.key]); };
+  function pendingSS(){ try { return JSON.parse(sessionStorage.getItem(SS) || '{}') || {}; } catch (e) { return {}; } }
+  function setPendingSS(o){ try { sessionStorage.setItem(SS, JSON.stringify(o)); } catch (e) {} }
+
+  window.bpgState = function(t){ return (t && t.key && store[t.key]) || null; };
+  window.bpgIsDone = function(t){ return !!bpgState(t); };
+  window.bpgRowClass = function(t){
+    var st = bpgState(t); if (!st) return '';
+    return ' is-done' + ((st.act === 'done' || st.act === 'dismissed' || st.act === 'deleted') ? ' strike' : '');
+  };
+  function kind(t){
+    if (t.source === 'email' || t.source === 'handoff') return 'board';
+    if (t.source === 'tasks-personal') return 'personal';
+    return 'assigned';
+  }
+  function stateLabel(st){
+    switch (st.act) {
+      case 'dismissed': return 'Not relevant';
+      case 'promoted': return 'Now a task ✓';
+      case 'deleted': return 'Deleted';
+      case 'reassigned': return 'Reassigned to ' + (st.to || '?');
+      case 'handedoff': return 'Handed to ' + (st.to || '?');
+      default: return 'Done ✓';
+    }
+  }
+  window.bpgDoneCell = function(t, idx){
+    var st = bpgState(t);
+    if (st) return '<span class="done-pill st-' + esc(st.act) + '">' + esc(stateLabel(st)) + '</span>';
+    if (!t.key) return '';
+    return '<span class="done-actions"><button class="complete-btn" onclick="bpgAct(event,' + idx + ',\'complete\')" title="Mark complete as yourself">Complete</button>' +
+           '<button class="more-btn" onclick="bpgMenu(event,' + idx + ')" title="More actions" aria-label="More actions">⋯</button></span>';
+  };
+
   var toastTimer = null;
   function toast(msg, err){
     var el = document.getElementById('bpg-toast');
     el.textContent = msg; el.className = err ? 'err' : ''; el.style.display = 'block';
     clearTimeout(toastTimer); toastTimer = setTimeout(function(){ el.style.display = 'none'; }, err ? 9000 : 4500);
   }
-  function markDone(key){
+  window.bpgToast = toast;
+  function setState(key, act, to){
     if (!key) return;
-    store[key] = { at: Date.now(), build: BUILD_ID }; save();
+    store[key] = { at: Date.now(), build: BUILD_ID, act: act || 'done', to: to || '' }; save();
     renderTable();
   }
-  var pending = {};
-  window.bpgComplete = function(ev, idx){
+
+  // ── Menu ──
+  var menu = null, menuIdx = null;
+  function closeMenu(){ if (menu) menu.style.display = 'none'; menuIdx = null; }
+  function item(label, onclick, cls){ return '<button class="menu-item' + (cls ? ' ' + cls : '') + '" onclick="' + onclick + '">' + esc(label) + '</button>'; }
+  window.bpgMenu = function(ev, idx){
     ev.stopPropagation(); ev.preventDefault();
+    if (!menu) { menu = document.createElement('div'); menu.id = 'bpg-menu'; menu.setAttribute('role', 'menu'); document.body.appendChild(menu); }
+    if (menuIdx === idx && menu.style.display === 'block') { closeMenu(); return; }
+    var t = TASKS[idx], k = kind(t), h = '';
+    var others = PEOPLE.filter(function(p){ return p !== t.person; });
+    if (k === 'board') {
+      h += item('Make it a task', 'bpgAct(event,' + idx + ',\'promote\')');
+      h += item('Not relevant', 'bpgAct(event,' + idx + ',\'dismiss\')');
+      h += '<hr><div class="menu-label">Reassign to</div>';
+      others.forEach(function(p){ h += item(p, 'bpgAct(event,' + idx + ',\'reassign\',\'' + p + '\')'); });
+    } else if (k === 'personal') {
+      h += item('Delete task', 'bpgAct(event,' + idx + ',\'deletetask\')', 'danger');
+      h += '<hr><div class="menu-label">Hand off to</div>';
+      others.forEach(function(p){ h += item(p, 'bpgAct(event,' + idx + ',\'handoff\',\'' + p + '\')'); });
+      h += '<div class="menu-note">Hand off marks your copy completed and puts it on the new person\'s board, where they can make it a task.</div>';
+    } else {
+      var isChat = t.source === 'tasks-chat';
+      var url = t.originUrl || t.openUrl;
+      if (url) h += '<a class="menu-item" href="' + escAttr(url) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">Reassign or remove in ' + (isChat ? 'Chat' : 'the Doc') + ' ↗</a>';
+      h += '<div class="menu-note">This task was assigned from ' + (isChat ? 'a Chat space' : 'a Doc') + '. Google only allows reassigning it there, and deleting it from the board would also delete the original.</div>';
+    }
+    menu.innerHTML = h;
+    menu.style.display = 'block'; menu.style.visibility = 'hidden';
+    var r = ev.currentTarget.getBoundingClientRect(), mw = menu.offsetWidth, mh = menu.offsetHeight;
+    var left = Math.max(8, Math.min(r.right - mw, window.innerWidth - mw - 8));
+    var top = r.bottom + 4; if (top + mh > window.innerHeight - 8) top = Math.max(8, r.top - mh - 4);
+    menu.style.left = left + 'px'; menu.style.top = top + 'px'; menu.style.visibility = 'visible';
+    menuIdx = idx; openedAt = Date.now(); openY = window.scrollY;
+  };
+  document.addEventListener('click', function(e){ if (menu && !menu.contains(e.target)) closeMenu(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeMenu(); });
+  var openedAt = 0, openY = 0;
+  window.addEventListener('scroll', function(){
+    if (!menu || menu.style.display !== 'block') return;
+    if (Date.now() - openedAt < 400 || Math.abs(window.scrollY - openY) < 40) return;
+    closeMenu();
+  }, true);
+
+  // ── Actions ──
+  var pending = {};
+  function confirmText(t, act, to){
+    var title = '"' + (t.task || '').slice(0, 90) + ((t.task || '').length > 90 ? '...' : '') + '"';
+    if (act === 'dismiss') return 'Mark ' + title + ' as not relevant? It drops off the board on the next refresh.';
+    if (act === 'reassign') return 'Reassign ' + title + ' to ' + to + '?';
+    if (act === 'deletetask') return 'Delete ' + title + ' from your Google Tasks? This cannot be undone from the board, and any subtasks under it go too.';
+    if (act === 'handoff') return 'Hand ' + title + ' to ' + to + '? Your copy is marked completed with a hand-off note. ' + to + ' sees it on the board after the next refresh and can make it a task.';
+    return '';
+  }
+  window.bpgAct = function(ev, idx, act, to){
+    ev.stopPropagation(); ev.preventDefault();
+    closeMenu();
     var t = TASKS[idx]; if (!t) return;
     if (!APP) { toast('Complete is not switched on yet. The web app still needs to be deployed.', true); return; }
+    var c = confirmText(t, act, to);
+    if (c && !window.confirm(c)) return;
+    var board = kind(t) === 'board';
+    var action = act === 'complete' ? (board ? 'syncdone' : 'complete') : act;
     var p = new URLSearchParams();
-    if (t.source === 'email') {
-      p.set('action', 'syncdone'); p.set('key', t.key); p.set('person', t.person);
-      p.set('date', t.noteDate || ''); p.set('title', (t.task || '').slice(0, 200));
-    } else {
-      p.set('action', 'complete'); p.set('list', t.lid || '@default'); p.set('task', t.tid);
-      p.set('person', t.person); p.set('key', t.key);
-    }
+    p.set('action', action); p.set('key', t.key); p.set('person', t.person);
+    if (board) { p.set('date', t.noteDate || ''); p.set('title', (t.task || '').slice(0, 300)); }
+    else { p.set('list', t.lid || '@default'); p.set('task', t.tid); }
+    if (to) p.set('to', to);
     p.set('back', location.href.split('#')[0]);
     var url = APP + '?' + p.toString();
-    var btn = ev.currentTarget; btn.disabled = true; btn.textContent = 'Working...';
-    pending[t.key] = btn;
-    setTimeout(function(){ if (pending[t.key]) { btn.disabled = false; btn.textContent = 'Complete'; delete pending[t.key]; } }, 90000);
+    var cell = document.querySelector('tr.task-row[data-idx="' + idx + '"] .done-actions');
+    var btns = cell ? cell.querySelectorAll('button') : [];
+    for (var i = 0; i < btns.length; i++) btns[i].disabled = true;
+    if (btns[0]) btns[0].textContent = 'Working...';
+    pending[t.key] = { action: action, to: to || '', idx: idx };
+    var ps = pendingSS(); ps[t.key] = { action: action, to: to || '' }; setPendingSS(ps);
+    setTimeout(function(){ if (pending[t.key]) { delete pending[t.key]; renderTable(); } }, 90000);
     var w = window.open(url, 'bpgComplete', 'popup,width=520,height=520');
     if (!w) { location.href = url; }
   };
+  function handleResult(d, fallback){
+    var key = d.key, pend = pending[key] || pendingSS()[key] || fallback || {};
+    delete pending[key];
+    var ps = pendingSS(); delete ps[key]; setPendingSS(ps);
+    var action = d.action || pend.action || 'complete';
+    if (d.ok) { setState(key, STATE_FOR[action] || 'done', d.to || pend.to); toast(d.message || 'Done.'); return; }
+    renderTable();
+    if (d.error === 'Unknown action.' && NEW_ACTIONS[action]) {
+      toast('This needs the updated script. Ask Eric to paste the new Code.gs and redeploy (Manage deployments, New version).', true);
+    } else {
+      toast(d.error || 'Not completed.', true);
+    }
+  }
+  window.bpgHandleResult = handleResult;
   window.addEventListener('message', function(e){
     var host = '';
     try { host = new URL(e.origin).hostname; } catch (x) { return; }
     if (!/\.googleusercontent\.com$/.test(host) && host !== 'script.google.com') return;
-    var d = e.data && e.data.bpgDashboard; if (!d) return;
-    var btn = pending[d.key]; delete pending[d.key];
-    if (d.ok) { markDone(d.key); toast(d.message || 'Done.'); }
-    else { if (btn) { btn.disabled = false; btn.textContent = 'Complete'; } toast(d.error || 'Not completed.', true); }
+    var d = e.data && e.data.bpgDashboard; if (!d || !d.key) return;
+    handleResult(d);
   });
   function fromHash(){
-    var m = location.hash.match(/bpgdone=([^&]+)&ok=([01])/);
+    var m = location.hash.match(/bpgdone=([^&]*)&ok=([01])/);
     if (!m) return;
-    if (m[2] === '1') { markDone(decodeURIComponent(m[1])); toast('Done. It clears from the board on the next refresh.'); }
+    var key = decodeURIComponent(m[1]);
     history.replaceState(null, '', location.pathname + location.search);
+    if (m[2] === '1') handleResult({ ok: true, key: key, message: 'Done. The board catches up on the next refresh.' });
+    else { var ps = pendingSS(); delete ps[key]; setPendingSS(ps); toast('That did not go through. The web app window showed the reason.', true); }
   }
   fromHash();
   window.addEventListener('hashchange', fromHash);
