@@ -235,7 +235,7 @@
 <header>
   <div>
     <h1>📋 BPG All-Tasks Dashboard</h1>
-    <p>STAGING · Berman Property Group · Tasks API · Snapshot of Oct 8, 2026 · 1:58 PM ET · 116 tasks</p>
+    <p>STAGING · Berman Property Group · Tasks API · Snapshot of Oct 8, 2026 · 1:58 PM ET · 112 tasks</p>
     <div class="source-pills">
       <span class="source-pill pill-gchat">✓ Tasks API</span>
     </div>
@@ -278,6 +278,18 @@
     <select id="filter-space">
       <option value="">All</option>
       <!-- populated dynamically by buildSpaceDropdown() -->
+    </select>
+  </span>
+  <span><label>Status:</label>
+    <select id="filter-status">
+      <option value="">All statuses</option>
+      <option value="open">Open</option>
+      <option value="done">Done</option>
+      <option value="promoted">Made into a task</option>
+      <option value="dismissed">Not relevant</option>
+      <option value="reassigned">Reassigned</option>
+      <option value="handedoff">Handed off</option>
+      <option value="deleted">Deleted</option>
     </select>
   </span>
   <span><label>Source:</label>
@@ -371,7 +383,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000000",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "SzFJbWpMUXlCTWhvRkNlUA"
+  "key": "SzFJbWpMUXlCTWhvRkNlUA",
+  "status": "open"
  },
  {
   "task": "513 Ribaut Rd - Jarrett takeoff for ramp",
@@ -391,7 +404,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000001",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "SW1hOERyRkc3LXc3UjZDOQ"
+  "key": "SW1hOERyRkc3LXc3UjZDOQ",
+  "status": "open"
  },
  {
   "task": "Hank/Varnon -> leadtime to start concrete/gravel",
@@ -411,7 +425,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000002",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "Zlo2YXEyV2dLMGRwQmxGTg"
+  "key": "Zlo2YXEyV2dLMGRwQmxGTg",
+  "status": "open"
  },
  {
   "task": "513 Ribaut Rd - snoddy to quote electrical",
@@ -431,7 +446,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000003",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "eVF4LTNFR1ZvQ21PVkdPZw"
+  "key": "eVF4LTNFR1ZvQ21PVkdPZw",
+  "status": "open"
  },
  {
   "task": "@Nichole Nelson turn this into a PO please",
@@ -451,7 +467,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000000",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "T3NnSnlMS1RpRnZVRk9jdA"
+  "key": "T3NnSnlMS1RpRnZVRk9jdA",
+  "status": "open"
  },
  {
   "task": "Client Dashboard - build out cloudfare protocol and security, then fire up for all projects",
@@ -471,7 +488,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000000",
   "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
-  "key": "WDBnSVFCTVltbC1GbjdhRQ"
+  "key": "WDBnSVFCTVltbC1GbjdhRQ",
+  "status": "open"
  },
  {
   "task": "513 Riabut Rd - discuss possibility of keeping toilet where it is w/ Bruce Skipper",
@@ -491,7 +509,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000001",
   "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
-  "key": "RzZOeGpXZ2lZUE40T1B2cg"
+  "key": "RzZOeGpXZ2lZUE40T1B2cg",
+  "status": "open"
  },
  {
   "task": "@Stephanie Pretto coordinate EFG to go look at drywall / paint / siding paint. Access code and all that",
@@ -511,7 +530,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000004",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "YnZ0YWpNT19YQnQyRUZWQw"
+  "key": "YnZ0YWpNT19YQnQyRUZWQw",
+  "status": "open"
  },
  {
   "task": "@Stephanie Pretto get gutters and downspouts estimates for this job and put in drive",
@@ -531,7 +551,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000005",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "R0RTek41UmwzVVNoMWR0WQ"
+  "key": "R0RTek41UmwzVVNoMWR0WQ",
+  "status": "open"
  },
  {
   "task": "Signage for Darrah Hall renovation",
@@ -551,7 +572,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000006",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "TFFxb3RLRjNwZHZMcGtWeQ"
+  "key": "TFFxb3RLRjNwZHZMcGtWeQ",
+  "status": "open"
  },
  {
   "task": "Build D-, SoE from start to finish for project",
@@ -571,7 +593,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000002",
   "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
-  "key": "ZVdHT3ktVGY4NTRiMGRUSw"
+  "key": "ZVdHT3ktVGY4NTRiMGRUSw",
+  "status": "open"
  },
  {
   "task": "Once received chamber of commerce, flyers, etc.",
@@ -591,7 +614,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000007",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "TWxnVW1ZYTNIb3pkcEFQZw"
+  "key": "TWxnVW1ZYTNIb3pkcEFQZw",
+  "status": "open"
  },
  {
   "task": "Rae Bittner → Review #s and provide update to Rae",
@@ -611,7 +635,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000004",
   "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
-  "key": "dmE1QmFENFVNd1NSOEdqTA"
+  "key": "dmE1QmFENFVNd1NSOEdqTA",
+  "status": "open"
  },
  {
   "task": "Nigel Stroud → Put together an offer",
@@ -631,7 +656,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000003",
   "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
-  "key": "WTBEM2dOZ2Y2c2lJWkQtWg"
+  "key": "WTBEM2dOZ2Y2c2lJWkQtWg",
+  "status": "open"
  },
  {
   "task": "Goal get us able to be bonded up to $3mil",
@@ -651,7 +677,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000001",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "UjRnZ3p4SC12dmZtdWVaOQ"
+  "key": "UjRnZ3p4SC12dmZtdWVaOQ",
+  "status": "open"
  },
  {
   "task": "Goal to get us Worker’s Comp as part of our insurance",
@@ -671,7 +698,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000002",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "cjVwQ29lMFZUSDBBWlhFOQ"
+  "key": "cjVwQ29lMFZUSDBBWlhFOQ",
+  "status": "open"
  },
  {
   "task": "Start rough electrical and trenching once lumber moved out of backyard",
@@ -691,7 +719,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000000",
   "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
-  "key": "aEpUQTE5Q3RKN0RhQTdMWg"
+  "key": "aEpUQTE5Q3RKN0RhQTdMWg",
+  "status": "open"
  },
  {
   "task": "Eric Berman to deliver the news when ready",
@@ -711,7 +740,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000006",
   "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
-  "key": "YldtOHYxU2dBSVY5WDBwcw"
+  "key": "YldtOHYxU2dBSVY5WDBwcw",
+  "status": "open"
  },
  {
   "task": "@Nichole Nelson @Stephanie Pretto Please review the 01 Admin uploads folder and adjudicate each item therein... i've asked for this several",
@@ -731,7 +761,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000003",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "YW93OS1wOERVY0gtaC0yTA"
+  "key": "YW93OS1wOERVY0gtaC0yTA",
+  "status": "open"
  },
  {
   "task": "@Nichole Nelson @Stephanie Pretto Please review the 01 Admin uploads folder and adjudicate each item therein... i've asked for this several",
@@ -751,7 +782,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000008",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "OFpKTzZudEZKQ1J3cXEyYQ"
+  "key": "OFpKTzZudEZKQ1J3cXEyYQ",
+  "status": "open"
  },
  {
   "task": "Compare HVAC Quotes: Determine the price difference for the 409 Carter Street system replacement between the current estimate (Watkins) and quotes from Lang",
@@ -771,7 +803,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000009",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "alk1aHl2Vi1Tc1hOUVd5bw"
+  "key": "alk1aHl2Vi1Tc1hOUVd5bw",
+  "status": "open"
  },
  {
   "task": "Research Cleaning Frequency: Investigate why the dryer duct at 137 Old Jericho Unit B requires repeated cleaning before approving further maintenance work",
@@ -791,7 +824,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000010",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "Y3AxM3RvcmVhQ2Y5NTY4Qg"
+  "key": "Y3AxM3RvcmVhQ2Y5NTY4Qg",
+  "status": "open"
  },
  {
   "task": "Verify Roof Status: Follow up with the contractor (EFG) to verify if roof work at the storage facility is finished",
@@ -811,7 +845,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000011",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "d0s4bHhLUmVRekFhSXlVMQ"
+  "key": "d0s4bHhLUmVRekFhSXlVMQ",
+  "status": "open"
  },
  {
   "task": "Review Repair Quotes: Review the maintenance work orders for 602 Battery Lane to evaluate costs and determine if independent re-quoting is required",
@@ -831,7 +866,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000012",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "R0EtZmU3TEVsbHpoT0tLeQ"
+  "key": "R0EtZmU3TEVsbHpoT0tLeQ",
+  "status": "open"
  },
  {
   "task": "Construction Client Updates",
@@ -851,7 +887,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000013",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "VjBqUzZKR1F6TUNGLUgtbg"
+  "key": "VjBqUzZKR1F6TUNGLUgtbg",
+  "status": "open"
  },
  {
   "task": "513 Ribaut Rd: D’s Home Improvements meeting",
@@ -871,7 +908,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000014",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "X2FMR1JXWlpVR2hjbjZIZA"
+  "key": "X2FMR1JXWlpVR2hjbjZIZA",
+  "status": "open"
  },
  {
   "task": "513 Ribaut Rd: Llewelyn - carpentry meeting",
@@ -891,7 +929,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000016",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "RjdNam5FdlN4aG1SbXJBNg"
+  "key": "RjdNam5FdlN4aG1SbXJBNg",
+  "status": "open"
  },
  {
   "task": "Find out more: Dusty Vickers Vicker's Construction or something like that - he does framing, carpentry etc",
@@ -911,7 +950,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000015",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "TGhEWWVVVkU3aHJndnY4eA"
+  "key": "TGhEWWVVVkU3aHJndnY4eA",
+  "status": "open"
  },
  {
   "task": "50 Meridian Rd - build proposal",
@@ -931,7 +971,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000005",
   "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
-  "key": "Q2szY21jVlR2eG9BUC0yZA"
+  "key": "Q2szY21jVlR2eG9BUC0yZA",
+  "status": "open"
  },
  {
   "task": "Please review @Austin Hartman",
@@ -951,7 +992,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000000",
   "lid": "MDQ3NDk4OTQ3ODQxNzQ5NTU3MDU6MDow",
-  "key": "M2NyVDk2ZDlEQlpFZUdMdw"
+  "key": "M2NyVDk2ZDlEQlpFZUdMdw",
+  "status": "open"
  },
  {
   "task": "602 Battery Ln - What’s ETA for completion on cleaning/repairs",
@@ -971,7 +1013,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000017",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "N2lVU01pNVJlbVNpeTdfUA"
+  "key": "N2lVU01pNVJlbVNpeTdfUA",
+  "status": "open"
  },
  {
   "task": "@Nichole Nelson homespring mortgage payment due today, you setting that up and making sure it's the correct amount given that we paid off a",
@@ -991,7 +1034,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000004",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "TUFnWXdUSVlXMjJpblFPMQ"
+  "key": "TUFnWXdUSVlXMjJpblFPMQ",
+  "status": "open"
  },
  {
   "task": "@Stephanie Pretto something else we ought to set up (and by \"we\" i mean you).  When marines transition out of service (and sailors) they",
@@ -1011,7 +1055,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000018",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "TExPdnBPR2E2M3NvNklxZQ"
+  "key": "TExPdnBPR2E2M3NvNklxZQ",
+  "status": "open"
  },
  {
   "task": "@Nichole Nelson I updated the PO template and changed Section 2 in the subcontractor agreement.  Can you re-issue this PO w/ the new PO",
@@ -1031,7 +1076,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000005",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "RmFMS0xqVGZfbENkbE1vRQ"
+  "key": "RmFMS0xqVGZfbENkbE1vRQ",
+  "status": "open"
  },
  {
   "task": "@Stephanie Pretto please attend to this. Re: [Non-DoD Source] Berman Property Group — Interest in NPTU Ship Store Conversion, Bldg 2711",
@@ -1051,7 +1097,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000019",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "RmZ1NmRuM281OEJDNWhweg"
+  "key": "RmZ1NmRuM281OEJDNWhweg",
+  "status": "open"
  },
  {
   "task": "2905 2nd Street Punching h List - Touch up paint in closets, front entryway, bathroom, and walls  ·  Measure and replace all ceiling HVAC vent registers with rust-proof plastic ones",
@@ -1071,7 +1118,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000001",
   "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
-  "key": "OFRnNDZFdzZMOXhpZHY2Sw"
+  "key": "OFRnNDZFdzZMOXhpZHY2Sw",
+  "status": "open"
  },
  {
   "task": "@Nichole Nelson make fireplace PO",
@@ -1091,7 +1139,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000006",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "T2gwck0wQ2RzNUZTdEpMXw"
+  "key": "T2gwck0wQ2RzNUZTdEpMXw",
+  "status": "open"
  },
  {
   "task": "@Nichole Nelson please see attached  Re: Reminder: Waiting for you to sign Lien Waiver AAA Overhead Door",
@@ -1111,7 +1160,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000007",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "VU51dXFyLUdZMVlsOWR4WQ"
+  "key": "VU51dXFyLUdZMVlsOWR4WQ",
+  "status": "open"
  },
  {
   "task": "Build demo via grokbot → github ; customer dashboard, weekly refresh",
@@ -1131,7 +1181,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000007",
   "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
-  "key": "dVVKTEpGbmhEXzNBNzQybw"
+  "key": "dVVKTEpGbmhEXzNBNzQybw",
+  "status": "open"
  },
  {
   "task": "Code insurance expirations on SREO to highlight in diffrent colors depending on upcoming vs past expirations.",
@@ -1151,7 +1202,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000008",
   "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
-  "key": "YWZwWTlwOGZKX1NOOWctYQ"
+  "key": "YWZwWTlwOGZKX1NOOWctYQ",
+  "status": "open"
  },
  {
   "task": "RJP needs to verify straps are on hand",
@@ -1171,7 +1223,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000002",
   "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
-  "key": "anlHV1JrMGZMdjFndjZpag"
+  "key": "anlHV1JrMGZMdjFndjZpag",
+  "status": "open"
  },
  {
   "task": "RJP to install locksmith sign + add QR code sign near keypad",
@@ -1191,7 +1244,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000003",
   "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
-  "key": "S3YxempIN21uSjFnbHJ6bQ"
+  "key": "S3YxempIN21uSjFnbHJ6bQ",
+  "status": "open"
  },
  {
   "task": "Main sign repair - PVC",
@@ -1211,7 +1265,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000007",
   "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
-  "key": "YWpKMk1zbWsxZ3ByNzZ2ag"
+  "key": "YWpKMk1zbWsxZ3ByNzZ2ag",
+  "status": "open"
  },
  {
   "task": "Update worksheet + Need ID who does/doesn’t have workers comp → we’re going to need to get worker’s comp from Brooks  nn to COMPLETE BY 9/4",
@@ -1231,7 +1286,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000008",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "c3JKMWwyc1VxelhJY2FGVA"
+  "key": "c3JKMWwyc1VxelhJY2FGVA",
+  "status": "open"
  },
  {
   "task": "@Richard Pratten can you get the light installed and test all plumbing / electrical",
@@ -1251,7 +1307,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000004",
   "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
-  "key": "dFhLaXlNb3RzQ2VTaDlxaA"
+  "key": "dFhLaXlNb3RzQ2VTaDlxaA",
+  "status": "open"
  },
  {
   "task": "Estimates / POs → send plans w/ SoW for estimate",
@@ -1271,7 +1328,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000020",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "NjRvVnpocTF5QVg5MHZ0Wg"
+  "key": "NjRvVnpocTF5QVg5MHZ0Wg",
+  "status": "open"
  },
  {
   "task": "Maintenance issues → have SHM resolve https://photos.app.goo.gl/MTuMNhZyyNeCL9ci9",
@@ -1291,7 +1349,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000021",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "RlB1dXF3bGRhUTc3b1pDYg"
+  "key": "RlB1dXF3bGRhUTc3b1pDYg",
+  "status": "open"
  },
  {
   "task": "Ribaut Storage - Small facility signs ready",
@@ -1311,7 +1370,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000005",
   "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
-  "key": "VzZDSUxaRFpGT3YxUmx4eA"
+  "key": "VzZDSUxaRFpGT3YxUmx4eA",
+  "status": "open"
  },
  {
   "task": "Measure the interior & exterior metal panels to ID depth of ribs, space b/w each rib etc. IOT identify replacement panel specs.",
@@ -1331,7 +1391,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000006",
   "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
-  "key": "Q1NHaExFc3k4VW5sVm5tcQ"
+  "key": "Q1NHaExFc3k4VW5sVm5tcQ",
+  "status": "open"
  },
  {
   "task": "Contractor Welcome Packet",
@@ -1351,7 +1412,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000009",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "NjN2NkJCcWQ3VXVUQ2tuOQ"
+  "key": "NjN2NkJCcWQ3VXVUQ2tuOQ",
+  "status": "open"
  },
  {
   "task": "Repurpose this PVC to hold the signage in at Ribaut Storage",
@@ -1371,7 +1433,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000008",
   "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
-  "key": "VkdhZ0luVG5KM3kxWXZ4dQ"
+  "key": "VkdhZ0luVG5KM3kxWXZ4dQ",
+  "status": "open"
  },
  {
   "task": "Do full audit of this property & listing",
@@ -1391,7 +1454,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000022",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "N0JGSEcwd3RMTE4tWG1PWA"
+  "key": "N0JGSEcwd3RMTE4tWG1PWA",
+  "status": "open"
  },
  {
   "task": "Set up 2 hour weekly time block for team to work on OS each week",
@@ -1411,7 +1475,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000023",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "QTJDanBOWE8wTVFzQ013ZQ"
+  "key": "QTJDanBOWE8wTVFzQ013ZQ",
+  "status": "open"
  },
  {
   "task": "Download all signed lien waivers from Adobe and save in Google Folder",
@@ -1431,7 +1496,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000010",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "aVlsMS02c0NYZmtpUkhhTA"
+  "key": "aVlsMS02c0NYZmtpUkhhTA",
+  "status": "open"
  },
  {
   "task": "@Nichole Nelson make that a part of your insurance project please. getting the policies all in one spot",
@@ -1451,7 +1517,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000011",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "OHhzb0h1TXlsYUVBak80ZQ"
+  "key": "OHhzb0h1TXlsYUVBak80ZQ",
+  "status": "open"
  },
  {
   "task": "@Richard Pratten - when you go over there next, trim the 4 doors down that they're requesting",
@@ -1471,7 +1538,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000009",
   "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
-  "key": "MkdyWFFsNUEyNDY2RkN0Rw"
+  "key": "MkdyWFFsNUEyNDY2RkN0Rw",
+  "status": "open"
  },
  {
   "task": "Get Gallagher insurance the following documents for their competitor pricing review:",
@@ -1491,7 +1559,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000017",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "TG04UTBkckdQWVEwVXZrQQ"
+  "key": "TG04UTBkckdQWVEwVXZrQQ",
+  "status": "open"
  },
  {
   "task": "@Stephanie Pretto please add items to battle rhythm in BPG-OS",
@@ -1511,7 +1580,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000024",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "OXJFRC1Pb1dyaElOVTRfQw"
+  "key": "OXJFRC1Pb1dyaElOVTRfQw",
+  "status": "open"
  },
  {
   "task": "Install other CYA signs from Amazon on the fence when they arrive",
@@ -1531,7 +1601,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000010",
   "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
-  "key": "OGJ1aDV4TnBNSkljNG0tNQ"
+  "key": "OGJ1aDV4TnBNSkljNG0tNQ",
+  "status": "open"
  },
  {
   "task": "@Austin Hartman i need to add you as a signer for BPG vanguard (call 877-662-7447)",
@@ -1551,7 +1622,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000009",
   "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
-  "key": "c1UwSU1WRFR2TG43XzQ1Yw"
+  "key": "c1UwSU1WRFR2TG43XzQ1Yw",
+  "status": "open"
  },
  {
   "task": "[RJP] Replace commercial door thresholds",
@@ -1571,7 +1643,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000012",
   "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
-  "key": "UWRvQnN4ODZndTFqZWdaSQ"
+  "key": "UWRvQnN4ODZndTFqZWdaSQ",
+  "status": "open"
  },
  {
   "task": "[RJP] Replace / repair all caulking along front side of building w/ industrial grade once #1 & 2 complete (EFG)",
@@ -1591,7 +1664,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000011",
   "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
-  "key": "eEZQYjRwM1dvNVo4ZjlrZA"
+  "key": "eEZQYjRwM1dvNVo4ZjlrZA",
+  "status": "open"
  },
  {
   "task": "USPS - Need to install mailbox in approved location w/ USPS and mark w/ lettering",
@@ -1611,7 +1685,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000013",
   "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
-  "key": "b2FLeGR1Z0xtMkI4WXUtUg"
+  "key": "b2FLeGR1Z0xtMkI4WXUtUg",
+  "status": "open"
  },
  {
   "task": "[RJP] Assess locks & doors for each unit (as allowed)",
@@ -1631,7 +1706,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000014",
   "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
-  "key": "cGRaei1TSjBKM0hYMzJQNg"
+  "key": "cGRaei1TSjBKM0hYMzJQNg",
+  "status": "open"
  },
  {
   "task": "[SMP] Build 1st Draft of Disposition Section of SOP.  How we handle sales of properties, lease listings, etc. → take our DD checklist and incorporate. 3/20",
@@ -1651,7 +1727,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000025",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "NGxjTHMwU3l2empmQ1p1Ng"
+  "key": "NGxjTHMwU3l2empmQ1p1Ng",
+  "status": "open"
  },
  {
   "task": "I think this should effectively be zero'd out, since the HOA has been billing against this each month and it's gone down over time - In",
@@ -1671,7 +1748,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000012",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "dU42S1ZNcUpnYTlVWkx6YQ"
+  "key": "dU42S1ZNcUpnYTlVWkx6YQ",
+  "status": "open"
  },
  {
   "task": "This shows Investment into Viktor Group by Ember.  Is there an equivalent to this on Viktor's books?  Would this show up under Equity on",
@@ -1691,7 +1769,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000013",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "TXBydzJ5a1pmZDFzZWM3Qg"
+  "key": "TXBydzJ5a1pmZDFzZWM3Qg",
+  "status": "open"
  },
  {
   "task": "Shouldn't these amortization lines be zero'd out as well?",
@@ -1711,7 +1790,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000014",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "VURvRHZmbE1rR2lMZmpOZw"
+  "key": "VURvRHZmbE1rR2lMZmpOZw",
+  "status": "open"
  },
  {
   "task": "I'm tracking a different outstanding loan amount - I'm tracking $404,322 - where's the JE that sold 65 sams point rd, shouldn't that have",
@@ -1731,7 +1811,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000015",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "MTdmVExaQS12RHRmZFlSNg"
+  "key": "MTdmVExaQS12RHRmZFlSNg",
+  "status": "open"
  },
  {
   "task": "How can we clear out this line on BPG B/S? @Nichole Nelson",
@@ -1751,7 +1832,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000016",
   "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
-  "key": "QzdKVWVLeFg0OThpNm5YRw"
+  "key": "QzdKVWVLeFg0OThpNm5YRw",
+  "status": "open"
  },
  {
   "task": "Close out BRB Acquisitions",
@@ -1771,7 +1853,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000010",
   "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
-  "key": "SGczeWNwRlBOeTNEZ1BRTA"
+  "key": "SGczeWNwRlBOeTNEZ1BRTA",
+  "status": "open"
  },
  {
   "task": "[ESB] Build 1st Draft of Acquisition Section of SOP. → 3/20",
@@ -1791,7 +1874,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000011",
   "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
-  "key": "b1BNcEpESHJmVzhZWTRTdg"
+  "key": "b1BNcEpESHJmVzhZWTRTdg",
+  "status": "open"
  },
  {
   "task": "Create before / after video and add to website",
@@ -1811,7 +1895,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000029",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "MWZaaEpqb1JGampiSVJydA"
+  "key": "MWZaaEpqb1JGampiSVJydA",
+  "status": "open"
  },
  {
   "task": "REAL AI  propstream comparison",
@@ -1831,7 +1916,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000026",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "dkl6X2JReVVHMUlNaFktLQ"
+  "key": "dkl6X2JReVVHMUlNaFktLQ",
+  "status": "open"
  },
  {
   "task": "We can also sort by Stage - i'll mess w/ this later",
@@ -1851,7 +1937,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000012",
   "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
-  "key": "YTMwbEVqZnVCTXJPb0h3Qg"
+  "key": "YTMwbEVqZnVCTXJPb0h3Qg",
+  "status": "open"
  },
  {
   "task": "2119 SIP Before/After video",
@@ -1871,7 +1958,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000027",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "M3RndEMtZmVCVFFSaDMtWA"
+  "key": "M3RndEMtZmVCVFFSaDMtWA",
+  "status": "open"
  },
  {
   "task": "Create before/after video and add to website",
@@ -1891,7 +1979,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000028",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "cTFYQ3JXVUhFYXJvME5haQ"
+  "key": "cTFYQ3JXVUhFYXJvME5haQ",
+  "status": "open"
  },
  {
   "task": "1x per month, send list of vacancies and construction openings to distro list (Dukes, Guerrero, Phillips, Megan/Hannah, Scott, Summerall, Dean, etc)",
@@ -1911,7 +2000,8 @@ const TASKS = [
   "parent": "",
   "position": "00000000000000000030",
   "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
-  "key": "YmZOTmt0R29pTG5GMmxOUA"
+  "key": "YmZOTmt0R29pTG5GMmxOUA",
+  "status": "open"
  },
  {
   "task": "Review change order: Analyze the Mom Grace change order in the chat for approval",
@@ -1931,7 +2021,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-01",
-  "key": "d440a1536cf8fd44"
+  "key": "d440a1536cf8fd44",
+  "status": "open"
  },
  {
   "task": "Provide policy data: Retrieve insurance policy details regarding reported gross revenue and expenses to support the audit process",
@@ -1951,7 +2042,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-01",
-  "key": "70164d43133fbe6c"
+  "key": "70164d43133fbe6c",
+  "status": "open"
  },
  {
   "task": "Review insurance audit: Examine the drafted insurance audit documents for the general liability policy",
@@ -1971,7 +2063,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-01",
-  "key": "6ecdbff655b512ba"
+  "key": "6ecdbff655b512ba",
+  "status": "open"
  },
  {
   "task": "Research cleaning frequency: Investigate why the dryer duct at 137 Old Jericho unit B requires repeated cleaning before approving the maintenance work",
@@ -1991,7 +2084,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-01",
-  "key": "0b9b6d477c3bbf7f"
+  "key": "0b9b6d477c3bbf7f",
+  "status": "open"
  },
  {
   "task": "Compare HVAC quotes: Determine the price difference for the 409 Carter Street system replacement between the current estimate and quotes from Lang",
@@ -2011,7 +2105,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-01",
-  "key": "2710ff032c976ca6"
+  "key": "2710ff032c976ca6",
+  "status": "open"
  },
  {
   "task": "Update banner: Modify the Reboot storage banner by the end of the day",
@@ -2031,27 +2126,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-01",
-  "key": "280b0d62fe5b3aec"
- },
- {
-  "task": "Engage legal counsel: Contact the recommended Charleston attorney to initiate mechanics lien and litigation filings",
-  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
-  "section": "SYNC notes",
-  "space": "",
-  "type": "general",
-  "person": "Eric",
-  "due": "",
-  "source": "email",
-  "sid": "",
-  "tid": "",
-  "did": "",
-  "openUrl": "",
-  "originUrl": "",
-  "updated": "",
-  "parent": "",
-  "position": "",
-  "noteDate": "2026-10-01",
-  "key": "2900749abbc7f427"
+  "key": "280b0d62fe5b3aec",
+  "status": "open"
  },
  {
   "task": "Verify Roof Status: Verify if the contractor has finished the roof work at the storage facility and update the team",
@@ -2071,27 +2147,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-01",
-  "key": "c15c30f5b0a77ca6"
- },
- {
-  "task": "Contact Kevin to confirm if the deposition schedule has changed",
-  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
-  "section": "SYNC notes",
-  "space": "",
-  "type": "general",
-  "person": "Eric",
-  "due": "",
-  "source": "email",
-  "sid": "",
-  "tid": "",
-  "did": "",
-  "openUrl": "",
-  "originUrl": "",
-  "updated": "",
-  "parent": "",
-  "position": "",
-  "noteDate": "2026-10-01",
-  "key": "7e827771fed425a2"
+  "key": "c15c30f5b0a77ca6",
+  "status": "open"
  },
  {
   "task": "Send Plumbing Documents: Forward the notes regarding plumbing and electrical work to the buyer to provide property information",
@@ -2111,7 +2168,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-01",
-  "key": "faa6b2afd606142f"
+  "key": "faa6b2afd606142f",
+  "status": "open"
  },
  {
   "task": "Consolidate Applications: Consolidate the debids applications as requested by the client contact",
@@ -2119,7 +2177,7 @@ const TASKS = [
   "section": "SYNC notes",
   "space": "",
   "type": "general",
-  "person": "Eric",
+  "person": "Stephanie",
   "due": "",
   "source": "email",
   "sid": "",
@@ -2131,7 +2189,9 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-01",
-  "key": "03d56d2bc02890a7"
+  "key": "03d56d2bc02890a7",
+  "reassignedFrom": "Eric",
+  "status": "reassigned"
  },
  {
   "task": "Schedule Training: Schedule a 3 hour training session between Eric and Richard for Thursday",
@@ -2151,7 +2211,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-01",
-  "key": "6d0fc47798ee634a"
+  "key": "6d0fc47798ee634a",
+  "status": "open"
  },
  {
   "task": "Contact Jared to address the lumber delivery delay for 1911 Derby",
@@ -2171,7 +2232,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-01",
-  "key": "ddd625cb598ebb97"
+  "key": "ddd625cb598ebb97",
+  "status": "open"
  },
  {
   "task": "Communicate Delay: Communicate the reasons for the roof installation delay at 1911 Derby to the client",
@@ -2191,7 +2253,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-01",
-  "key": "c2792d683b45e074"
+  "key": "c2792d683b45e074",
+  "status": "open"
  },
  {
   "task": "Update Clients: Draft an apology and explanation regarding the project delay for Tony and Allison",
@@ -2211,7 +2274,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-01",
-  "key": "f43fbc6e5065e343"
+  "key": "f43fbc6e5065e343",
+  "status": "open"
  },
  {
   "task": "Check Cables: Inspect the quick tie cables at the site in the morning",
@@ -2231,7 +2295,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-01",
-  "key": "de2b4bb95a547a89"
+  "key": "de2b4bb95a547a89",
+  "status": "open"
  },
  {
   "task": "Connect Clients: Email David and Jared to introduce them regarding the exterior door installation",
@@ -2251,27 +2316,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-01",
-  "key": "0db651895fdebe81"
- },
- {
-  "task": "Sync Meeting: Reschedule the team sync meeting to 9:30 AM.",
-  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
-  "section": "SYNC notes",
-  "space": "",
-  "type": "general",
-  "person": "Eric",
-  "due": "",
-  "source": "email",
-  "sid": "",
-  "tid": "",
-  "did": "",
-  "openUrl": "",
-  "originUrl": "",
-  "updated": "",
-  "parent": "",
-  "position": "",
-  "noteDate": "2026-10-06",
-  "key": "cf9f10ad5e76bd1b"
+  "key": "0db651895fdebe81",
+  "status": "open"
  },
  {
   "task": "Discuss Audit: Discuss audit feedback with Brooks to determine the correct reporting figures before final submission.",
@@ -2291,7 +2337,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "0c8c5f1db5a4a277"
+  "key": "0c8c5f1db5a4a277",
+  "status": "open"
  },
  {
   "task": "Correct Invoice: Call Dlair to request a correction for the Frick Street invoice.",
@@ -2311,7 +2358,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "895df558f5737407"
+  "key": "895df558f5737407",
+  "status": "open"
  },
  {
   "task": "Send Payment: Process the progress payment to Edgar for the Mom Grace project.",
@@ -2331,7 +2379,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "f0d880d51a80fb34"
+  "key": "f0d880d51a80fb34",
+  "status": "open"
  },
  {
   "task": "Pay Invoice: Contact Cook and Boardman to pay the outstanding invoice.",
@@ -2351,7 +2400,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "f4ee8b869cd838af"
+  "key": "f4ee8b869cd838af",
+  "status": "open"
  },
  {
   "task": "Resolve Billing: Contact CC Storage to resolve the unauthorized recurring charges on the company card.",
@@ -2371,7 +2421,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "696f496fb00b2f4b"
+  "key": "696f496fb00b2f4b",
+  "status": "open"
  },
  {
   "task": "Invoice Derby: Prepare the Derby invoice for the upcoming Friday billing cycle.",
@@ -2391,7 +2442,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "f29435d757208c2f"
+  "key": "f29435d757208c2f",
+  "status": "open"
  },
  {
   "task": "Collect Payment: Contact Joy Patterson regarding outstanding payments for Rebo Storage units.",
@@ -2411,7 +2463,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "4cd3a75956310d5d"
+  "key": "4cd3a75956310d5d",
+  "status": "open"
  },
  {
   "task": "Payment Reminder: Send a payment reminder to the client for the Rebo Road project.",
@@ -2431,7 +2484,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "8563f85fb25c968a"
+  "key": "8563f85fb25c968a",
+  "status": "open"
  },
  {
   "task": "Collect Payment: Call Alpha Graphics to collect outstanding funds for work performed at 65 Sams.",
@@ -2451,7 +2505,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "5dfdac1bae8308df"
+  "key": "5dfdac1bae8308df",
+  "status": "open"
  },
  {
   "task": "Notify Account Rep: Notify the representative Stephen about the new automatic payment setup for 27 Miller.",
@@ -2471,7 +2526,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "9b46238fdbebba8a"
+  "key": "9b46238fdbebba8a",
+  "status": "open"
  },
  {
   "task": "Website Strategy: Evaluate business positioning and branding strategy to prepare for a website refresh.",
@@ -2491,7 +2547,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "a1f6b6e1b511b03a"
+  "key": "a1f6b6e1b511b03a",
+  "status": "open"
  },
  {
   "task": "Forward Email: Forward the email from Chris Fates regarding the 1904 Pigeon Point Road plan updates to Eric Berman.",
@@ -2511,7 +2568,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "c5d24d294bd5d8af"
+  "key": "c5d24d294bd5d8af",
+  "status": "open"
  },
  {
   "task": "Clean Storage Unit: Clean out unit 66 of Rebo Storage, including removing the dead animal from the concrete.",
@@ -2531,27 +2589,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "e637d90111110fa8"
- },
- {
-  "task": "Call Eli: Call Eli to discuss his development proposal for 614, including potential financing options.",
-  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
-  "section": "SYNC notes",
-  "space": "",
-  "type": "general",
-  "person": "Eric",
-  "due": "",
-  "source": "email",
-  "sid": "",
-  "tid": "",
-  "did": "",
-  "openUrl": "",
-  "originUrl": "",
-  "updated": "",
-  "parent": "",
-  "position": "",
-  "noteDate": "2026-10-06",
-  "key": "24eda849f3668b9c"
+  "key": "e637d90111110fa8",
+  "status": "open"
  },
  {
   "task": "Contact DBM Roofing: Call Brandon to enforce the original contract price of 9950 dollars for the standing seam roof.",
@@ -2571,7 +2610,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "73546fc01aba9f10"
+  "key": "73546fc01aba9f10",
+  "status": "open"
  },
  {
   "task": "Source gutters: Schedule installation for gutters and downspouts on the Allison project.",
@@ -2591,7 +2631,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "f199044ed04ebb2c"
+  "key": "f199044ed04ebb2c",
+  "status": "open"
  },
  {
   "task": "Connect fridge: Plug in the refrigerator at the property.",
@@ -2611,7 +2652,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "d8b7e05284e6fa29"
+  "key": "d8b7e05284e6fa29",
+  "status": "open"
  },
  {
   "task": "Notify Mikey: Inform Mikey about the scheduled electrical meter move.",
@@ -2631,7 +2673,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "06187a7f888f7f4e"
+  "key": "06187a7f888f7f4e",
+  "status": "open"
  },
  {
   "task": "Manage dumpster: Check with Richard regarding required dumpster change outs this week.",
@@ -2651,7 +2694,8 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "e57aba00e6285d0e"
+  "key": "e57aba00e6285d0e",
+  "status": "open"
  },
  {
   "task": "Launch project: Start the planning process for the Wick Hawks project.",
@@ -2671,10 +2715,11 @@ const TASKS = [
   "parent": "",
   "position": "",
   "noteDate": "2026-10-06",
-  "key": "347f4e7806fe2cbb"
+  "key": "347f4e7806fe2cbb",
+  "status": "open"
  }
 ];
-const BUILD_ID = "20261008153945";
+const BUILD_ID = "20261008161110";
 window.DASH_APP_URL = "https://script.google.com/a/macros/bermanpropertygroupllc.com/s/AKfycbxm4nCug0xDXB_Aqu7a_tQ3Xlc5LDtEJcL48r-E_NOTiSdw35PpJK4ddx5BtM2mr7UH/exec";
 
 // ── Sort// ── Sort / expand state ───────────────────────────────────────────────────
@@ -2767,12 +2812,14 @@ function getFilteredTasks() {
   const fP = document.getElementById('filter-person').value;
   const fSp= document.getElementById('filter-space').value;
   const fSrc=document.getElementById('filter-source').value;
-  return TASKS.map((t,i)=>({...t,_idx:i,done:(window.bpgIsDone&&bpgIsDone(t))?'1':'0'})).filter(t => {
+  const fSt=(document.getElementById('filter-status')||{}).value||'';
+  return TASKS.map((t,i)=>({...t,_idx:i,done:window.bpgStatusRank?bpgStatusRank(t):'0'})).filter(t => {
     if (q && ![t.task,t.detail,t.space,t.person,t.section].some(f=>(f||'').toLowerCase().includes(q))) return false;
     if (fS  && t.section!==fS)  return false;
     if (fP  && t.person !==fP)  return false;
     if (fSp && t.space  !==fSp) return false;
     if (fSrc&& t.source !==fSrc)return false;
+    if (fSt && !(window.bpgMatchStatus ? bpgMatchStatus(t, fSt) : (fSt === 'open'))) return false;
     return true;
   });
 }
@@ -2893,14 +2940,14 @@ function sortTable(col) {
 }
 function clearFilters() {
   document.getElementById('search').value='';
-  ['filter-section','filter-person','filter-space','filter-source'].forEach(id=>document.getElementById(id).value='');
+  ['filter-section','filter-person','filter-space','filter-source','filter-status'].forEach(id=>document.getElementById(id).value='');
   renderTable();
 }
 function filterByPerson(p)  { document.getElementById('filter-person').value=p;  renderTable(); }
 function filterBySection(s) { document.getElementById('filter-section').value=s; renderTable(); }
 
 document.getElementById('search').addEventListener('input', renderTable);
-['filter-section','filter-person','filter-space','filter-source'].forEach(id=>
+['filter-section','filter-person','filter-space','filter-source','filter-status'].forEach(id=>
   document.getElementById(id).addEventListener('change', renderTable));
 
 // ── Space/Area dropdown — built dynamically from TASKS data ──────────────
@@ -3016,7 +3063,9 @@ renderTable();
   try { store = JSON.parse(localStorage.getItem(LS) || '{}') || {}; } catch (e) { store = {}; }
   var now = Date.now();
   Object.keys(store).forEach(function(k){
-    var v = store[k] || {};
+    var v = store[k];
+    if (!v || typeof v !== 'object') { delete store[k]; return; }
+    if (!v.act) v.act = 'done'; // entries saved before actions were tracked meant "completed"
     if (v.build !== BUILD_ID && now - (v.at || 0) > 3 * 3600 * 1000) delete store[k];
   });
   function save(){ try { localStorage.setItem(LS, JSON.stringify(store)); } catch (e) {} }
@@ -3026,6 +3075,22 @@ renderTable();
 
   window.bpgState = function(t){ return (t && t.key && store[t.key]) || null; };
   window.bpgIsDone = function(t){ return !!bpgState(t); };
+  // A click on this device wins. Otherwise the status baked in at rebuild.
+  window.bpgStatus = function(t){
+    var st = bpgState(t);
+    if (st && st.act) return st.act;
+    return (t && t.status) || 'open';
+  };
+  window.bpgMatchStatus = function(t, f){
+    if (!f) return true;
+    var act = (bpgState(t) || {}).act || '';
+    if (f === 'open') return !act && ((t.status || 'open') === 'open');
+    if (f === 'reassigned') return act === 'reassigned' || (!act && !!t.reassignedFrom);
+    if (f === 'handedoff') return act === 'handedoff' || (!act && t.source === 'handoff');
+    return act === f;
+  };
+  var STATUS_RANK = { open:'0', done:'1', promoted:'2', dismissed:'3', reassigned:'4', handedoff:'5', deleted:'6' };
+  window.bpgStatusRank = function(t){ return STATUS_RANK[bpgStatus(t)] || '9'; };
   window.bpgRowClass = function(t){
     var st = bpgState(t); if (!st) return '';
     return ' is-done' + ((st.act === 'done' || st.act === 'dismissed' || st.act === 'deleted') ? ' strike' : '');
