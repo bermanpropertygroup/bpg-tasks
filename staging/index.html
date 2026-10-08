@@ -1,0 +1,3221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>STAGING · BPG All-Tasks Dashboard</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; color: #1a1a2e; }
+
+  header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+    color: white; padding: 24px 32px; display: flex; align-items: center;
+    justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  }
+  header h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: 0.5px; }
+  header p { font-size: 0.82rem; opacity: 0.65; margin-top: 4px; }
+  .source-pills { display: flex; gap: 8px; margin-top: 8px; }
+  .source-pill { font-size: 0.7rem; font-weight: 700; padding: 2px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .pill-gchat { background: rgba(255,255,255,0.18); color: #fff; }
+  .pill-gdocs { background: rgba(255,255,255,0.18); color: #fff; }
+  .header-stats { display: flex; gap: 24px; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat .num { font-size: 2rem; font-weight: 800; color: #e94560; }
+  .stat .lbl { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; }
+
+  /* Controls */
+  .controls {
+    background: white; padding: 12px 32px; display: flex; gap: 10px;
+    flex-wrap: wrap; align-items: center; border-bottom: 1px solid #e0e0e0;
+    position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .controls label { font-size: 0.78rem; font-weight: 600; color: #666; margin-right: 3px; white-space: nowrap; }
+  .controls select, .controls input {
+    border: 1px solid #ddd; border-radius: 8px; padding: 6px 10px;
+    font-size: 0.82rem; background: #fafafa; cursor: pointer; outline: none; transition: border 0.2s;
+  }
+  .controls select:focus, .controls input:focus { border-color: #0f3460; }
+  .controls input { width: 200px; }
+  .clear-btn {
+    margin-left: auto; background: #e94560; color: white; border: none;
+    border-radius: 8px; padding: 6px 14px; font-size: 0.8rem; font-weight: 600;
+    cursor: pointer; transition: background 0.2s; white-space: nowrap;
+  }
+  .clear-btn:hover { background: #c73652; }
+
+  .main { padding: 22px 32px; }
+
+  /* Summary Cards */
+  .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .card { background: white; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid #ccc; transition: transform 0.15s; cursor: pointer; }
+  .card:hover { transform: translateY(-2px); }
+  .card.c-nichole   { border-color: #e65100; }
+  .card.c-stephanie { border-color: #e94560; }
+  .card.c-eric      { border-color: #0f3460; }
+  .card.c-austin    { border-color: #2e7d32; }
+  .card.c-unassigned{ border-color: #9e9e9e; }
+  .card.c-total     { border-color: #f5a623; }
+  .card .card-num { font-size: 2rem; font-weight: 800; }
+  .card.c-nichole   .card-num { color: #e65100; }
+  .card.c-stephanie .card-num { color: #e94560; }
+  .card.c-eric      .card-num { color: #0f3460; }
+  .card.c-austin    .card-num { color: #2e7d32; }
+  .card.c-unassigned .card-num { color: #9e9e9e; }
+  .card.c-total     .card-num { color: #f5a623; }
+  .card .card-label { font-size: 0.72rem; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 3px; }
+
+  /* Section legend */
+  .section-legend { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; }
+  .section-legend span { font-size: 0.72rem; font-weight: 700; color: #888; margin-right: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .leg-pill { display: inline-block; padding: 3px 11px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
+  .leg-pill:hover { opacity: 0.75; }
+
+  /* Table */
+  .table-wrap { background: white; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); overflow: hidden; }
+  .table-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid #f0f0f0; }
+  .table-header h2 { font-size: 0.95rem; font-weight: 700; color: #1a1a2e; }
+  .task-count { font-size: 0.78rem; color: #888; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    background: #f8f9fc; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.8px; color: #555; padding: 11px 14px; text-align: left;
+    border-bottom: 2px solid #eee; cursor: pointer; user-select: none; white-space: nowrap;
+  }
+  th:hover { background: #eef0f8; }
+  th .sort-icon { margin-left: 4px; opacity: 0.4; }
+  th.sorted .sort-icon { opacity: 1; color: #0f3460; }
+
+  /* Main task row */
+  tr.task-row td { padding: 11px 14px; border-bottom: 1px solid #f4f4f4; font-size: 0.86rem; vertical-align: middle; }
+  tr.task-row:last-of-type td { border-bottom: none; }
+  tr.task-row { cursor: pointer; }
+  tr.task-row:hover td { background: #f5f7ff; }
+  tr.task-row.expanded td { background: #f0f4ff; border-bottom: none; }
+
+  .task-name-cell { font-weight: 600; color: #1a1a2e; }
+  .task-title-row { display: flex; align-items: flex-start; gap: 8px; }
+
+  /* Expand chevron */
+  .chevron {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0; margin-top: 1px;
+    font-size: 0.65rem; color: #aaa; transition: transform 0.2s, color 0.2s;
+  }
+  .chevron.has-detail { color: #0f3460; }
+  .chevron.open { transform: rotate(90deg); color: #0f3460; }
+  .no-detail-icon { width: 18px; height: 18px; display: inline-block; flex-shrink: 0; }
+
+  /* Detail expand row */
+  tr.detail-row td {
+    padding: 0; border-bottom: 1px solid #e8edf8;
+    background: #f0f4ff;
+  }
+  tr.detail-row.hidden { display: none; }
+  .detail-inner {
+    padding: 12px 14px 14px 48px;
+    font-size: 0.84rem; color: #374151; line-height: 1.6;
+    border-left: 3px solid #0f3460; margin: 0 14px 10px 14px;
+    background: white; border-radius: 0 8px 8px 0;
+  }
+  .detail-inner .detail-label {
+    font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+    color: #0f3460; margin-bottom: 5px;
+  }
+  .detail-inner .detail-text { color: #374151; }
+  .detail-inner .detail-missing {
+    color: #aaa; font-style: italic; font-size: 0.8rem;
+  }
+
+  /* Person badges */
+  .person { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 20px; font-size: 0.73rem; font-weight: 600; white-space: nowrap; }
+  .person-eric       { background: #e8eeff; color: #0f3460; }
+  .person-stephanie  { background: #ffe8ee; color: #c62450; }
+  .person-austin     { background: #e8f5e9; color: #2e7d32; }
+  .person-nichole    { background: #fff8e1; color: #e65100; }
+  .person-unassigned { background: #f5f5f5; color: #757575; }
+  .person .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+  /* Space tag */
+  .space-tag { display: inline-block; padding: 2px 8px; border-radius: 5px; font-size: 0.71rem; font-weight: 600; background: #f0f0f0; color: #444; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .space-tag.type-accounting { background: #fff8e1; color: #e65100; }
+  .space-tag.type-general    { background: #e8eeff; color: #1a237e; }
+  .space-tag.type-marketing  { background: #fce4ec; color: #880e4f; }
+  .space-tag.type-cx         { background: #e8f5e9; color: #1b5e20; }
+  .space-tag.type-ix         { background: #e3f2fd; color: #0d47a1; }
+
+  /* Section badges */
+  .sec-badge { display: inline-block; padding: 2px 8px; border-radius: 5px; font-size: 0.68rem; font-weight: 700; white-space: nowrap; letter-spacing: 0.2px; }
+  .sec-bpg-general { background: #ede7f6; color: #4527a0; }
+  .sec-01-acq      { background: #f3e5f5; color: #6a1b9a; }
+  .sec-02-conv     { background: #e8f5e9; color: #1b5e20; }
+  .sec-03-disp     { background: #fff3e0; color: #e65100; }
+  .sec-stab-ix     { background: #e3f2fd; color: #0d47a1; }
+  .sec-archive-ix  { background: #eceff1; color: #546e7a; }
+  .sec-archive-cx  { background: #f1f8e9; color: #558b2f; }
+  .sec-gdocs       { background: #fce4ec; color: #880e4f; }
+
+  /* Source pill */
+  .src-pill { display: inline-block; padding: 1px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .src-gchat { background: #e3f0ff; color: #1565c0; }
+  .src-gdocs { background: #fce4ec; color: #880e4f; }
+  .src-email { background: #e8f5e9; color: #1b5e20; }
+
+  .no-results { text-align: center; padding: 48px; color: #aaa; font-size: 0.95rem; }
+
+  a.task-open-link { color: #0f3460; text-decoration: none; font-weight: 600; }
+  a.task-open-link:hover { text-decoration: underline; color: #e94560; }
+  .detail-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+  .detail-links a {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 0.78rem; font-weight: 700; padding: 4px 10px; border-radius: 6px;
+    text-decoration: none; border: 1px solid #c5d0e6; background: #f5f8ff; color: #0f3460;
+  }
+  .detail-links a:hover { background: #e8eeff; border-color: #0f3460; }
+  .detail-links a.origin-chat { border-color: #90caf9; background: #e3f0ff; color: #1565c0; }
+  .detail-links a.origin-docs { border-color: #f48fb1; background: #fce4ec; color: #880e4f; }
+
+
+
+  /* Updated column */
+  .updated-cell { font-size: 0.78rem; color: #555; white-space: nowrap; }
+  .updated-cell.empty { color: #bbb; }
+
+  /* Subtask cue */
+  .task-title-row.is-subtask { padding-left: 12px; }
+  .subtask-cue {
+    display: inline-block; font-size: 0.68rem; font-weight: 700;
+    color: #6a1b9a; background: #f3e5f5; padding: 1px 7px; border-radius: 4px;
+    margin-right: 4px; flex-shrink: 0; white-space: nowrap;
+  }
+  .parent-hint { font-size: 0.7rem; color: #888; font-weight: 500; margin-top: 2px; }
+
+  @media (max-width: 768px) {
+    header { flex-direction: column; }
+    .main { padding: 14px; }
+    .controls { padding: 10px 14px; }
+  }
+</style>
+
+<style id="bpg-complete-css">
+  .staging-banner { background:#fff3cd; color:#7a5a00; border-bottom:1px solid #f0d78c; padding:8px 32px; font-size:.82rem; font-weight:600; }
+  .staging-banner a { color:#7a5a00; }
+  .table-wrap { overflow-x:auto; }
+  tr.task-row td.done-cell { white-space:nowrap; padding-left:6px; padding-right:6px; }
+  th#th-done { padding-left:6px; padding-right:6px; }
+  button.complete-btn { border:1px solid #2e7d32; background:#fff; color:#2e7d32; border-radius:7px; padding:3px 8px; font-size:.72rem; font-weight:700; cursor:pointer; }
+  button.complete-btn:hover { background:#e8f5e9; }
+  button.complete-btn[disabled] { opacity:.6; cursor:wait; }
+  .done-pill { display:inline-block; font-size:.72rem; font-weight:700; color:#2e7d32; background:#e8f5e9; padding:3px 9px; border-radius:7px; }
+  tr.task-row.is-done td { opacity:.45; }
+  tr.task-row.is-done td.task-name-cell { text-decoration:line-through; }
+  tr.task-row.is-done td.done-cell { opacity:1; text-decoration:none; }
+  .sync-age { font-size:.68rem; color:#888; font-weight:500; margin-top:2px; }
+  #bpg-toast { position:fixed; left:50%; bottom:22px; transform:translateX(-50%); max-width:560px; background:#1a1a2e; color:#fff; padding:10px 16px; border-radius:10px; font-size:.84rem; box-shadow:0 6px 24px rgba(0,0,0,.25); z-index:99; display:none; }
+  #bpg-toast.err { background:#b71c1c; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>📋 BPG All-Tasks Dashboard</h1>
+    <p>STAGING · Berman Property Group · Tasks API · Snapshot of Oct 8, 2026 · 10:00 AM ET · 124 tasks</p>
+    <div class="source-pills">
+      <span class="source-pill pill-gchat">✓ Tasks API</span>
+    </div>
+  </div>
+  <div class="header-stats">
+    <div class="stat"><div class="num" id="total-tasks">84</div><div class="lbl">Total Tasks</div></div>
+    <div class="stat"><div class="num" id="total-sections">–</div><div class="lbl">Sections</div></div>
+    <div class="stat"><div class="num" id="total-unassigned">0</div><div class="lbl">Unassigned</div></div>
+  </div>
+</header>
+
+<div class="staging-banner">Staging copy for testing click-to-complete. The live board is <a href="../">here</a>. SYNC note items older than 7 days are hidden on this copy.</div>
+<div class="controls">
+  <span><label>🔍</label><input type="text" id="search" placeholder="Search tasks, spaces, people..."></span>
+  <span><label>Section:</label>
+    <select id="filter-section">
+      <option value="">All Sections</option>
+      <option value="BPG - General Biz">BPG - General Biz</option>
+      <option value="01 Acquisition">01 Acquisition</option>
+      <option value="02 Conversion">02 Conversion</option>
+      <option value="03 Disposition">03 Disposition</option>
+      <option value="Stabilized - Ix">Stabilized - Ix</option>
+      <option value="Archive - Ix">Archive - Ix</option>
+      <option value="Archive - Cx">Archive - Cx</option>
+    </select>
+  </span>
+  <span><label>Person:</label>
+    <select id="filter-person">
+      <option value="">All People</option>
+      <option value="Nichole">Nichole</option>
+          <option value="Richard">Richard</option>
+      <option value="Stephanie">Stephanie</option>
+      <option value="Eric">Eric</option>
+      <option value="Austin">Austin</option>
+      <option value="Richard">Richard</option>
+      <option value="Unassigned">Unassigned</option>
+    </select>
+  </span>
+  <span><label>Space/Area:</label>
+    <select id="filter-space">
+      <option value="">All</option>
+      <!-- populated dynamically by buildSpaceDropdown() -->
+    </select>
+  </span>
+  <span><label>Source:</label>
+    <select id="filter-source">
+      <option value="">All Sources</option>
+      <option value="tasks-personal">Tasks · Personal</option>
+      <option value="tasks-chat">Tasks · Chat</option>
+      <option value="tasks-docs">Tasks · Docs</option>
+      <option value="email">Email</option>
+    </select>
+  </span>
+  <button class="clear-btn" onclick="clearFilters()">✕ Clear</button>
+</div>
+
+<div class="main">
+  <div class="summary-cards">
+    <div class="card c-nichole"    onclick="filterByPerson('Nichole')">   <div class="card-num" id="cnt-nichole">0</div>   <div class="card-label">Nichole</div></div>
+    <div class="card c-stephanie"  onclick="filterByPerson('Stephanie')"> <div class="card-num" id="cnt-stephanie">0</div> <div class="card-label">Stephanie</div></div>
+    <div class="card c-eric"       onclick="filterByPerson('Eric')">      <div class="card-num" id="cnt-eric">0</div>      <div class="card-label">Eric</div></div>
+    <div class="card c-austin"     onclick="filterByPerson('Austin')">    <div class="card-num" id="cnt-austin">0</div>    <div class="card-label">Austin</div></div>
+    <div class="card c-richard"    onclick="filterByPerson('Richard')">   <div class="card-num" id="cnt-richard">0</div>   <div class="card-label">Richard</div></div>
+    <div class="card c-unassigned" onclick="filterByPerson('Unassigned')"><div class="card-num" id="cnt-unassigned">0</div><div class="card-label">Unassigned</div></div>
+    <div class="card c-total"      onclick="clearFilters()">              <div class="card-num" id="cnt-total">0</div>     <div class="card-label">All Tasks</div></div>
+  </div>
+
+  <div class="section-legend">
+    <span>Section:</span>
+    <span class="leg-pill sec-bpg-general" onclick="filterBySection('BPG - General Biz')">BPG - General Biz</span>
+    <span class="leg-pill sec-02-conv"     onclick="filterBySection('02 Conversion')">02 Conversion (Cx)</span>
+    <span class="leg-pill sec-stab-ix"     onclick="filterBySection('Stabilized - Ix')">Stabilized Ix</span>
+    <span class="leg-pill sec-archive-cx"  onclick="filterBySection('Archive - Cx')">Archive Cx</span>
+    <span class="leg-pill sec-archive-ix"  onclick="filterBySection('Archive - Ix')">Archive Ix</span>
+  </div>
+
+  <div class="table-wrap">
+    <div class="table-header">
+      <h2>Active Tasks <span style="font-size:0.75rem;font-weight:400;color:#aaa;margin-left:8px;">▶ click any row to expand full context</span></h2>
+      <span class="task-count" id="showing-count"></span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th onclick="sortTable('task')"    id="th-task">Task <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable('section')" id="th-section">Section <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable('space')"   id="th-space">Space / Area <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable('person')"  id="th-person">Assigned To <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable('due')"     id="th-due">Due <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable('updated')" id="th-updated">Updated <span class="sort-icon">↕</span></th>
+          <th id="th-done">Done</th>
+          <th onclick="sortTable('source')"  id="th-source">Source <span class="sort-icon">↕</span></th>
+        </tr>
+      </thead>
+      <tbody id="task-tbody"></tbody>
+    </table>
+    <div class="no-results" id="no-results" style="display:none;">No tasks match your filters.</div>
+  </div>
+</div>
+
+<script>
+const SECTION_CLASS = {
+  "BPG - General Biz": "sec-bpg-general",
+  "01 Acquisition":    "sec-01-acq",
+  "02 Conversion":     "sec-02-conv",
+  "03 Disposition":    "sec-03-disp",
+  "Stabilized - Ix":   "sec-stab-ix",
+  "Archive - Ix":      "sec-archive-ix",
+  "Archive - Cx":      "sec-archive-cx",
+  "Google Docs":       "sec-gdocs",
+};
+
+// ── Task data ──────────────────────────────────────────────────────────────
+// Fields: task, detail, section, space, type, person, due, source, openUrl, originUrl, updated, parent, position, parentTitle?
+// detail: "" = not yet captured from source; populate on next GChat re-scan
+const TASKS = [
+ {
+  "task": "@Stephanie Pretto coordinate EFG to go look at drywall / paint / siding paint. Access code and all that",
+  "detail": "",
+  "section": "Cx - 404 Euhaw St (Fetterman)",
+  "space": "Cx - 404 Euhaw St (Fetterman)",
+  "type": "cx",
+  "person": "Stephanie",
+  "due": "2026-09-30",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAy-k78EU",
+  "tid": "YnZ0YWpNT19YQnQyRUZWQw",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/bvtajMO_XBt2EFVC?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAy-k78EU/67y6ap8WIc4/67y6ap8WIc4",
+  "updated": "2026-10-07T15:58:58.739Z",
+  "parent": "",
+  "position": "00000000000000000000",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "YnZ0YWpNT19YQnQyRUZWQw"
+ },
+ {
+  "task": "@Stephanie Pretto please text Mikie  and Rob - service disconnect will occur Thursday morning, confirmed w/ Dominion",
+  "detail": "",
+  "section": "Cx - 16 Mum Grace (Herbstman/Simek)",
+  "space": "Cx - 16 Mum Grace (Herbstman/Simek)",
+  "type": "cx",
+  "person": "Stephanie",
+  "due": "2026-10-06",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAqurAXTM",
+  "tid": "YW40c1ZHQ3U1bUkzMnRXTQ",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/an4sVGCu5mI32tWM?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAqurAXTM/_RfJ9kWLdvU/_RfJ9kWLdvU",
+  "updated": "2026-10-06T19:57:44.996Z",
+  "parent": "",
+  "position": "00000000000000000002",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "YW40c1ZHQ3U1bUkzMnRXTQ"
+ },
+ {
+  "task": "@Stephanie Pretto get gutters and downspouts estimates for this job and put in drive",
+  "detail": "",
+  "section": "Cx - 1911 Darby Dr - Garage Addition",
+  "space": "Cx - 1911 Darby Dr - Garage Addition",
+  "type": "cx",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAdhcsRlo",
+  "tid": "R0RTek41UmwzVVNoMWR0WQ",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/GDSzN5Rl3USh1dtY?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAdhcsRlo/HOJky83mGYc/HOJky83mGYc",
+  "updated": "2026-10-06T14:31:49.344Z",
+  "parent": "",
+  "position": "00000000000000000003",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "R0RTek41UmwzVVNoMWR0WQ"
+ },
+ {
+  "task": "Signage for Darrah Hall renovation",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "TFFxb3RLRjNwZHZMcGtWeQ",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/LQqotKF3pdvLpkVy?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=LQqotKF3pdvLpkVy",
+  "updated": "2026-10-06T14:02:37.086Z",
+  "parent": "",
+  "position": "00000000000000000004",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "TFFxb3RLRjNwZHZMcGtWeQ"
+ },
+ {
+  "task": "Build D-, SoE from start to finish for project",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "ZVdHT3ktVGY4NTRiMGRUSw",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/eWGOy-Tf854b0dTK?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=eWGOy-Tf854b0dTK",
+  "updated": "2026-10-06T13:59:56.640Z",
+  "parent": "",
+  "position": "00000000000000000000",
+  "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
+  "key": "ZVdHT3ktVGY4NTRiMGRUSw"
+ },
+ {
+  "task": "1919 Duke St → Give Reagan a proposal",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "UzNteXdxWG1WSjJRRHg4UQ",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/S3mywqXmVJ2QDx8Q?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=S3mywqXmVJ2QDx8Q",
+  "updated": "2026-10-06T13:54:20.872Z",
+  "parent": "",
+  "position": "00000000000000000001",
+  "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
+  "key": "UzNteXdxWG1WSjJRRHg4UQ"
+ },
+ {
+  "task": "828B Paris Ave → Schedule Edgar to replace the balcony door",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "cFpiNWs1ekxwVGpHa0V0eA",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/pZb5k5zLpTjGkEtx?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=pZb5k5zLpTjGkEtx",
+  "updated": "2026-10-06T13:53:42.081Z",
+  "parent": "",
+  "position": "00000000000000000005",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "cFpiNWs1ekxwVGpHa0V0eA"
+ },
+ {
+  "task": "Once received chamber of commerce, flyers, etc.",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "2026-10-06",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "TWxnVW1ZYTNIb3pkcEFQZw",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/MlgUmYa3HozdpAPg?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=MlgUmYa3HozdpAPg",
+  "updated": "2026-10-06T13:40:45.900Z",
+  "parent": "",
+  "position": "00000000000000000006",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "TWxnVW1ZYTNIb3pkcEFQZw"
+ },
+ {
+  "task": "Rae Bittner → Review #s and provide update to Rae",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "dmE1QmFENFVNd1NSOEdqTA",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/va5BaD4UMwSR8GjL?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=va5BaD4UMwSR8GjL",
+  "updated": "2026-10-06T13:34:37.520Z",
+  "parent": "",
+  "position": "00000000000000000003",
+  "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
+  "key": "dmE1QmFENFVNd1NSOEdqTA"
+ },
+ {
+  "task": "Nigel Stroud → Put together an offer",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "WTBEM2dOZ2Y2c2lJWkQtWg",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/Y0D3gNgf6siIZD-Z?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=Y0D3gNgf6siIZD-Z",
+  "updated": "2026-10-06T13:34:27.472Z",
+  "parent": "",
+  "position": "00000000000000000002",
+  "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
+  "key": "WTBEM2dOZ2Y2c2lJWkQtWg"
+ },
+ {
+  "task": "Goal get us able to be bonded up to $3mil",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Nichole",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "UjRnZ3p4SC12dmZtdWVaOQ",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/R4ggzxH-vvfmueZ9?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=R4ggzxH-vvfmueZ9",
+  "updated": "2026-10-06T13:02:32.805Z",
+  "parent": "",
+  "position": "00000000000000000000",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "UjRnZ3p4SC12dmZtdWVaOQ"
+ },
+ {
+  "task": "Goal to get us Worker’s Comp as part of our insurance",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Nichole",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "cjVwQ29lMFZUSDBBWlhFOQ",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/r5pCoe0VTH0AZXE9?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=r5pCoe0VTH0AZXE9",
+  "updated": "2026-10-06T13:02:23.031Z",
+  "parent": "",
+  "position": "00000000000000000001",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "cjVwQ29lMFZUSDBBWlhFOQ"
+ },
+ {
+  "task": "Start rough electrical and trenching once lumber moved out of backyard",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Richard",
+  "due": "2026-10-06",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "aEpUQTE5Q3RKN0RhQTdMWg",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/hJTA19CtJ7DaA7LZ?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=hJTA19CtJ7DaA7LZ",
+  "updated": "2026-10-06T12:30:27.254Z",
+  "parent": "",
+  "position": "00000000000000000000",
+  "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
+  "key": "aEpUQTE5Q3RKN0RhQTdMWg"
+ },
+ {
+  "task": "Eric Berman to deliver the news when ready",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "YldtOHYxU2dBSVY5WDBwcw",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/bWm8v1SgAIV9X0ps?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=bWm8v1SgAIV9X0ps",
+  "updated": "2026-10-05T22:32:33.028Z",
+  "parent": "",
+  "position": "00000000000000000005",
+  "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
+  "key": "YldtOHYxU2dBSVY5WDBwcw"
+ },
+ {
+  "task": "@Nichole Nelson @Stephanie Pretto Please review the 01 Admin uploads folder and adjudicate each item therein... i've asked for this several",
+  "detail": "times.",
+  "section": "BPG - General",
+  "space": "BPG - General",
+  "type": "general",
+  "person": "Nichole",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAxACHEGs",
+  "tid": "YW93OS1wOERVY0gtaC0yTA",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/aow9-p8DUcH-h-2L?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAxACHEGs/fTPTYqIjbdI/fTPTYqIjbdI",
+  "updated": "2026-10-05T21:18:42.396Z",
+  "parent": "",
+  "position": "00000000000000000002",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "YW93OS1wOERVY0gtaC0yTA"
+ },
+ {
+  "task": "@Nichole Nelson @Stephanie Pretto Please review the 01 Admin uploads folder and adjudicate each item therein... i've asked for this several",
+  "detail": "times.",
+  "section": "BPG - General",
+  "space": "BPG - General",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAxACHEGs",
+  "tid": "OFpKTzZudEZKQ1J3cXEyYQ",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/8ZJO6ntFJCRwqq2a?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAxACHEGs/fTPTYqIjbdI/fTPTYqIjbdI",
+  "updated": "2026-10-05T21:18:31.710Z",
+  "parent": "",
+  "position": "00000000000000000007",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "OFpKTzZudEZKQ1J3cXEyYQ"
+ },
+ {
+  "task": "Retrieve Contact Info: Obtain contact information for contractor Dusty Vickers",
+  "detail": "",
+  "section": "My Tasks",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-personal",
+  "sid": "",
+  "tid": "YVRGOWROUlZ0RzRaZUlvag",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/aTF9dNRVtG4ZeIoj?sa=6",
+  "originUrl": "",
+  "updated": "2026-10-02T22:41:29.233Z",
+  "parent": "",
+  "position": "00000000000000000008",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "YVRGOWROUlZ0RzRaZUlvag"
+ },
+ {
+  "task": "Compare HVAC Quotes: Determine the price difference for the 409 Carter Street system replacement between the current estimate (Watkins) and quotes from Lang",
+  "detail": "",
+  "section": "My Tasks",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-personal",
+  "sid": "",
+  "tid": "alk1aHl2Vi1Tc1hOUVd5bw",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/jY5hyvV-SsXNQWyo?sa=6",
+  "originUrl": "",
+  "updated": "2026-10-02T22:41:27.209Z",
+  "parent": "",
+  "position": "00000000000000000009",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "alk1aHl2Vi1Tc1hOUVd5bw"
+ },
+ {
+  "task": "Research Cleaning Frequency: Investigate why the dryer duct at 137 Old Jericho Unit B requires repeated cleaning before approving further maintenance work",
+  "detail": "",
+  "section": "My Tasks",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-personal",
+  "sid": "",
+  "tid": "Y3AxM3RvcmVhQ2Y5NTY4Qg",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/cp13toreaCf9568B?sa=6",
+  "originUrl": "",
+  "updated": "2026-10-02T22:41:26.898Z",
+  "parent": "",
+  "position": "00000000000000000010",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "Y3AxM3RvcmVhQ2Y5NTY4Qg"
+ },
+ {
+  "task": "Find Fireplace Photo: Search online for a reference image of the selected galvalume fireplace topper",
+  "detail": "",
+  "section": "My Tasks",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-personal",
+  "sid": "",
+  "tid": "N05aR252TS1UNUYtTHVWdg",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/7NZGnvM-T5F-LuVv?sa=6",
+  "originUrl": "",
+  "updated": "2026-10-02T22:41:24.889Z",
+  "parent": "",
+  "position": "00000000000000000011",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "N05aR252TS1UNUYtTHVWdg"
+ },
+ {
+  "task": "Connect Clients: Email David and Jared to introduce them regarding exterior door installation",
+  "detail": "",
+  "section": "My Tasks",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-personal",
+  "sid": "",
+  "tid": "OTJobzQ1TVRsMVAyeHJNaw",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/92ho45MTl1P2xrMk?sa=6",
+  "originUrl": "",
+  "updated": "2026-10-02T22:41:23.870Z",
+  "parent": "",
+  "position": "00000000000000000012",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "OTJobzQ1TVRsMVAyeHJNaw"
+ },
+ {
+  "task": "Verify Roof Status: Follow up with the contractor (EFG) to verify if roof work at the storage facility is finished",
+  "detail": "",
+  "section": "My Tasks",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-personal",
+  "sid": "",
+  "tid": "d0s4bHhLUmVRekFhSXlVMQ",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/wK8lxKReQzAaIyU1?sa=6",
+  "originUrl": "",
+  "updated": "2026-10-02T22:41:22.173Z",
+  "parent": "",
+  "position": "00000000000000000013",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "d0s4bHhLUmVRekFhSXlVMQ"
+ },
+ {
+  "task": "Follow Up Quote: Contact Snotty to obtain a revised quote for the project",
+  "detail": "",
+  "section": "My Tasks",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-personal",
+  "sid": "",
+  "tid": "TEJCaHF3OWRmbG1WN3BpTw",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/LBBhqw9dflmV7piO?sa=6",
+  "originUrl": "",
+  "updated": "2026-10-02T22:41:21.324Z",
+  "parent": "",
+  "position": "00000000000000000014",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "TEJCaHF3OWRmbG1WN3BpTw"
+ },
+ {
+  "task": "Review Repair Quotes: Review the maintenance work orders for 602 Battery Lane to evaluate costs and determine if independent re-quoting is required",
+  "detail": "",
+  "section": "My Tasks",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-personal",
+  "sid": "",
+  "tid": "R0EtZmU3TEVsbHpoT0tLeQ",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/GA-fe7LEllzhOKKy?sa=6",
+  "originUrl": "",
+  "updated": "2026-10-02T22:41:21.026Z",
+  "parent": "",
+  "position": "00000000000000000015",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "R0EtZmU3TEVsbHpoT0tLeQ"
+ },
+ {
+  "task": "Construction Client Updates",
+  "detail": "1911 Darby - Alison Greco and Tony\n504 King St - Greg/Bill\n2507 Fripp St - Witt Cox\n16 Mum Grace - Rob Herbstman\n18 Indigo Loop - Jeff Popham\n1012 Mustelidae - Parusos",
+  "section": "My Tasks",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "2026-10-02",
+  "source": "tasks-personal",
+  "sid": "",
+  "tid": "VjBqUzZKR1F6TUNGLUgtbg",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/V0jS6JGQzMCF-H-n?sa=6",
+  "originUrl": "",
+  "updated": "2026-10-02T04:00:57.406Z",
+  "parent": "",
+  "position": "00000000000000000016",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "VjBqUzZKR1F6TUNGLUgtbg"
+ },
+ {
+  "task": "513 Ribaut Rd: D’s Home Improvements meeting",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "X2FMR1JXWlpVR2hjbjZIZA",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/_aLGRWZZUGhcn6Hd?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=_aLGRWZZUGhcn6Hd",
+  "updated": "2026-10-01T20:24:35.434Z",
+  "parent": "",
+  "position": "00000000000000000017",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "X2FMR1JXWlpVR2hjbjZIZA"
+ },
+ {
+  "task": "513 Ribaut Rd: Llewelyn - carpentry meeting",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "RjdNam5FdlN4aG1SbXJBNg",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/F7MjnEvSxhmRmrA6?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=F7MjnEvSxhmRmrA6",
+  "updated": "2026-10-01T20:24:11.132Z",
+  "parent": "",
+  "position": "00000000000000000019",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "RjdNam5FdlN4aG1SbXJBNg"
+ },
+ {
+  "task": "Find out more: Dusty Vickers Vicker's Construction or something like that - he does framing, carpentry etc",
+  "detail": "",
+  "section": "BPG - General",
+  "space": "BPG - General",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAxACHEGs",
+  "tid": "TGhEWWVVVkU3aHJndnY4eA",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/LhDYeUVE7hrgvv8x?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAxACHEGs/VQ_QVNenQ9o/VQ_QVNenQ9o",
+  "updated": "2026-10-01T20:23:53.401Z",
+  "parent": "",
+  "position": "00000000000000000018",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "TGhEWWVVVkU3aHJndnY4eA"
+ },
+ {
+  "task": "50 Meridian Rd - build proposal",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "Q2szY21jVlR2eG9BUC0yZA",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/Ck3cmcVTvxoAP-2d?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=Ck3cmcVTvxoAP-2d",
+  "updated": "2026-10-01T20:08:14.283Z",
+  "parent": "",
+  "position": "00000000000000000004",
+  "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
+  "key": "Q2szY21jVlR2eG9BUC0yZA"
+ },
+ {
+  "task": "Snoddy - Estimate for 709 14th St",
+  "detail": "",
+  "section": "My Tasks",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-personal",
+  "sid": "",
+  "tid": "SFJtR1ZBTXBzR1gyRVUzSg",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/HRmGVAMpsGX2EU3J?sa=6",
+  "originUrl": "",
+  "updated": "2026-10-01T19:07:50.448Z",
+  "parent": "",
+  "position": "00000000000000000020",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "SFJtR1ZBTXBzR1gyRVUzSg"
+ },
+ {
+  "task": "Edgar - Estimate for 828B Paris Ave",
+  "detail": "",
+  "section": "My Tasks",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-personal",
+  "sid": "",
+  "tid": "TU5lZEFsSVdWem01TUp3ZQ",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/MNedAlIWVzm5MJwe?sa=6",
+  "originUrl": "",
+  "updated": "2026-10-01T19:07:17.674Z",
+  "parent": "",
+  "position": "00000000000000000021",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "TU5lZEFsSVdWem01TUp3ZQ"
+ },
+ {
+  "task": "Please review @Austin Hartman",
+  "detail": "",
+  "section": "Cx - 404 Euhaw St (Fetterman)",
+  "space": "Cx - 404 Euhaw St (Fetterman)",
+  "type": "cx",
+  "person": "Austin",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAy-k78EU",
+  "tid": "M2NyVDk2ZDlEQlpFZUdMdw",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/3crT96d9DBZEeGLw?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAy-k78EU/1_Sr0_-VGPc/1_Sr0_-VGPc",
+  "updated": "2026-10-01T18:57:56.527Z",
+  "parent": "",
+  "position": "00000000000000000000",
+  "lid": "MDQ3NDk4OTQ3ODQxNzQ5NTU3MDU6MDow",
+  "key": "M2NyVDk2ZDlEQlpFZUdMdw"
+ },
+ {
+  "task": "Create PO for Insulation:   Here's the revised estimate expliciting stating the mineral wool around the fireplace chase16 Mum Grace - CBS - CC Insulation ($2,229),",
+  "detail": "Drywall ($3,950.00) \n\nCC Insulation - $2,229\nSow Budget: $1,000",
+  "section": "Cx - 16 Mum Grace (Herbstman/Simek)",
+  "space": "Cx - 16 Mum Grace (Herbstman/Simek)",
+  "type": "cx",
+  "person": "Nichole",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAqurAXTM",
+  "tid": "TmdKQlBIaVp3RHlqeUtIYQ",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/NgJBPHiZwDyjyKHa?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAqurAXTM/wyhQ8HuWxbM/wyhQ8HuWxbM",
+  "updated": "2026-09-29T18:35:11.701Z",
+  "parent": "",
+  "position": "00000000000000000003",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "TmdKQlBIaVp3RHlqeUtIYQ"
+ },
+ {
+  "task": "602 Battery Ln - What’s ETA for completion on cleaning/repairs",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "N2lVU01pNVJlbVNpeTdfUA",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/7iUSMi5RemSiy7_P?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=7iUSMi5RemSiy7_P",
+  "updated": "2026-09-29T13:45:31.157Z",
+  "parent": "",
+  "position": "00000000000000000022",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "N2lVU01pNVJlbVNpeTdfUA"
+ },
+ {
+  "task": "@Nichole Nelson homespring mortgage payment due today, you setting that up and making sure it's the correct amount given that we paid off a",
+  "detail": "considerable amount of principal?",
+  "section": "Accounting",
+  "space": "Accounting",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAf-q99W8",
+  "tid": "TUFnWXdUSVlXMjJpblFPMQ",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/MAgYwTIYW22inQO1?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAf-q99W8/YpmcGuk_Lrc/YpmcGuk_Lrc",
+  "updated": "2026-09-29T12:27:24.575Z",
+  "parent": "",
+  "position": "00000000000000000004",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "TUFnWXdUSVlXMjJpblFPMQ"
+ },
+ {
+  "task": "@Stephanie Pretto something else we ought to set up (and by \"we\" i mean you).  When marines transition out of service (and sailors) they",
+  "detail": "have to go thru some sort of transition program. For Marines i think it's still called TRS (Transition Readiness Seminar)  for navy i think it's TAPs (transition assistance program) or something like that.\n\nThese programs usually last a week or two and require the service member to show up for a full day every day for about two weeks. They get inundated with information from the VA and things about reserves. Usually there are different vendors or people hiring for jobs that can also come and are",
+  "section": "BPG - General",
+  "space": "BPG - General",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAxACHEGs",
+  "tid": "TExPdnBPR2E2M3NvNklxZQ",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/LLOvpOGa63so6Iqe?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAxACHEGs/etPf7ryApXw/etPf7ryApXw",
+  "updated": "2026-09-28T17:38:33.831Z",
+  "parent": "",
+  "position": "00000000000000000023",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "TExPdnBPR2E2M3NvNklxZQ"
+ },
+ {
+  "task": "F/U w/ David Johnson to obtain his selections",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "YTJCLXNCNTk1LWM2STJsdw",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/a2B-sB595-c6I2lw?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=a2B-sB595-c6I2lw",
+  "updated": "2026-09-25T14:59:31.297Z",
+  "parent": "",
+  "position": "00000000000000000024",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "YTJCLXNCNTk1LWM2STJsdw"
+ },
+ {
+  "task": "@Nichole Nelson I updated the PO template and changed Section 2 in the subcontractor agreement.  Can you re-issue this PO w/ the new PO",
+  "detail": "template updated. \nWork \n\nRe: Reminder: Waiting for you to sign PO - PO-2026-1083 - AAA Overhead Door-1911 Darby Drive",
+  "section": "Accounting",
+  "space": "Accounting",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAf-q99W8",
+  "tid": "RmFMS0xqVGZfbENkbE1vRQ",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/FaLKLjTf_lCdlMoE?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAf-q99W8/FokQnhin_TE/FokQnhin_TE",
+  "updated": "2026-09-24T14:02:02.701Z",
+  "parent": "",
+  "position": "00000000000000000005",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "RmFMS0xqVGZfbENkbE1vRQ"
+ },
+ {
+  "task": "@Stephanie Pretto please attend to this. Re: [Non-DoD Source] Berman Property Group — Interest in NPTU Ship Store Conversion, Bldg 2711",
+  "detail": "(DKGV1161806)",
+  "section": "Cx - Prospects",
+  "space": "Cx - Prospects",
+  "type": "cx",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQANJ8-POg",
+  "tid": "RmZ1NmRuM281OEJDNWhweg",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/Ffu6dn3o58BC5hpz?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQANJ8-POg/GiAULSF5bUI/GiAULSF5bUI",
+  "updated": "2026-09-24T13:34:20.995Z",
+  "parent": "",
+  "position": "00000000000000000025",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "RmZ1NmRuM281OEJDNWhweg"
+ },
+ {
+  "task": "2905 2nd Street Punching h List - Touch up paint in closets, front entryway, bathroom, and walls  ·  Measure and replace all ceiling HVAC vent registers with rust-proof plastic ones",
+  "detail": "",
+  "section": "My Tasks",
+  "space": "",
+  "type": "general",
+  "person": "Richard",
+  "due": "2026-09-23",
+  "source": "tasks-personal",
+  "sid": "",
+  "tid": "OFRnNDZFdzZMOXhpZHY2Sw",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/8Tg46Ew6L9xidv6K?sa=6",
+  "originUrl": "",
+  "updated": "2026-09-23T15:51:20.046Z",
+  "parent": "",
+  "position": "00000000000000000001",
+  "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
+  "key": "OFRnNDZFdzZMOXhpZHY2Sw"
+ },
+ {
+  "task": "@Nichole Nelson make fireplace PO",
+  "detail": "",
+  "section": "Cx - 16 Mum Grace (Herbstman/Simek)",
+  "space": "Cx - 16 Mum Grace (Herbstman/Simek)",
+  "type": "cx",
+  "person": "Nichole",
+  "due": "2026-09-22",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAqurAXTM",
+  "tid": "T2gwck0wQ2RzNUZTdEpMXw",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/Oh0rM0Cds5FStJL_?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAqurAXTM/prDd5bTVJAU/prDd5bTVJAU",
+  "updated": "2026-09-22T17:35:13.670Z",
+  "parent": "",
+  "position": "00000000000000000006",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "T2gwck0wQ2RzNUZTdEpMXw"
+ },
+ {
+  "task": "@Nichole Nelson Check out the screenshot, doesn't look like mortgage interest was recorded for May/June for 153 Williams St.  I don't think",
+  "detail": "principal paydown was recorded for those months either.  Any idea what that's about?",
+  "section": "Accounting",
+  "space": "Accounting",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAf-q99W8",
+  "tid": "VER2eHpEMDdIRzRKYkd4ZA",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/TDvxzD07HG4JbGxd?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAf-q99W8/qLaolzVjg2M/qLaolzVjg2M",
+  "updated": "2026-09-19T01:44:25.570Z",
+  "parent": "",
+  "position": "00000000000000000007",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "VER2eHpEMDdIRzRKYkd4ZA"
+ },
+ {
+  "task": "@Nichole Nelson please see attached  Re: Reminder: Waiting for you to sign Lien Waiver AAA Overhead Door",
+  "detail": "",
+  "section": "Accounting",
+  "space": "Accounting",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "2026-09-18",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAf-q99W8",
+  "tid": "VU51dXFyLUdZMVlsOWR4WQ",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/UNuuqr-GY1Yl9dxY?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAf-q99W8/qii9-CPsNrU/qii9-CPsNrU",
+  "updated": "2026-09-18T16:58:26.110Z",
+  "parent": "",
+  "position": "00000000000000000008",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "VU51dXFyLUdZMVlsOWR4WQ"
+ },
+ {
+  "task": "Build demo via grokbot → github ; customer dashboard, weekly refresh",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "dVVKTEpGbmhEXzNBNzQybw",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/uUJLJFnhD_3A742o?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=uUJLJFnhD_3A742o",
+  "updated": "2026-09-18T13:26:05.093Z",
+  "parent": "",
+  "position": "00000000000000000006",
+  "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
+  "key": "dVVKTEpGbmhEXzNBNzQybw"
+ },
+ {
+  "task": "Code insurance expirations on SREO to highlight in diffrent colors depending on upcoming vs past expirations.",
+  "detail": "",
+  "section": "My Tasks",
+  "space": "",
+  "type": "general",
+  "person": "Eric",
+  "due": "2026-09-25",
+  "source": "tasks-personal",
+  "sid": "",
+  "tid": "YWZwWTlwOGZKX1NOOWctYQ",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/afpY9p8fJ_SN9g-a?sa=6",
+  "originUrl": "",
+  "updated": "2026-09-16T21:48:27.002Z",
+  "parent": "",
+  "position": "00000000000000000007",
+  "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
+  "key": "YWZwWTlwOGZKX1NOOWctYQ"
+ },
+ {
+  "task": "RJP needs to verify straps are on hand",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Richard",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "anlHV1JrMGZMdjFndjZpag",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/jyGWRk0fLv1gv6ij?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=jyGWRk0fLv1gv6ij",
+  "updated": "2026-09-08T15:05:02.895Z",
+  "parent": "",
+  "position": "00000000000000000002",
+  "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
+  "key": "anlHV1JrMGZMdjFndjZpag"
+ },
+ {
+  "task": "RJP to install locksmith sign + add QR code sign near keypad",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Richard",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "S3YxempIN21uSjFnbHJ6bQ",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/Kv1zjH7mnJ1glrzm?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=Kv1zjH7mnJ1glrzm",
+  "updated": "2026-09-04T13:21:26.762Z",
+  "parent": "",
+  "position": "00000000000000000003",
+  "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
+  "key": "S3YxempIN21uSjFnbHJ6bQ"
+ },
+ {
+  "task": "Main sign repair - PVC",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Richard",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "YWpKMk1zbWsxZ3ByNzZ2ag",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/ajJ2Msmk1gpr76vj?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=ajJ2Msmk1gpr76vj",
+  "updated": "2026-09-04T13:21:05.985Z",
+  "parent": "",
+  "position": "00000000000000000007",
+  "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
+  "key": "YWpKMk1zbWsxZ3ByNzZ2ag"
+ },
+ {
+  "task": "Update worksheet + Need ID who does/doesn’t have workers comp → we’re going to need to get worker’s comp from Brooks  nn to COMPLETE BY 9/4",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Nichole",
+  "due": "2026-09-04",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "c3JKMWwyc1VxelhJY2FGVA",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/srJ1l2sUqzXIcaFT?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=srJ1l2sUqzXIcaFT",
+  "updated": "2026-09-01T13:11:36.807Z",
+  "parent": "",
+  "position": "00000000000000000009",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "c3JKMWwyc1VxelhJY2FGVA"
+ },
+ {
+  "task": "@Richard Pratten can you get the light installed and test all plumbing / electrical",
+  "detail": "",
+  "section": "Cx - 2507 Fripp St",
+  "space": "Cx - 2507 Fripp St",
+  "type": "cx",
+  "person": "Richard",
+  "due": "2026-08-27",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAwjXqksY",
+  "tid": "dFhLaXlNb3RzQ2VTaDlxaA",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/tXKiyMotsCeSh9qh?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAwjXqksY/RdtaXtfPQnw/RdtaXtfPQnw",
+  "updated": "2026-08-27T16:44:07.694Z",
+  "parent": "",
+  "position": "00000000000000000004",
+  "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
+  "key": "dFhLaXlNb3RzQ2VTaDlxaA"
+ },
+ {
+  "task": "Estimates / POs → send plans w/ SoW for estimate",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "NjRvVnpocTF5QVg5MHZ0Wg",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/64oVzhq1yAX90vtZ?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=64oVzhq1yAX90vtZ",
+  "updated": "2026-08-25T14:02:47.737Z",
+  "parent": "",
+  "position": "00000000000000000026",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "NjRvVnpocTF5QVg5MHZ0Wg"
+ },
+ {
+  "task": "Maintenance issues → have SHM resolve https://photos.app.goo.gl/MTuMNhZyyNeCL9ci9",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "RlB1dXF3bGRhUTc3b1pDYg",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/FPuuqwldaQ77oZCb?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=FPuuqwldaQ77oZCb",
+  "updated": "2026-08-21T15:02:39.668Z",
+  "parent": "",
+  "position": "00000000000000000027",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "RlB1dXF3bGRhUTc3b1pDYg"
+ },
+ {
+  "task": "Ribaut Storage - Small facility signs ready",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Richard",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "VzZDSUxaRFpGT3YxUmx4eA",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/W6CILZDZFOv1Rlxx?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=W6CILZDZFOv1Rlxx",
+  "updated": "2026-08-21T13:23:53.198Z",
+  "parent": "",
+  "position": "00000000000000000005",
+  "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
+  "key": "VzZDSUxaRFpGT3YxUmx4eA"
+ },
+ {
+  "task": "Measure the interior & exterior metal panels to ID depth of ribs, space b/w each rib etc. IOT identify replacement panel specs.",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Richard",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "Q1NHaExFc3k4VW5sVm5tcQ",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/CSGhLEsy8UnlVnmq?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=CSGhLEsy8UnlVnmq",
+  "updated": "2026-08-14T13:38:03.398Z",
+  "parent": "",
+  "position": "00000000000000000006",
+  "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
+  "key": "Q1NHaExFc3k4VW5sVm5tcQ"
+ },
+ {
+  "task": "Update Construction Contracts",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "X1pNYjRhQURZRTdoamlNdg",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/_ZMb4aADYE7hjiMv?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=_ZMb4aADYE7hjiMv",
+  "updated": "2026-08-07T12:41:19.684Z",
+  "parent": "",
+  "position": "00000000000000000012",
+  "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
+  "key": "X1pNYjRhQURZRTdoamlNdg"
+ },
+ {
+  "task": "Contractor Welcome Packet",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Nichole",
+  "due": "2026-08-10",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "NjN2NkJCcWQ3VXVUQ2tuOQ",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/63v6BBqd7UuTCkn9?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=63v6BBqd7UuTCkn9",
+  "updated": "2026-08-04T13:16:26.151Z",
+  "parent": "",
+  "position": "00000000000000000010",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "NjN2NkJCcWQ3VXVUQ2tuOQ"
+ },
+ {
+  "task": "Repurpose this PVC to hold the signage in at Ribaut Storage",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Richard",
+  "due": "2026-08-10",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "VkdhZ0luVG5KM3kxWXZ4dQ",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/VGagInTnJ3y1Yvxu?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=VGagInTnJ3y1Yvxu",
+  "updated": "2026-08-04T11:58:29.314Z",
+  "parent": "",
+  "position": "00000000000000000008",
+  "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
+  "key": "VkdhZ0luVG5KM3kxWXZ4dQ"
+ },
+ {
+  "task": "Do full audit of this property & listing",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "N0JGSEcwd3RMTE4tWG1PWA",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/7BFHG0wtLLN-XmOX?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=7BFHG0wtLLN-XmOX",
+  "updated": "2026-07-20T13:34:54.594Z",
+  "parent": "",
+  "position": "00000000000000000028",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "N0JGSEcwd3RMTE4tWG1PWA"
+ },
+ {
+  "task": "Set up 2 hour weekly time block for team to work on OS each week",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "2026-06-29",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "QTJDanBOWE8wTVFzQ013ZQ",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/A2CjpNXO0MQsCMwe?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=A2CjpNXO0MQsCMwe",
+  "updated": "2026-06-29T13:19:19.944Z",
+  "parent": "",
+  "position": "00000000000000000029",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "QTJDanBOWE8wTVFzQ013ZQ"
+ },
+ {
+  "task": "Download all signed lien waivers from Adobe and save in Google Folder",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Nichole",
+  "due": "2026-07-03",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "aVlsMS02c0NYZmtpUkhhTA",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/iYl1-6sCXfkiRHaL?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=iYl1-6sCXfkiRHaL",
+  "updated": "2026-06-29T12:51:25.811Z",
+  "parent": "",
+  "position": "00000000000000000011",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "aVlsMS02c0NYZmtpUkhhTA"
+ },
+ {
+  "task": "@Nichole Nelson make that a part of your insurance project please. getting the policies all in one spot",
+  "detail": "",
+  "section": "Accounting",
+  "space": "Accounting",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "2026-06-25",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAf-q99W8",
+  "tid": "OHhzb0h1TXlsYUVBak80ZQ",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/8xsoHuMylaEAjO4e?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAf-q99W8/9tGrRbtLPy0/9tGrRbtLPy0",
+  "updated": "2026-06-25T17:59:30.358Z",
+  "parent": "",
+  "position": "00000000000000000012",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "OHhzb0h1TXlsYUVBak80ZQ"
+ },
+ {
+  "task": "@Richard Pratten - when you go over there next, trim the 4 doors down that they're requesting",
+  "detail": "",
+  "section": "Cx - 504 King St",
+  "space": "Cx - 504 King St",
+  "type": "cx",
+  "person": "Richard",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAWvvZJE0",
+  "tid": "MkdyWFFsNUEyNDY2RkN0Rw",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/2GrXQl5A2466FCtG?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAWvvZJE0/8wpM_5tcdTk/8wpM_5tcdTk",
+  "updated": "2026-06-25T13:09:28.483Z",
+  "parent": "",
+  "position": "00000000000000000009",
+  "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
+  "key": "MkdyWFFsNUEyNDY2RkN0Rw"
+ },
+ {
+  "task": "Get Gallagher insurance the following documents for their competitor pricing review:",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Nichole",
+  "due": "2026-06-26",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "TG04UTBkckdQWVEwVXZrQQ",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/Lm8Q0drGPYQ0UvkA?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=Lm8Q0drGPYQ0UvkA",
+  "updated": "2026-06-22T12:42:19.109Z",
+  "parent": "",
+  "position": "00000000000000000018",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "TG04UTBkckdQWVEwVXZrQQ"
+ },
+ {
+  "task": "@Stephanie Pretto please add items to battle rhythm in BPG-OS",
+  "detail": "",
+  "section": "BPG - General",
+  "space": "BPG - General",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAxACHEGs",
+  "tid": "OXJFRC1Pb1dyaElOVTRfQw",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/9rED-OoWrhINU4_C?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAxACHEGs/W5Y5w_H1Ohc/W5Y5w_H1Ohc",
+  "updated": "2026-06-18T12:56:37.416Z",
+  "parent": "",
+  "position": "00000000000000000030",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "OXJFRC1Pb1dyaElOVTRfQw"
+ },
+ {
+  "task": "Install other CYA signs from Amazon on the fence when they arrive",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Richard",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "OGJ1aDV4TnBNSkljNG0tNQ",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/8buh5xNpMJIc4m-5?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=8buh5xNpMJIc4m-5",
+  "updated": "2026-06-15T12:46:44.634Z",
+  "parent": "",
+  "position": "00000000000000000010",
+  "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
+  "key": "OGJ1aDV4TnBNSkljNG0tNQ"
+ },
+ {
+  "task": "@Austin Hartman i need to add you as a signer for BPG vanguard (call 877-662-7447)",
+  "detail": "",
+  "section": "Accounting",
+  "space": "Accounting",
+  "type": "accounting",
+  "person": "Eric",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAf-q99W8",
+  "tid": "c1UwSU1WRFR2TG43XzQ1Yw",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/sU0IMVDTvLn7_45c?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAf-q99W8/iuyH517kVDs/iuyH517kVDs",
+  "updated": "2026-06-05T15:54:03.249Z",
+  "parent": "",
+  "position": "00000000000000000008",
+  "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
+  "key": "c1UwSU1WRFR2TG43XzQ1Yw"
+ },
+ {
+  "task": "[RJP] Replace commercial door thresholds",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Richard",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "UWRvQnN4ODZndTFqZWdaSQ",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/QdoBsx86gu1jegZI?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=QdoBsx86gu1jegZI",
+  "updated": "2026-06-04T14:14:58.493Z",
+  "parent": "",
+  "position": "00000000000000000012",
+  "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
+  "key": "UWRvQnN4ODZndTFqZWdaSQ"
+ },
+ {
+  "task": "[RJP] Replace / repair all caulking along front side of building w/ industrial grade once #1 & 2 complete (EFG)",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Richard",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "eEZQYjRwM1dvNVo4ZjlrZA",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/xFPb4p3Wo5Z8f9kd?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=xFPb4p3Wo5Z8f9kd",
+  "updated": "2026-06-04T14:13:26.066Z",
+  "parent": "",
+  "position": "00000000000000000011",
+  "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
+  "key": "eEZQYjRwM1dvNVo4ZjlrZA"
+ },
+ {
+  "task": "USPS - Need to install mailbox in approved location w/ USPS and mark w/ lettering",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Richard",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "b2FLeGR1Z0xtMkI4WXUtUg",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/oaKxdugLm2B8Yu-R?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=oaKxdugLm2B8Yu-R",
+  "updated": "2026-06-04T13:58:12.126Z",
+  "parent": "",
+  "position": "00000000000000000013",
+  "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
+  "key": "b2FLeGR1Z0xtMkI4WXUtUg"
+ },
+ {
+  "task": "[RJP] Assess locks & doors for each unit (as allowed)",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Richard",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "cGRaei1TSjBKM0hYMzJQNg",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/pdZz-SJ0J3HX32P6?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=pdZz-SJ0J3HX32P6",
+  "updated": "2026-06-04T13:57:46.685Z",
+  "parent": "",
+  "position": "00000000000000000014",
+  "lid": "MTE4MjUyNzkzNzA2ODY3MzAxMjg6MDow",
+  "key": "cGRaei1TSjBKM0hYMzJQNg"
+ },
+ {
+  "task": "[SMP] Build 1st Draft of Disposition Section of SOP.  How we handle sales of properties, lease listings, etc. → take our DD checklist and incorporate. 3/20",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "NGxjTHMwU3l2empmQ1p1Ng",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/4lcLs0SyvzjfCZu6?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=4lcLs0SyvzjfCZu6",
+  "updated": "2026-05-21T23:43:33.918Z",
+  "parent": "",
+  "position": "00000000000000000031",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "NGxjTHMwU3l2empmQ1p1Ng"
+ },
+ {
+  "task": "I think this should effectively be zero'd out, since the HOA has been billing against this each month and it's gone down over time - In",
+  "detail": "other words, you can put $1300 towards HOA fees for 25 sams 3B, and the other 1300 towards HOA fees for 25 sams 3D in a JE to zero it out",
+  "section": "Accounting",
+  "space": "Accounting",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAf-q99W8",
+  "tid": "dU42S1ZNcUpnYTlVWkx6YQ",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/uN6KVMqJga9UZLza?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAf-q99W8/GOzAh28-WwY/n4hZzRXO-hU",
+  "updated": "2026-05-04T19:30:39.583Z",
+  "parent": "",
+  "position": "00000000000000000013",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "dU42S1ZNcUpnYTlVWkx6YQ"
+ },
+ {
+  "task": "This shows Investment into Viktor Group by Ember.  Is there an equivalent to this on Viktor's books?  Would this show up under Equity on",
+  "detail": "Viktor's B/S?  These entries Phillip put in, i don't fully understand them",
+  "section": "Accounting",
+  "space": "Accounting",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAf-q99W8",
+  "tid": "TXBydzJ5a1pmZDFzZWM3Qg",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/Mprw2ykZfd1sec7B?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAf-q99W8/PkfEC0SVJ0I/1zX1TtqaubM",
+  "updated": "2026-05-04T19:19:56.292Z",
+  "parent": "",
+  "position": "00000000000000000014",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "TXBydzJ5a1pmZDFzZWM3Qg"
+ },
+ {
+  "task": "Shouldn't these amortization lines be zero'd out as well?",
+  "detail": "",
+  "section": "Accounting",
+  "space": "Accounting",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAf-q99W8",
+  "tid": "VURvRHZmbE1rR2lMZmpOZw",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/UDoDvflMkGiLfjNg?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAf-q99W8/PkfEC0SVJ0I/hKMV-hHYSIM",
+  "updated": "2026-05-04T19:17:10.578Z",
+  "parent": "",
+  "position": "00000000000000000015",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "VURvRHZmbE1rR2lMZmpOZw"
+ },
+ {
+  "task": "I'm tracking a different outstanding loan amount - I'm tracking $404,322 - where's the JE that sold 65 sams point rd, shouldn't that have",
+  "detail": "adjusted this correctly?  Please explain",
+  "section": "Accounting",
+  "space": "Accounting",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAf-q99W8",
+  "tid": "MTdmVExaQS12RHRmZFlSNg",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/17fTLZA-vDtfdYR6?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAf-q99W8/KUaQZOXov9A/dbGJaifeHS8",
+  "updated": "2026-05-04T19:11:36.469Z",
+  "parent": "",
+  "position": "00000000000000000016",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "MTdmVExaQS12RHRmZFlSNg"
+ },
+ {
+  "task": "How can we clear out this line on BPG B/S? @Nichole Nelson",
+  "detail": "",
+  "section": "Accounting",
+  "space": "Accounting",
+  "type": "accounting",
+  "person": "Nichole",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAf-q99W8",
+  "tid": "QzdKVWVLeFg0OThpNm5YRw",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/C7JUeKxX498i6nXG?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAf-q99W8/KUaQZOXov9A/eyR-nylDyJ4",
+  "updated": "2026-05-04T19:03:23.207Z",
+  "parent": "",
+  "position": "00000000000000000017",
+  "lid": "MDUwNzQzOTQ5NzcxMTg0NDI5NDE6MDow",
+  "key": "QzdKVWVLeFg0OThpNm5YRw"
+ },
+ {
+  "task": "Advertise in chamber newsletter",
+  "detail": "",
+  "section": "My Tasks",
+  "space": "",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "tasks-personal",
+  "sid": "",
+  "tid": "RjRlR3hFN3BwdTMwYVpDbw",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/F4eGxE7ppu30aZCo?sa=6",
+  "originUrl": "",
+  "updated": "2026-04-06T19:02:41.730Z",
+  "parent": "",
+  "position": "00000000000000000009",
+  "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
+  "key": "RjRlR3hFN3BwdTMwYVpDbw"
+ },
+ {
+  "task": "Close out BRB Acquisitions",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "SGczeWNwRlBOeTNEZ1BRTA",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/Hg3ycpFPNy3DgPQL?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=Hg3ycpFPNy3DgPQL",
+  "updated": "2026-03-20T13:07:51.812Z",
+  "parent": "",
+  "position": "00000000000000000010",
+  "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
+  "key": "SGczeWNwRlBOeTNEZ1BRTA"
+ },
+ {
+  "task": "[ESB] Build 1st Draft of Acquisition Section of SOP. → 3/20",
+  "detail": "",
+  "section": "Projects Master",
+  "space": "Projects Master",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "tasks-docs",
+  "sid": "",
+  "tid": "b1BNcEpESHJmVzhZWTRTdg",
+  "did": "11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI",
+  "openUrl": "https://tasks.google.com/task/oPMpJDHrfW8YY4Sv?sa=6",
+  "originUrl": "https://docs.google.com/document/d/11mFMkIukku3CfOWuuKmjB0kora9V4RGGqcvkBWtTuiI/view#task=oPMpJDHrfW8YY4Sv",
+  "updated": "2026-03-13T12:52:36.716Z",
+  "parent": "",
+  "position": "00000000000000000011",
+  "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
+  "key": "b1BNcEpESHJmVzhZWTRTdg"
+ },
+ {
+  "task": "Create before / after video and add to website",
+  "detail": "",
+  "section": "Cx - 26 Janette",
+  "space": "Cx - 26 Janette",
+  "type": "cx",
+  "person": "Stephanie",
+  "due": "2025-12-19",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQAX8kY5A0",
+  "tid": "MWZaaEpqb1JGampiSVJydA",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/1fZhJjoRFjjbIRrt?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQAX8kY5A0",
+  "updated": "2026-03-10T17:00:08.288Z",
+  "parent": "",
+  "position": "00000000000000000035",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "MWZaaEpqb1JGampiSVJydA"
+ },
+ {
+  "task": "REAL AI  propstream comparison",
+  "detail": "",
+  "section": "My Tasks",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-personal",
+  "sid": "",
+  "tid": "dkl6X2JReVVHMUlNaFktLQ",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/vIz_bQyUG1IMhY--?sa=6",
+  "originUrl": "",
+  "updated": "2026-02-18T19:59:50.992Z",
+  "parent": "",
+  "position": "00000000000000000032",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "dkl6X2JReVVHMUlNaFktLQ"
+ },
+ {
+  "task": "We can also sort by Stage - i'll mess w/ this later",
+  "detail": "",
+  "section": "Marketing",
+  "space": "Marketing",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQA7hPpLAU",
+  "tid": "YTMwbEVqZnVCTXJPb0h3Qg",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/a30lEjfuBMrOoHwB?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQA7hPpLAU/cDs02AzZteQ/cDs02AzZteQ",
+  "updated": "2025-12-17T14:41:18.991Z",
+  "parent": "",
+  "position": "00000000000000000013",
+  "lid": "MDM2OTg2NTI4OTUzNzQ2NDUwNTk6MDow",
+  "key": "YTMwbEVqZnVCTXJPb0h3Qg"
+ },
+ {
+  "task": "2119 SIP Before/After video",
+  "detail": "",
+  "section": "Cx - 2119 SIP",
+  "space": "Cx - 2119 SIP",
+  "type": "cx",
+  "person": "Stephanie",
+  "due": "2025-12-19",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQA4ThrJDA",
+  "tid": "M3RndEMtZmVCVFFSaDMtWA",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/3tgtC-feBTQRh3-X?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQA4ThrJDA",
+  "updated": "2025-12-17T04:14:33.485Z",
+  "parent": "",
+  "position": "00000000000000000033",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "M3RndEMtZmVCVFFSaDMtWA"
+ },
+ {
+  "task": "Create before/after video and add to website",
+  "detail": "",
+  "section": "Cx - 332 CJFV",
+  "space": "Cx - 332 CJFV",
+  "type": "cx",
+  "person": "Stephanie",
+  "due": "2025-12-19",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQA8-7G32I",
+  "tid": "cTFYQ3JXVUhFYXJvME5haQ",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/q1XCrWUHEaro0Nai?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQA8-7G32I",
+  "updated": "2025-12-09T13:31:49.175Z",
+  "parent": "",
+  "position": "00000000000000000034",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "cTFYQ3JXVUhFYXJvME5haQ"
+ },
+ {
+  "task": "1x per month, send list of vacancies and construction openings to distro list (Dukes, Guerrero, Phillips, Megan/Hannah, Scott, Summerall, Dean, etc)",
+  "detail": "",
+  "section": "Marketing",
+  "space": "Marketing",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "tasks-chat",
+  "sid": "spaces/AAQA7hPpLAU",
+  "tid": "YmZOTmt0R29pTG5GMmxOUA",
+  "did": "",
+  "openUrl": "https://tasks.google.com/task/bfNNktGoiLnF2lNP?sa=6",
+  "originUrl": "https://mail.google.com/chat/#chat/space/AAQA7hPpLAU",
+  "updated": "2025-12-05T21:41:03.538Z",
+  "parent": "",
+  "position": "00000000000000000036",
+  "lid": "MDQ3MjI3MTQ2OTE5NTY2MjIwNDc6MDow",
+  "key": "YmZOTmt0R29pTG5GMmxOUA"
+ },
+ {
+  "task": "Review change order: Analyze the Mom Grace change order in the chat for approval",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Austin",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "d440a1536cf8fd44"
+ },
+ {
+  "task": "Provide policy data: Retrieve insurance policy details regarding reported gross revenue and expenses to support the audit process",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Nichole",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "70164d43133fbe6c"
+ },
+ {
+  "task": "Review insurance audit: Examine the drafted insurance audit documents for the general liability policy",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Austin",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "6ecdbff655b512ba"
+ },
+ {
+  "task": "Research cleaning frequency: Investigate why the dryer duct at 137 Old Jericho unit B requires repeated cleaning before approving the maintenance work",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "0b9b6d477c3bbf7f"
+ },
+ {
+  "task": "Compare HVAC quotes: Determine the price difference for the 409 Carter Street system replacement between the current estimate and quotes from Lang",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "2710ff032c976ca6"
+ },
+ {
+  "task": "Update banner: Modify the Reboot storage banner by the end of the day",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "280b0d62fe5b3aec"
+ },
+ {
+  "task": "Engage legal counsel: Contact the recommended Charleston attorney to initiate mechanics lien and litigation filings",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "2900749abbc7f427"
+ },
+ {
+  "task": "Verify Roof Status: Verify if the contractor has finished the roof work at the storage facility and update the team",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "c15c30f5b0a77ca6"
+ },
+ {
+  "task": "Contact Kevin to confirm if the deposition schedule has changed",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "7e827771fed425a2"
+ },
+ {
+  "task": "Send Plumbing Documents: Forward the notes regarding plumbing and electrical work to the buyer to provide property information",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "faa6b2afd606142f"
+ },
+ {
+  "task": "Consolidate Applications: Consolidate the debids applications as requested by the client contact",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "03d56d2bc02890a7"
+ },
+ {
+  "task": "Collect Permit: Retrieve the 513 Rebo permit from the city once the notarized documents are accepted",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "acb21885b8ff4028"
+ },
+ {
+  "task": "Schedule Training: Schedule a 3 hour training session between Eric and Richard for Thursday",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "6d0fc47798ee634a"
+ },
+ {
+  "task": "Contact Jared to address the lumber delivery delay for 1911 Derby",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Austin",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "ddd625cb598ebb97"
+ },
+ {
+  "task": "Communicate Delay: Communicate the reasons for the roof installation delay at 1911 Derby to the client",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Austin",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "c2792d683b45e074"
+ },
+ {
+  "task": "Update Clients: Draft an apology and explanation regarding the project delay for Tony and Allison",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "f43fbc6e5065e343"
+ },
+ {
+  "task": "Check Cables: Inspect the quick tie cables at the site in the morning",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Unassigned",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "de2b4bb95a547a89"
+ },
+ {
+  "task": "Connect Clients: Email David and Jared to introduce them regarding the exterior door installation",
+  "detail": "From Gemini SYNC/STANDUP notes Oct 1, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-01",
+  "key": "0db651895fdebe81"
+ },
+ {
+  "task": "Sync Meeting: Reschedule the team sync meeting to 9:30 AM.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "cf9f10ad5e76bd1b"
+ },
+ {
+  "task": "Discuss Audit: Discuss audit feedback with Brooks to determine the correct reporting figures before final submission.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Nichole",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "0c8c5f1db5a4a277"
+ },
+ {
+  "task": "Correct Invoice: Call Dlair to request a correction for the Frick Street invoice.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Nichole",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "895df558f5737407"
+ },
+ {
+  "task": "Send Payment: Process the progress payment to Edgar for the Mom Grace project.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Nichole",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "f0d880d51a80fb34"
+ },
+ {
+  "task": "Pay Invoice: Contact Cook and Boardman to pay the outstanding invoice.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Nichole",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "f4ee8b869cd838af"
+ },
+ {
+  "task": "Resolve Billing: Contact CC Storage to resolve the unauthorized recurring charges on the company card.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Nichole",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "696f496fb00b2f4b"
+ },
+ {
+  "task": "Invoice Derby: Prepare the Derby invoice for the upcoming Friday billing cycle.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Nichole",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "f29435d757208c2f"
+ },
+ {
+  "task": "Collect Payment: Contact Joy Patterson regarding outstanding payments for Rebo Storage units.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Nichole",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "4cd3a75956310d5d"
+ },
+ {
+  "task": "Payment Reminder: Send a payment reminder to the client for the Rebo Road project.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Nichole",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "8563f85fb25c968a"
+ },
+ {
+  "task": "Collect Payment: Call Alpha Graphics to collect outstanding funds for work performed at 65 Sams.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Nichole",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "5dfdac1bae8308df"
+ },
+ {
+  "task": "Notify Account Rep: Notify the representative Stephen about the new automatic payment setup for 27 Miller.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Nichole",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "9b46238fdbebba8a"
+ },
+ {
+  "task": "Website Strategy: Evaluate business positioning and branding strategy to prepare for a website refresh.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Unassigned",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "a1f6b6e1b511b03a"
+ },
+ {
+  "task": "Forward Email: Forward the email from Chris Fates regarding the 1904 Pigeon Point Road plan updates to Eric Berman.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "c5d24d294bd5d8af"
+ },
+ {
+  "task": "Clean Storage Unit: Clean out unit 66 of Rebo Storage, including removing the dead animal from the concrete.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull. Also tagged: Austin Hartman, Richard.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Austin",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "e637d90111110fa8"
+ },
+ {
+  "task": "Call Eli: Call Eli to discuss his development proposal for 614, including potential financing options.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Eric",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "24eda849f3668b9c"
+ },
+ {
+  "task": "Contact DBM Roofing: Call Brandon to enforce the original contract price of 9950 dollars for the standing seam roof.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Austin",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "73546fc01aba9f10"
+ },
+ {
+  "task": "Source gutters: Schedule installation for gutters and downspouts on the Allison project.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "f199044ed04ebb2c"
+ },
+ {
+  "task": "Connect fridge: Plug in the refrigerator at the property.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Richard",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "d8b7e05284e6fa29"
+ },
+ {
+  "task": "Notify Mikey: Inform Mikey about the scheduled electrical meter move.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Austin",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "06187a7f888f7f4e"
+ },
+ {
+  "task": "Manage dumpster: Check with Richard regarding required dumpster change outs this week.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Stephanie",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "e57aba00e6285d0e"
+ },
+ {
+  "task": "Launch project: Start the planning process for the Wick Hawks project.",
+  "detail": "From Gemini SYNC notes Oct 6, 2026  -  suggested next step not found in Tasks API pull.",
+  "section": "SYNC notes",
+  "space": "",
+  "type": "general",
+  "person": "Unassigned",
+  "due": "",
+  "source": "email",
+  "sid": "",
+  "tid": "",
+  "did": "",
+  "openUrl": "",
+  "originUrl": "",
+  "updated": "",
+  "parent": "",
+  "position": "",
+  "noteDate": "2026-10-06",
+  "key": "347f4e7806fe2cbb"
+ }
+];
+const BUILD_ID = "20261008120811";
+window.DASH_APP_URL = "";
+
+// ── Sort// ── Sort / expand state ───────────────────────────────────────────────────
+let sortCol = null, sortDir = 1;
+const expandedRows = new Set();
+
+// ── Helpers ───────────────────────────────────────────────────────────────
+function esc(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/'/g,'&#39;');
+}
+function detailLinksHtml(t) {
+  const bits = [];
+  if (t.openUrl) {
+    bits.push(`<a href="${escAttr(t.openUrl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Open in Tasks ↗</a>`);
+  }
+  if (t.originUrl) {
+    const isChat = (t.source === 'tasks-chat' || t.source === 'gchat' || /mail\.google\.com\/chat|chat\.google/.test(t.originUrl));
+    const isDoc = (t.source === 'tasks-docs' || t.source === 'gdocs' || /docs\.google\.com/.test(t.originUrl));
+    const label = isChat ? 'Origin · Chat ↗' : (isDoc ? 'Origin · Doc ↗' : 'Origin ↗');
+    const cls = isChat ? 'origin-chat' : (isDoc ? 'origin-docs' : '');
+    bits.push(`<a class="${cls}" href="${escAttr(t.originUrl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${label}</a>`);
+  }
+  return bits.length ? `<div class="detail-links">${bits.join('')}</div>` : '';
+}
+
+function sectionBadge(s) {
+  return `<span class="sec-badge ${SECTION_CLASS[s]||'sec-bpg-general'}">${s}</span>`;
+}
+function spaceTagClass(t) { return "space-tag type-" + t; }
+function personBadge(p) {
+  const m = { Eric:"person-eric", Stephanie:"person-stephanie", Austin:"person-austin", Nichole:"person-nichole", Richard:"person-eric", Unassigned:"person-unassigned" };
+  return `<span class="person ${m[p]||'person-unassigned'}"><span class="dot"></span>${p}</span>`;
+}
+function dueDisplay(due) {
+  if (!due) return `<span style="color:#bbb;">—</span>`;
+  const d = new Date(due), overdue = !isNaN(d) && d < new Date();
+  return `<span style="${overdue?'color:#d32f2f;font-weight:700;':'color:#e65100;font-weight:600;'}">${due}${overdue?' ⚠':''}</span>`;
+}
+function updatedDisplay(iso) {
+  if (!iso) return `<span class="updated-cell empty">—</span>`;
+  const d = new Date(iso);
+  if (isNaN(d)) return `<span class="updated-cell">${esc(iso)}</span>`;
+  // America/New_York compact: Sep 9 or Sep 9, 1:49pm
+  const fmt = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York', month: 'short', day: 'numeric',
+    hour: 'numeric', minute: '2-digit', hour12: true
+  });
+  const parts = fmt.formatToParts(d);
+  const get = (t) => (parts.find(p => p.type === t) || {}).value || '';
+  const month = get('month'), day = get('day');
+  let hour = get('hour'), minute = get('minute'), dayPeriod = (get('dayPeriod') || '').toLowerCase();
+  // Drop :00 minutes? keep minutes always for clarity
+  const label = `${month} ${day}, ${hour}:${minute}${dayPeriod}`;
+  return `<span class="updated-cell" title="${esc(iso)}">${esc(label)}</span>`;
+}
+function taskTitleHtml(t) {
+  const isSub = !!(t.parent);
+  const cue = isSub ? `<span class="subtask-cue">↳ subtask</span>` : '';
+  const parentHint = (isSub && t.parentTitle)
+    ? `<div class="parent-hint">of: ${esc(t.parentTitle)}</div>` : '';
+  const title = t.openUrl
+    ? `<a class="task-open-link" href="${escAttr(t.openUrl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(t.task)}</a>`
+    : esc(t.task);
+  return `<div class="task-title-row${isSub ? ' is-subtask' : ''}">${cue}<div>${title}${parentHint}</div></div>`;
+}
+function sourcePill(s) {
+  if (s==='tasks-docs'||s==='gdocs') return `<span class="src-pill src-gdocs">Docs</span>`;
+  if (s==='email') return `<span class="src-pill src-email">Email</span>`;
+  if (s==='tasks-personal') return `<span class="src-pill src-gchat">Personal</span>`;
+  if (s==='tasks-chat'||s==='gchat') return `<span class="src-pill src-gchat">Chat</span>`;
+  return `<span class="src-pill src-gchat">Tasks</span>`;
+}
+
+
+function doneCellHtml(t, idx) {
+  if (window.bpgIsDone && bpgIsDone(t)) return '<span class="done-pill">Done ✓</span>';
+  if (!t.key) return '';
+  return `<button class="complete-btn" onclick="bpgComplete(event, ${idx})" title="Mark complete as yourself">Complete</button>`;
+}
+
+// ── Filter ────────────────────────────────────────────────────────────────
+function getFilteredTasks() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const fS = document.getElementById('filter-section').value;
+  const fP = document.getElementById('filter-person').value;
+  const fSp= document.getElementById('filter-space').value;
+  const fSrc=document.getElementById('filter-source').value;
+  return TASKS.map((t,i)=>({...t,_idx:i})).filter(t => {
+    if (q && ![t.task,t.detail,t.space,t.person,t.section].some(f=>(f||'').toLowerCase().includes(q))) return false;
+    if (fS  && t.section!==fS)  return false;
+    if (fP  && t.person !==fP)  return false;
+    if (fSp && t.space  !==fSp) return false;
+    if (fSrc&& t.source !==fSrc)return false;
+    return true;
+  });
+}
+
+// ── Render ────────────────────────────────────────────────────────────────
+function renderTable() {
+  const filtered = getFilteredTasks();
+  let sorted = [...filtered];
+  if (sortCol) {
+    sorted.sort((a,b) => {
+      let av = a[sortCol] || '', bv = b[sortCol] || '';
+      if (sortCol === 'updated') {
+        // Empty updated sorts last regardless of direction
+        if (!av && !bv) return 0;
+        if (!av) return 1;
+        if (!bv) return -1;
+        // ISO strings compare lexicographically; invert so first click (sortDir=1) = newest first
+        return av.localeCompare(bv) * sortDir * -1;
+      }
+      return String(av).localeCompare(String(bv)) * sortDir;
+    });
+  }
+
+  const tbody = document.getElementById('task-tbody');
+  tbody.innerHTML = '';
+  document.getElementById('no-results').style.display = sorted.length ? 'none' : 'block';
+
+  sorted.forEach(t => {
+    const idx = t._idx;
+    const isOpen = expandedRows.has(idx);
+    const hasDetail = !!(t.detail || t.openUrl || t.originUrl);
+
+    // Main row
+    const tr = document.createElement('tr');
+    tr.className = 'task-row' + (isOpen ? ' expanded' : '') + (window.bpgIsDone && bpgIsDone(t) ? ' is-done' : '');
+    tr.dataset.idx = idx;
+    tr.onclick = () => toggleDetail(idx);
+    tr.innerHTML = `
+      <td class="task-name-cell">
+        <div class="task-title-row${t.parent ? ' is-subtask' : ''}">
+          <span class="chevron ${hasDetail||t.openUrl||t.originUrl?'has-detail':''} ${isOpen?'open':''}">▶</span>
+          ${t.parent ? '<span class="subtask-cue">↳ subtask</span>' : ''}
+          <div>
+            ${t.openUrl ? `<a class="task-open-link" href="${escAttr(t.openUrl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(t.task)}</a>` : esc(t.task)}
+            ${t.parent && t.parentTitle ? `<div class="parent-hint">of: ${esc(t.parentTitle)}</div>` : ''}
+            ${t.source === 'email' && t.noteDate ? `<div class="sync-age">From SYNC ${esc(t.noteDate)}</div>` : ''}
+          </div>
+        </div>
+      </td>
+      <td>${sectionBadge(t.section)}</td>
+      <td><span class="${spaceTagClass(t.type)}">${esc(t.space)}</span></td>
+      <td>${personBadge(t.person)}</td>
+      <td>${dueDisplay(t.due)}</td>
+      <td>${updatedDisplay(t.updated)}</td>
+      <td class="done-cell">${doneCellHtml(t, idx)}</td>
+      <td>${sourcePill(t.source)}</td>
+    `;
+    tbody.appendChild(tr);
+
+    // Detail row
+    const dr = document.createElement('tr');
+    dr.className = 'detail-row' + (isOpen ? '' : ' hidden');
+    dr.dataset.detailFor = idx;
+    const linksHtml = detailLinksHtml(t);
+    let detailContent;
+    if (t.detail) {
+      detailContent = `<div class="detail-label">Full Context</div><div class="detail-text">${esc(t.detail)}</div>` + linksHtml;
+    } else if (linksHtml) {
+      detailContent = linksHtml;
+    } else {
+      detailContent = `<div class="detail-missing">Full task text not yet captured — will be added on next GChat re-scan.</div>`;
+    }
+    dr.innerHTML = `<td colspan="8"><div class="detail-inner">${detailContent}</div></td>`;
+    tbody.appendChild(dr);
+  });
+
+  document.getElementById('showing-count').textContent = `Showing ${sorted.length} of ${TASKS.length} tasks`;
+  updateStats();
+}
+
+function toggleDetail(idx) {
+  if (expandedRows.has(idx)) expandedRows.delete(idx);
+  else expandedRows.add(idx);
+
+  // Update only the affected rows without full re-render
+  const taskRow   = document.querySelector(`tr.task-row[data-idx="${idx}"]`);
+  const detailRow = document.querySelector(`tr.detail-row[data-detail-for="${idx}"]`);
+  if (!taskRow || !detailRow) return;
+
+  const open = expandedRows.has(idx);
+  taskRow.classList.toggle('expanded', open);
+  detailRow.classList.toggle('hidden', !open);
+  const chevron = taskRow.querySelector('.chevron');
+  if (chevron) chevron.classList.toggle('open', open);
+}
+
+function updateStats() {
+  const c = p => TASKS.filter(t=>t.person===p).length;
+  document.getElementById('cnt-nichole').textContent    = c('Nichole');
+  document.getElementById('cnt-stephanie').textContent  = c('Stephanie');
+  document.getElementById('cnt-eric').textContent       = c('Eric');
+  document.getElementById('cnt-austin').textContent     = c('Austin');
+  const elRichard = document.getElementById('cnt-richard');
+  if (elRichard) elRichard.textContent = c('Richard');
+  document.getElementById('cnt-unassigned').textContent = c('Unassigned');
+  document.getElementById('cnt-total').textContent      = TASKS.length;
+  document.getElementById('total-tasks').textContent    = TASKS.length;
+  document.getElementById('total-unassigned').textContent = c('Unassigned');
+  document.getElementById('total-sections').textContent = new Set(TASKS.map(t=>t.section)).size;
+}
+
+function sortTable(col) {
+  sortDir = sortCol===col ? sortDir*-1 : 1;
+  sortCol = col;
+  document.querySelectorAll('th').forEach(th=>th.classList.remove('sorted'));
+  document.getElementById('th-'+col)?.classList.add('sorted');
+  renderTable();
+}
+function clearFilters() {
+  document.getElementById('search').value='';
+  ['filter-section','filter-person','filter-space','filter-source'].forEach(id=>document.getElementById(id).value='');
+  renderTable();
+}
+function filterByPerson(p)  { document.getElementById('filter-person').value=p;  renderTable(); }
+function filterBySection(s) { document.getElementById('filter-section').value=s; renderTable(); }
+
+document.getElementById('search').addEventListener('input', renderTable);
+['filter-section','filter-person','filter-space','filter-source'].forEach(id=>
+  document.getElementById(id).addEventListener('change', renderTable));
+
+// ── Space/Area dropdown — built dynamically from TASKS data ──────────────
+function buildSpaceDropdown() {
+  const SECTION_ORDER = [
+    'BPG - General Biz',
+    '01 Acquisition',
+    '02 Conversion',
+    '03 Disposition',
+    'Stabilized - Ix',
+    'Archive - Ix',
+    'Archive - Cx'
+  ];
+  // Collect unique spaces grouped by section
+  const grouped = {};
+  TASKS.forEach(t => {
+    if (!t.space) return;
+    if (!grouped[t.section]) grouped[t.section] = new Set();
+    grouped[t.section].add(t.space);
+  });
+
+  const sel = document.getElementById('filter-space');
+  // Remove all existing options except the first "All" option
+  while (sel.options.length > 1) sel.remove(1);
+
+  // Add optgroups in canonical order
+  SECTION_ORDER.forEach(sec => {
+    if (!grouped[sec]) return;
+    const spaces = [...grouped[sec]].sort();
+    const grp = document.createElement('optgroup');
+    grp.label = '── ' + sec + ' ──';
+    spaces.forEach(sp => {
+      const opt = document.createElement('option');
+      opt.value = sp;
+      // Friendly display: strip 'Ix - ' / 'Cx - ' prefix clutter for long names
+      opt.textContent = sp;
+      grp.appendChild(opt);
+    });
+    sel.appendChild(grp);
+  });
+}
+
+buildSpaceDropdown();
+renderTable();
+</script>
+<!--BPG-ENH-V1-->
+<style>
+.card.c-richard{border-left-color:rgb(106,27,154)!important}
+.card.c-richard .card-num{color:rgb(106,27,154)!important}
+#task-tbody a.src-link{text-decoration:none;color:inherit}
+#task-tbody a.src-link:hover{text-decoration:underline}
+#task-tbody a.src-link .src-arrow{opacity:.5;font-size:.85em;margin-left:3px}
+</style>
+<script>
+(function(){
+ var PEOPLE=["Nichole","Stephanie","Eric","Austin","Richard"];
+ function ensureOption(){var s=document.getElementById("filter-person");if(!s)return;
+  PEOPLE.forEach(function(p){var has=false;for(var k=0;k<s.options.length;k++){if(s.options[k].value===p)has=true;}
+   if(!has){var o=document.createElement("option");o.value=p;o.textContent=p;var un=null;
+    for(var k2=0;k2<s.options.length;k2++){if(s.options[k2].value==="Unassigned")un=s.options[k2];}
+    s.insertBefore(o,un);}});}
+ function ensureCards(){var un=document.getElementById("cnt-unassigned");if(!un)return;
+  var unCard=un.parentElement,row=unCard.parentElement;if(!row)return;
+  PEOPLE.forEach(function(p){var id="cnt-"+p.toLowerCase();if(document.getElementById(id))return;
+   var c=unCard.cloneNode(true);c.className="card c-"+p.toLowerCase();c.setAttribute("onclick","filterByPerson('"+p+"')");
+   if(c.children[0]){c.children[0].id=id;c.children[0].textContent="0";}
+   if(c.children[1]){c.children[1].textContent=p;}
+   row.insertBefore(c,unCard);});}
+ function counts(){PEOPLE.concat(["Unassigned"]).forEach(function(p){
+   var e=document.getElementById("cnt-"+p.toLowerCase());if(!e)return;
+   var n=0;for(var k=0;k<TASKS.length;k++){if(TASKS[k].person===p)n++;}e.textContent=n;});
+  var t=document.getElementById("cnt-total");if(t)t.textContent=TASKS.length;}
+ var BASE={gchat:"https://chat.google.com/app/chat/",email:"https://mail.google.com/mail/u/0/#all/",gdocs:"https://docs.google.com/document/d/"};
+ function href(t){
+  /* Prefer precise originUrl for Chat/Docs source pill; else openUrl; else legacy space/doc fallbacks */
+  if(t.originUrl) return t.originUrl;
+  if(t.openUrl) return t.openUrl;
+  if((t.source==="tasks-chat"||t.source==="gchat")&&t.sid){var id=String(t.sid).replace(/^spaces\//,"");return "https://mail.google.com/chat/#chat/space/"+id;}
+  if(t.source==="email"&&t.tid)return BASE.email+t.tid;
+  if((t.source==="tasks-docs"||t.source==="gdocs")&&t.did)return BASE.gdocs+t.did+"/view";return null;}
+ var byTitle={};for(var q=0;q<TASKS.length;q++){byTitle[TASKS[q].task]=TASKS[q];}
+ function linkRows(){var rows=document.querySelectorAll("#task-tbody tr");
+  for(var a=0;a<rows.length;a++){var r=rows[a];var c=r.children;if(c.length<6)continue; /* Updated col ok */
+   var last=c[c.length-1];if(last.querySelector("a.src-link"))continue;
+   var title=(c[0].textContent||"").replace(/\u25b6/g,"").trim();
+   var t=byTitle[title];if(!t)continue;var u=href(t);if(!u)continue;
+   var link=document.createElement("a");link.className="src-link";link.href=u;
+   link.target="_blank";link.rel="noopener";link.title="Open source";
+   while(last.firstChild){link.appendChild(last.firstChild);}
+   var ar=document.createElement("span");ar.className="src-arrow";ar.textContent="\u2197";
+   link.appendChild(ar);last.appendChild(link);}}
+ function boot(){try{ensureOption();ensureCards();counts();linkRows();}catch(e){}}
+ function watch(){var tb=document.getElementById("task-tbody");
+  if(tb&&window.MutationObserver){new MutationObserver(function(){linkRows();}).observe(tb,{childList:true});}}
+ if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",function(){boot();watch();});}
+ else {boot();watch();}
+ setTimeout(boot,400);setTimeout(boot,1500);
+})();
+</script>
+<!--/BPG-ENH-V1-->
+<div id="bpg-toast"></div>
+
+<script id="bpg-complete-js">
+/* Click-to-complete (staging). Opens the BPG Dashboard Complete web app, which runs as the
+   signed-in person, so nobody can close someone else's task. No keys live on this page. */
+(function(){
+  var APP = window.DASH_APP_URL || '';
+  var LS = 'bpgDashDone:v1';
+  var store = {};
+  try { store = JSON.parse(localStorage.getItem(LS) || '{}') || {}; } catch (e) { store = {}; }
+  var now = Date.now();
+  Object.keys(store).forEach(function(k){
+    var v = store[k] || {};
+    if (v.build !== BUILD_ID && now - (v.at || 0) > 3 * 3600 * 1000) delete store[k];
+  });
+  function save(){ try { localStorage.setItem(LS, JSON.stringify(store)); } catch (e) {} }
+  save();
+  window.bpgIsDone = function(t){ return !!(t && t.key && store[t.key]); };
+  var toastTimer = null;
+  function toast(msg, err){
+    var el = document.getElementById('bpg-toast');
+    el.textContent = msg; el.className = err ? 'err' : ''; el.style.display = 'block';
+    clearTimeout(toastTimer); toastTimer = setTimeout(function(){ el.style.display = 'none'; }, err ? 9000 : 4500);
+  }
+  function markDone(key){
+    if (!key) return;
+    store[key] = { at: Date.now(), build: BUILD_ID }; save();
+    renderTable();
+  }
+  var pending = {};
+  window.bpgComplete = function(ev, idx){
+    ev.stopPropagation(); ev.preventDefault();
+    var t = TASKS[idx]; if (!t) return;
+    if (!APP) { toast('Complete is not switched on yet. The web app still needs to be deployed.', true); return; }
+    var p = new URLSearchParams();
+    if (t.source === 'email') {
+      p.set('action', 'syncdone'); p.set('key', t.key); p.set('person', t.person);
+      p.set('date', t.noteDate || ''); p.set('title', (t.task || '').slice(0, 200));
+    } else {
+      p.set('action', 'complete'); p.set('list', t.lid || '@default'); p.set('task', t.tid);
+      p.set('person', t.person); p.set('key', t.key);
+    }
+    p.set('back', location.href.split('#')[0]);
+    var url = APP + '?' + p.toString();
+    var btn = ev.currentTarget; btn.disabled = true; btn.textContent = 'Working...';
+    pending[t.key] = btn;
+    setTimeout(function(){ if (pending[t.key]) { btn.disabled = false; btn.textContent = 'Complete'; delete pending[t.key]; } }, 90000);
+    var w = window.open(url, 'bpgComplete', 'popup,width=520,height=520');
+    if (!w) { location.href = url; }
+  };
+  window.addEventListener('message', function(e){
+    var host = '';
+    try { host = new URL(e.origin).hostname; } catch (x) { return; }
+    if (!/\.googleusercontent\.com$/.test(host) && host !== 'script.google.com') return;
+    var d = e.data && e.data.bpgDashboard; if (!d) return;
+    var btn = pending[d.key]; delete pending[d.key];
+    if (d.ok) { markDone(d.key); toast(d.message || 'Done.'); }
+    else { if (btn) { btn.disabled = false; btn.textContent = 'Complete'; } toast(d.error || 'Not completed.', true); }
+  });
+  function fromHash(){
+    var m = location.hash.match(/bpgdone=([^&]+)&ok=([01])/);
+    if (!m) return;
+    if (m[2] === '1') { markDone(decodeURIComponent(m[1])); toast('Done. It clears from the board on the next refresh.'); }
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+  fromHash();
+  window.addEventListener('hashchange', fromHash);
+})();
+renderTable();
+</script>
+</body>
+</html>
+
+<!-- redeploy 1788992105924 -->
