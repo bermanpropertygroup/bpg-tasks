@@ -1,5 +1,10 @@
 # BPG Rental KPI — Run Log
 
+## Oct 9, 2026 · 7:13 AM ET — layout v2: entity month tables full-width (Eric 7:12 AM)
+- Month-by-month entity P&L + CF tables moved out of the 4 narrow entity cards into a full-width "Entity P&L + cash flow by month" area below the card row (one collapsible block per entity, collapsed by default; card button opens + scrolls to it).
+- No ellipsis/truncation; full whole dollars; negatives red; NOI/NI/CF bold; memo + reconciliation rows readable; sticky label column (mobile scroll inside table only). † partial Viktor Sep preserved.
+- QA: 1280 + 1400 all tables expanded → no table/page horizontal scroll, 0 truncated elements, 0 JS errors; 390px page no horizontal scroll. Data unchanged from 6:54 build.
+
 ## 2026-10-09 — Entity-wide P&L + cash flow tables on By-Entity cards — PUBLISHED
 
 **Stamp:** Oct 9, 2026 · 6:54 AM ET · Same live QBO pull as the 6:33 AM rebuild (no new data).
