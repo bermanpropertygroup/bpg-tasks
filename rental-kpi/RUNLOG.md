@@ -1,5 +1,12 @@
 # BPG Rental KPI — Run Log
 
+## Oct 9, 2026 · 8:09 AM ET — ROSTER GATE + cross-source accuracy sweep + Market tooltip restore (Eric 8:02/8:04 AM)
+- Removed a sold property from Needs Attention → payment risk (it was a hardcoded template row) and from all board text (header note, BPG entity-P&L labels, data check, insurance note, chart notes). Snapshot header now computed: 20 properties · 34 units.
+- New canonical roster (skill `references/portfolio-roster.json`) + ROSTER GATE (sweep + whole-file scan in assemble + rendered-DOM scan in qa_cdp).
+- Sweep (Chat 30d REST, Gmail 30–45d, RUNNING, SREO, QBO books-thru, teammate memory, overrides): 2203 Unit 801 → Delinquent (Sep $700 NSF, balance unpaid — Stephanie→Stinger 10/5; SREO); 612 North partial-pay note; 1122 Emmons duct leak → done (Kyle addressed, 10/5); 25 Sams 2a duct re-insulation updated (10/5); 409 leak-test note (Chat 10/6); 606 U1 asking $1,750 (10/4 listing email; $1,850 superseded); new open item 606 U3 ceiling paint (10/5); tenants filled from SREO for 2905 Second + 606 Cottage. Conflicts listed in Data check: SREO still lists the sold property (Active + RentRoll), 602 Battery former tenant in RentRoll, rent diffs 606 U3 ($2,100 vs $2,150) and 409 ($3,297.94 vs $3,462.84).
+- Market Check tooltip restored (root cause: `tenantLabel(p,r)` ReferenceError on hover); now hover + tap, $/% vs band; QA gate qa_cdp.py (real CDP mouse/touch).
+- Financials unchanged from 6:33 build; identityGate.allPass true.
+
 ## Oct 9, 2026 · 7:13 AM ET — layout v2: entity month tables full-width (Eric 7:12 AM)
 - Month-by-month entity P&L + CF tables moved out of the 4 narrow entity cards into a full-width "Entity P&L + cash flow by month" area below the card row (one collapsible block per entity, collapsed by default; card button opens + scrolls to it).
 - No ellipsis/truncation; full whole dollars; negatives red; NOI/NI/CF bold; memo + reconciliation rows readable; sticky label column (mobile scroll inside table only). † partial Viktor Sep preserved.
