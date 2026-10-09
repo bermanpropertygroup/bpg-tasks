@@ -1,5 +1,19 @@
 # BPG Rental KPI — Run Log
 
+## 2026-10-09 — Entity-wide P&L + cash flow tables on By-Entity cards — PUBLISHED
+
+**Stamp:** Oct 9, 2026 · 6:54 AM ET · Same live QBO pull as the 6:33 AM rebuild (no new data).
+- New `DATA.entityPnl` per entity: latest closed month up front (Viktor = Aug, Sep †) + collapsible Jan–Sep + YTD (collapsed by default, prefs localStorage `bpg-rental-kpi-sec`).
+- Rows: Income · OpEx (incl. COGS) · NOI · Interest/other (net) · NI · Principal · Actual CF (NI − principal); memo investing / other financing / net cash (not in Actual CF).
+- Identity gate on entity tables: pass all months, all 4 entities (no bridges needed). identityGate.allPass = true.
+- Recon (entity NI − Σ property NI, YTD): Ember +$4,313; Viktor −$35,284; 2203 $0; BPG −$36,274 (non-rental; ex-27 Miller).
+- BPG table = entity-wide incl. non-rental, excludes 27 Miller (cust 431).
+- Ember Sep sanity: inc $20,585.04 · OpEx $17,031.52 · NOI $3,553.52 · int $8,566.06 · NI −$5,012.42 · prin $2,503.38 · CF −$7,515.80 ✔
+- Collapse init fix: honours expanded prefs (false) for default-collapsed sections; caret via CSS only.
+- QA: desktop 1400 + 390px (iframe) — no body horizontal scroll with tables expanded; no JS errors.
+
+---
+
 ## 2026-10-09 — FULL REBUILD Jan–Sep (Eric: entities reconciled thru Sep) — PUBLISHED
 
 **Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/
