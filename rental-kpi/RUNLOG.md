@@ -1,5 +1,37 @@
 # BPG Rental KPI — Run Log
 
+## 2026-10-09 — FULL REBUILD Jan–Sep (Eric: entities reconciled thru Sep) — PUBLISHED
+
+**Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/
+**Stamp:** Oct 9, 2026 · 6:33 AM ET
+**Period:** Jan–Sep 2026 / as_of 2026-09-30, ytdMonths=9. Live QBO cash (pulled 10/9, 0 API failures). identityGate.allPass=true; QA fails 0.
+
+### Data-through (Oct 3 → Oct 9)
+- Ember: 9/21 partial → books thru 10/7, Sep CLOSED (Sep int $8,566.06 + prin $2,503.38 posted on all 9 props).
+- 2203: 9/8 partial → thru 10/2, Sep CLOSED (Lima One int $1,030.42 + prin $363.28).
+- Viktor: 9/8 partial → entries thru 10/7 but Sep STILL PARTIAL: 609 Carteret + 409 Carteret Sep mortgage int/prin not posted.
+- BPG: 10/3 → 10/9, complete. Ribaut excluded per portfolio lock.
+
+### Restatements
+- Sep entity NI: Ember $15,627 → −$5,012; 2203 $3,654 → $2,584; Viktor $9,145 → $5,068 (still partial); BPG $93,740 → $78,632.
+- 153 Williams May/Jun interest back-posted ($252.26/$251.71).
+- 67 Sams 433 Sep: +$500 other income (NI −$1,749.81 → −$1,249.81).
+
+### Ops
+- 606 U2 → OCCUPIED 9/5–11/30 (Jason Hurt furnished ST, $1,800) per Stephanie Chat 10/6 + SREO. Sep rent $0 on books → confirm Stinger disbursement. Occupancy 31/34.
+- 828 B $2,250 confirmed (10/4 $1,750 was a typo). Balcony door swap Sat 10/10.
+- SREO rent roll (updated 9/21): renewals 23WD A ($1,550), 137 B, 820 B, 25 Sams 2a; 820 A $1,802.50; 612 North DELINQUENT.
+- 602 Battery turn WOs; 832 B plumbing Mon 10/12; 2203 803 Watkins invoice → SHM.
+
+### Still not reconciled
+Ember entity vs property income (Jan +$5,317.13, Feb −$4,700, Jun +$234.36, Jul +$3,000); 23 White Dogwood Sep (−$1,512.50); 609 parent income vs units (~$512–536/mo Jan, Mar–Aug); 828 B $2,250/mo collected Jan–Aug while vacant; 67 Sams HomeSpring ~$33.4K Jan–Aug on parent 430; Viktor Sep mortgages (609/409); 606 U2 Sep rent.
+
+### Next run should
+- Re-check Viktor Sep (609/409) and drop Viktor † once posted.
+- Dual T&I run-rate (deferred again). Drive RUNLOG/CONTEXT docs not updated this run (repo RUNLOG only).
+
+---
+
 ## 2026-10-05 — Weekly partial (ops-only, Monday) — BUILT, PUBLISH BLOCKED
 
 **Target:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/ (live still shows Oct 3, 2026 · 11:44 AM ET full rebuild)
