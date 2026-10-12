@@ -1,5 +1,41 @@
 # BPG Rental KPI — Run Log
 
+## Oct 12, 2026 · 9:23 AM ET — MONTHLY full rebuild Jan–Sep (12th) — BUILT, PUBLISH BLOCKED (GH_TOKEN empty)
+
+**Target:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/ (live still shows the Oct 9, 8:32 AM ET build)
+**Workdir:** /workspace/rental-kpi/oct12-monthly (pipeline copied from skill scripts/pipeline-2026-10-09 + patch_oct12.py + tmpl_oct12.py). Local commit in oct12-monthly/pub (not pushed).
+**Period:** Jan–Sep 2026 / as_of 2026-09-30, ytdMonths=9. Live QBO cash pulled 10/12 ~9:15 AM ET, 0 API failures, no CSV fallback. identityGate.allPass=true (all props + Paris + 4 entity tables). QA: qa_v2 1280/1400/390 pass; qa_cdp MARKET_TOOLTIP / MARKET_TAP / ROSTER_DOM / NO_HSCROLL / JS_ERRORS / RENDER_TEXT pass. Roster gate pass.
+
+### Data-through
+- Ember thru 10/7 (unchanged), 2203 thru 10/2 (unchanged), BPG thru 10/9 (unchanged): Sep closed.
+- Viktor thru 10/8: 409 Carteret Sep interest $2,231.25 now posted; 609 Carteret Sep interest + principal still NOT posted → Viktor Sep stays PARTIAL †.
+
+### Restatements vs Oct 9 pull (Viktor Sep only)
+409 Sep NI $4,751.33 → $2,520.08; 25 Sams 3B/3D Sep OpEx +$410 each; 609 Sep OpEx +$107.45; Paris Sep NI $1,936.52 → $1,757.99; Viktor Sep income +$110.41. Ember / 2203 / BPG identical to Oct 9 (Ember Sep sanity check matches).
+
+### Ops (Stinger 10/9 Statement Questions reply, Chat, RUNNING 10/10)
+- 2203 Unit 801 Delinquent → current (Stinger 10/9). 612 North: Sep balance "will be on the October statement" (still on watch). 606 U2 Sep rent disbursed, on Oct statement (timing).
+- 606 U1: 7 showings, parking a deterrent; Hartle unreachable. 828 B: Stinger declined Masi on credit 10/9; Stephanie escalation sent 10/12 8:00 AM ET; new lead Kevin Phillips. Balcony door swap 10/10 unconfirmed.
+- 409 HVAC deferred: Kyle limps unit with free refrigerant to Nov–Feb, then change-out + ductwork; Eric paused 10/9. 409 refi → Futures Funding (Morgan Chapman); others paused.
+- 602 Battery: WO #115832 $315 estimate awaiting approval (10/9). Ember Oct distribution $4,922.81 low; Eric asked Stinger 10/9, no reply.
+- No reply from Stephanie or Nichole to Eric's 10/9 rent roll / SREO message; SREO last edited 10/2 (none of the 4 items applied).
+
+### Dual T&I run-rate (FIRST dual-CF run) — matched accounts
+Insurance / Property Insurance; Insurance / Property insurance; Insurance / General Liability Insurance (67 Sams 433); Insurance / Liability insurance (609, 800 Paris); Taxes & Licenses / Property Taxes (BPG); Taxes paid / Property taxes (Ember/Viktor/2203). Rule: gap = max(0, 2025 T&I × 9/12 − 2026 Jan–Sep T&I), accrued if ≥ $250 and ≥ 10% of pro-rata.
+Run-rate CF/mo: Ember $626 (Actual $3,071; gap $22,006 — 2026 property taxes ~unexpensed on all Ember props), 2203 $1,384 (Actual $2,487; $0 T&I expensed in 2026 vs $13,236.80 in 2025), Viktor −$6,064 (Actual −$5,435; gaps 25 Sams 3B/3D, 137 taxes), BPG $1,540 (= Actual; 67 Sams complete).
+
+### Numbers snapshot
+Collections YTD $593,922 = 98.9% of $600,460 expected; Sep $57,314 (85.9% of $66,718/mo; −$18,746 / −24.6% MoM vs Aug $76,060). Occupancy 31/34 (vacant 602 Battery, 606 U1, 828 B). Delinquent: 612 North. Leases ≤90d: 23 White Dogwood B 10/31 (extension signed), 606 U2 ST 11/30. Below market 15 (Ember 8, Viktor 5, 2203 2). Entity-wide NI YTD: Ember $54,075; Viktor −$54,025 (Sep partial); 2203 $25,595; BPG −$22,419 (incl. non-rental).
+
+### Next run should
+- Push this build (or rebuild) once GH_TOKEN is available; weekly 9:43 AM run may have published first — rebase + merge overrides.json, never force.
+- Drop Viktor † when 609 Sep mortgage posts. Check October statement for 612 North balance and 606 U2 Sep rent.
+- Watch for replies on the 10/9 rent roll / SREO message and the Ember distribution query; drop SREO suggestions once SREO is edited.
+- Keep dual T&I accrual; drop it per property as escrow→expense JEs post.
+- Drive RUNLOG/CONTEXT docs: Docs-API append not available via the Drive connector (metadata-only updates) — repo RUNLOG.md is the working log.
+
+---
+
 ## Oct 9, 2026 · 8:09 AM ET — ROSTER GATE + cross-source accuracy sweep + Market tooltip restore (Eric 8:02/8:04 AM)
 - Removed a sold property from Needs Attention → payment risk (it was a hardcoded template row) and from all board text (header note, BPG entity-P&L labels, data check, insurance note, chart notes). Snapshot header now computed: 20 properties · 34 units.
 - New canonical roster (skill `references/portfolio-roster.json`) + ROSTER GATE (sweep + whole-file scan in assemble + rendered-DOM scan in qa_cdp).
