@@ -1,5 +1,21 @@
 # BPG Rental KPI — Run Log
 
+## Oct 12, 2026 · 10:21 AM ET — WEEKLY full rebuild (Monday) — PUBLISHED
+
+**Live:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/ · stamp Oct 12, 2026 · 10:21 AM ET
+**Workdir:** /workspace/rental-kpi/oct12-weekly (copy of oct12-monthly pipeline + patch_wk1012.py).
+- Fresh live QBO cash pull 10/12 ~10:18 AM ET (all 4 entities, entity + per-customer P&L/CF BM + P&L detail), 0 failures, no CSV fallback. Every report identical to the 9:15 AM monthly pull (only Ember P&L-detail row order changed). TransactionList books-thru unchanged: Ember 10/7, Viktor 10/8 (Sep PARTIAL †, 609 Carteret Sep P&I not posted), 2203 10/2, BPG 10/9.
+- Ops: Chat 30d re-pulled (85 spaces); only new rental item since 9:15 AM = 828 B balcony door swap under way 10/12 (Edgar + Hector; Austin, Chat Ix-800 Paris 9:24 AM ET), item moved scheduled → ongoing. Gmail since 10/11: nothing new for the board (Stephanie's 10/12 8:00 AM SHM email already in). Projects Master last modified 10/10, SREO 10/2 — unchanged, so none of the 10/9 SREO/rent roll suggestions applied yet.
+- Note: the 9:23 AM monthly build did reach the live site (commit 941d21a) despite its RUNLOG header saying publish blocked.
+- Gates: sweep ROSTER GATE pass (6 conflicts, 20 suggested edits, same as monthly), identityGate.allPass true (financials unchanged), qa_v2 1280/1400 pass, qa_cdp local pass (MARKET_TOOLTIP/TAP, ROSTER_DOM, NO_HSCROLL 390, JS_ERRORS, RENDER_TEXT).
+
+### Next run should
+- Drop Viktor † when 609 Carteret Sep mortgage posts; check the October statement for 612 North balance and 606 U2 Sep rent.
+- Confirm the 828 B balcony door is finished (then mark done, EFG paint next).
+- Watch for SREO/rent roll edits from Stephanie/Nichole on the 10/9 message; drop suggestions once applied.
+
+---
+
 ## Oct 12, 2026 · 9:23 AM ET — MONTHLY full rebuild Jan–Sep (12th) — BUILT, PUBLISH BLOCKED (GH_TOKEN empty)
 
 **Target:** https://bermanpropertygroup.github.io/bpg-tasks/rental-kpi/ (live still shows the Oct 9, 8:32 AM ET build)

@@ -1,32 +1,32 @@
 {
-  "status": {
-    "10|Cottage": {
-      "status": "occupied",
-      "note": "Lease started 7/27/26 — Occupied (Eric QA)",
-      "_by": "rebuild",
-      "_at": "2026-09-18"
-    },
-    "4|": {
-      "status": "vacant",
-      "note": "Moved out 9/23/26 — Vacant (weekly 9/28)",
-      "_by": "weekly-partial",
-      "_at": "2026-09-28"
-    },
-    "10|Unit 1": {
-      "status": "vacant",
-      "note": "Asking $1,750 (RUNNING 9/24)",
-      "_by": "weekly-partial",
-      "_at": "2026-09-28"
-    },
-    "10|Unit 2": {
-      "status": "occupied",
-      "note": "Occupied 9/5–11/30 — Jason Hurt furnished ST rental, $1,800 (Stephanie Chat 10/6)",
-      "_by": "rebuild",
-      "_at": "2026-10-09"
-    }
+ "status": {
+  "10|Cottage": {
+   "status": "occupied",
+   "note": "Lease started 7/27/26 — Occupied (Eric QA)",
+   "_by": "rebuild",
+   "_at": "2026-09-18"
   },
-  "maint": {},
-  "updatedAt": "2026-10-12T13:23:27.000Z",
-  "path": "rental-kpi/overrides.json",
-  "note": "Monthly full rebuild 2026-10-12 (Jan–Sep); merge on load; commit on republish"
+  "4|": {
+   "status": "vacant",
+   "note": "Moved out 9/23/26 — Vacant (weekly 9/28)",
+   "_by": "weekly-partial",
+   "_at": "2026-09-28"
+  },
+  "10|Unit 1": {
+   "status": "vacant",
+   "note": "Asking $1,750 (RUNNING 9/24)",
+   "_by": "weekly-partial",
+   "_at": "2026-09-28"
+  },
+  "10|Unit 2": {
+   "status": "occupied",
+   "note": "Occupied 9/5–11/30 — Jason Hurt furnished ST rental, $1,800 (Stephanie Chat 10/6)",
+   "_by": "rebuild",
+   "_at": "2026-10-09"
+  }
+ },
+ "maint": {},
+ "updatedAt": "2026-10-12T14:21:17.000Z",
+ "path": "rental-kpi/overrides.json",
+ "note": "Weekly full rebuild 2026-10-12 (Jan–Sep); merge on load; commit on republish"
 }
