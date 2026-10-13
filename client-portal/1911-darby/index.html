@@ -113,6 +113,17 @@ tr:last-child td{border-bottom:none}
 .tl-hint{display:none;font-size:.7rem;color:var(--muted);margin-top:6px}
 @media (max-width:720px){.tl-scroll{margin:0 -4px;padding:0 4px 6px}.tl-hint{display:block}}
 .foot{margin-top:36px;font-size:.75rem;color:var(--muted);text-align:center}
+.upd{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+@media (max-width:720px){.upd{grid-template-columns:1fr}}
+.upd ul{margin:6px 0 0;padding-left:18px;font-size:.9rem;line-height:1.5}
+.upd li{margin:3px 0}
+.co{margin-top:14px;background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:12px 14px}
+.co-t{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:6px}
+.co-t th,.co-t td{text-align:left;padding:6px 4px;border-bottom:1px solid var(--ring);vertical-align:top}
+.co-t td:nth-child(3){white-space:nowrap}
+.co-sum{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;font-size:.8rem}
+@media (max-width:720px){.co-sum{grid-template-columns:1fr 1fr}}
+.co-sum span{display:block;color:var(--ink2)}.co-sum b{font-size:1rem}
 </style>
 <style>
 .tile .v{font-size:1.25rem}
@@ -191,7 +202,25 @@ td .pay-btn{margin-left:8px;padding:4px 10px;font-size:.7rem;vertical-align:midd
         <div class="tl-legend" aria-hidden="true"><span><i class="lg-done"></i>Done</span><span><i class="lg-now"></i>Current</span><span><i class="lg-start"></i>Started in parallel</span><span><i class="lg-up"></i>Upcoming</span></div>
       </div>
     </div>
-    <p class="disclaimer">Phase position is approximate. Framing and electrical rough-in passed inspection Sep 23. Windows and doors were installed Oct 2 and fascia is underway. The flashing inspection passed Oct 6 and the windows and doors inspection passed Oct 8. Siding and soffit work continues. Next: spray foam insulation and the insulation inspection once siding is done. The metal roof is still to come. Carport finishes confirmed Sep 24: vertical posts will be painted black once the lumber has dried.</p>
+    <div class="upd">
+      <div class="upd-col"><div class="k">Completed</div><ul>
+        <li><b>Apr 15:</b> Deposit received</li>
+        <li><b>Aug 17:</b> Slab inspection passed</li>
+        <li><b>Sep 23:</b> Framing and electrical rough-in passed inspection</li>
+        <li><b>Oct 2:</b> Windows and doors installed</li>
+        <li><b>Oct 6:</b> Flashing inspection passed</li>
+        <li><b>Oct 8:</b> Windows and doors inspection passed</li>
+      </ul></div>
+      <div class="upd-col"><div class="k">In progress and next</div><ul>
+        <li><b>Now:</b> siding, soffit and fascia. Siding is expected to wrap up this week.</li>
+        <li><b>Next (expected week of Oct 19):</b> spray foam insulation, then the insulation inspection</li>
+        <li><b>After that:</b> drywall, trim, electrical trim-out and garage doors</li>
+        <li><b>Metal roof:</b> still to come</li>
+        <li><b>Carport posts:</b> will be painted black once the lumber has dried, per your Sep 24 request</li>
+        <li><b>Nov 30, 2026:</b> complete-by date</li>
+      </ul></div>
+    </div>
+    <p class="disclaimer">Phase position is approximate. Dates marked expected can move with weather, deliveries and inspections.</p>
   </section>
 
   <section>
@@ -219,7 +248,17 @@ td .pay-btn{margin-left:8px;padding:4px 10px;font-size:.7rem;vertical-align:midd
         <div class="n">Directional · cost plus</div>
       </div>
     </div>
-    <p class="disclaimer">Open change orders: none on file. Management fee $8,000 per agreement.</p>
+    <div class="co">
+      <div class="k">Change orders</div>
+      <p style="margin:6px 0 0;font-size:.9rem">No change orders to date.</p>
+      <div class="co-sum">
+        <div><span>Exhibit A estimate</span><b>$155,948.42</b></div>
+        <div><span>Change orders to date</span><b>$0.00</b></div>
+        <div><span>Current estimate</span><b>$155,948.42</b></div>
+        <div><span>Change orders as share of estimate</span><b>0.0%</b></div>
+      </div>
+    </div>
+    <p class="disclaimer">Management fee $8,000 per agreement.</p>
   </section>
 
   <section>
