@@ -124,6 +124,23 @@ tr:last-child td{border-bottom:none}
 .co-sum{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;font-size:.8rem}
 @media (max-width:720px){.co-sum{grid-template-columns:1fr 1fr}}
 .co-sum span{display:block;color:var(--ink2)}.co-sum b{font-size:1rem}
+
+.ct-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:10px}
+.ct{background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:12px 14px}
+.ct-n{font-weight:700}.ct-r{font-size:.78rem;color:var(--ink2)}.ct-e{font-size:clamp(12px,3.6vw,13px);color:var(--muted);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ct-a{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ct-btn{display:inline-block;padding:6px 10px;border-radius:999px;background:#142846;color:#fff;font-size:.78rem;text-decoration:none}
+.ct-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:12px;font-size:.88rem}
+.msg-open,.msg-send{background:#c9a227;color:#142846;border:0;border-radius:999px;padding:10px 18px;font-weight:700;cursor:pointer}
+.msg-cancel{background:transparent;border:1px solid var(--ring);border-radius:999px;padding:10px 16px;cursor:pointer}
+#msgDlg{border:0;border-radius:12px;padding:0;width:min(440px,92vw)}
+#msgDlg::backdrop{background:rgba(20,40,70,.45)}
+#msgForm{padding:18px;display:flex;flex-direction:column;gap:10px}
+#msgForm h2{margin:0;font-size:1.1rem}.msg-sub{margin:0;font-size:.8rem;color:#555}
+#msgForm label{display:flex;flex-direction:column;gap:4px;font-size:.82rem;font-weight:600}
+#msgForm input,#msgForm textarea{font:inherit;font-weight:400;padding:8px;border:1px solid #bbb;border-radius:8px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px}
+.msg-act{display:flex;gap:8px;justify-content:flex-end}.msg-st{font-size:.82rem;min-height:1em}
 </style>
 <style>
 .tile .v{font-size:1.25rem}
@@ -288,6 +305,34 @@ td .pay-btn{margin-left:8px;padding:4px 10px;font-size:.7rem;vertical-align:midd
     </div>
   </section>
 
+  <section id="contact">
+    <div class="sec-label">Contact your team</div>
+    <div class="ct-grid">
+<div class="ct"><div class="ct-n">Eric Berman</div><div class="ct-e">eric@bermanpropertygroup.com</div><div class="ct-a"><a class="ct-btn" href="mailto:eric@bermanpropertygroup.com?subject=16%20Mum%20Grace">Email</a></div></div>
+<div class="ct"><div class="ct-n">Stephanie Pretto</div><div class="ct-e">stephanie@bermanpropertygroup.com</div><div class="ct-a"><a class="ct-btn" href="mailto:stephanie@bermanpropertygroup.com?subject=16%20Mum%20Grace">Email</a></div></div>
+<div class="ct"><div class="ct-n">Austin Hartman</div><div class="ct-e">austin@bermanpropertygroup.com</div><div class="ct-a"><a class="ct-btn" href="mailto:austin@bermanpropertygroup.com?subject=16%20Mum%20Grace">Email</a></div></div>
+<div class="ct"><div class="ct-n">Richard Pratten</div><div class="ct-e">richard@bermanpropertygroup.com</div><div class="ct-a"><a class="ct-btn" href="mailto:richard@bermanpropertygroup.com?subject=16%20Mum%20Grace">Email</a></div></div>
+<div class="ct"><div class="ct-n">Nichole Nelson</div><div class="ct-e">nichole@bermanpropertygroup.com</div><div class="ct-a"><a class="ct-btn" href="mailto:nichole@bermanpropertygroup.com?subject=16%20Mum%20Grace">Email</a></div></div>
+    </div>
+    <div class="ct-foot">
+      <div>Main office: <a href="tel:+18439407271">(843) 940-7271</a> · <a href="https://www.bermanpropertygroup.com" target="_blank" rel="noopener">bermanpropertygroup.com</a></div>
+      <button type="button" class="msg-open" id="msgOpen">Send us a message</button>
+    </div>
+  </section>
+
+  <dialog id="msgDlg" aria-labelledby="msgTitle">
+    <form id="msgForm" method="dialog">
+      <h2 id="msgTitle">Send us a message</h2>
+      <p class="msg-sub">Goes to the 16 Mum Grace project team.</p>
+      <label>Your name<input name="name" required maxlength="80" value="Rob Herbstman &amp; Mikie Simek"></label>
+      <label>Message<textarea name="message" required minlength="5" maxlength="2000" rows="5"></textarea></label>
+      <label>Callback number (optional)<input name="phone" type="tel" maxlength="20" inputmode="tel"></label>
+      <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="msg-st" id="msgSt" role="status"></div>
+      <div class="msg-act"><button type="button" id="msgCancel" class="msg-cancel">Cancel</button><button type="submit" id="msgSend" class="msg-send">Send</button></div>
+    </form>
+  </dialog>
+
   <p class="foot"><span class="mark">Berman Property Group</span> · 16 Mum Grace client portal · bermanpropertygroup.com</p>
 </div>
 <script>
@@ -295,6 +340,23 @@ td .pay-btn{margin-left:8px;padding:4px 10px;font-size:.7rem;vertical-align:midd
 (function(){var sc=document.querySelector('.tl-scroll'),h=document.querySelector('.tl-here');
 if(!sc||!h)return;function c(){if(sc.scrollWidth>sc.clientWidth){sc.scrollLeft=h.offsetLeft-sc.clientWidth/2;}}
 c();window.addEventListener('load',c);window.addEventListener('resize',c);})();
+</script>
+<script>
+// Contact form. ENDPOINT and JOB_KEY are filled in at publish time (see DEPLOY_STEPS.md).
+(function(){var ENDPOINT='https://script.google.com/macros/s/AKfycbz0bt8mAZCeaaLFpDntwFhqWu3JUpdoHch8vhjZFVyjYISXf4ALA1e3jobyR9kBYjqO/exec',JOB='16-mum-grace',JOB_KEY='76UXf9JRhZWBePv3TwQjOpsr';
+var d=document.getElementById('msgDlg'),f=document.getElementById('msgForm'),st=document.getElementById('msgSt'),send=document.getElementById('msgSend'),t0=0;
+document.getElementById('msgOpen').onclick=function(){st.textContent='';t0=Date.now();d.showModal();};
+document.getElementById('msgCancel').onclick=function(){d.close();};
+f.addEventListener('submit',function(e){e.preventDefault();
+ if(ENDPOINT.indexOf('http')!==0){st.textContent='Messaging is not connected yet. Please email or call us above.';return;}
+ var b={job:JOB,key:JOB_KEY,name:f.elements['name'].value,message:f.elements['message'].value,phone:f.elements['phone'].value,website:f.elements['website'].value,elapsed:Date.now()-t0};
+ send.disabled=true;st.textContent='Sending...';
+ fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(b)})
+ .then(function(r){return r.json();}).then(function(j){
+   if(j.ok){st.textContent='Thanks. Your message was sent to the team.';f.elements['message'].value='';setTimeout(function(){d.close();},2500);}
+   else{st.textContent=j.error||'Could not send. Please email or call us above.';}})
+ .catch(function(){st.textContent='Could not send. Please email or call us above.';})
+ .finally(function(){send.disabled=false;});});})();
 </script>
 </body>
 </html>
