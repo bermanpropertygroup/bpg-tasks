@@ -141,6 +141,8 @@ tr:last-child td{border-bottom:none}
 #msgForm input,#msgForm textarea{font:inherit;font-weight:400;padding:8px;border:1px solid #bbb;border-radius:8px}
 .hp{position:absolute;left:-9999px;width:1px;height:1px}
 .msg-act{display:flex;gap:8px;justify-content:flex-end}.msg-st{font-size:.82rem;min-height:1em}
+
+.ct-copied{font-size:.75rem;color:#1a7f37;margin-left:4px;align-self:center}
 </style>
 <style>
 .tile .v{font-size:1.25rem}
@@ -357,6 +359,12 @@ f.addEventListener('submit',function(e){e.preventDefault();
    else{st.textContent=j.error||'Could not send. Please email or call us above.';}})
  .catch(function(){st.textContent='Could not send. Please email or call us above.';})
  .finally(function(){send.disabled=false;});});})();
+</script>
+<script>
+// Email buttons: open mail app and also copy the address, showing "Email copied".
+(function(){document.querySelectorAll('a.ct-btn[href^="mailto:"]').forEach(function(a){a.addEventListener('click',function(){
+ var addr=a.getAttribute('href').slice(7).split('?')[0],done=function(){var n=a.parentNode.querySelector('.ct-copied');if(!n){n=document.createElement('span');n.className='ct-copied';n.setAttribute('role','status');a.parentNode.appendChild(n);}n.textContent='Email copied';clearTimeout(n._t);n._t=setTimeout(function(){n.textContent='';},2000);};
+ try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(addr).then(done,function(){});}else{var t=document.createElement('textarea');t.value=addr;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();if(document.execCommand('copy'))done();t.remove();}}catch(e){}});});})();
 </script>
 </body>
 </html>
