@@ -6,6 +6,7 @@ Static client-facing project pages published via GitHub Pages on this repo (same
 
 - **1911 Darby:** https://bermanpropertygroup.github.io/bpg-tasks/client-portal/1911-darby/
 - **404 Euhaw:** https://bermanpropertygroup.github.io/bpg-tasks/client-portal/404-euhaw/
+- **16 Mum Grace:** https://bermanpropertygroup.github.io/bpg-tasks/client-portal/16-mum-grace/
 
 ## Rules
 
